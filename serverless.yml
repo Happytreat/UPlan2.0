@@ -14,6 +14,22 @@ provider:
   runtime: nodejs8.10
   stage: dev
   region: ap-southeast-1
+  # 'iamRoleStatements' defines the permission policy for the Lambda
+  # function.
+  # In this case Lambda functions are granted with permissions to
+  # access DynamoDB.
+  iamRoleStatements:
+    - Effect: Allow
+  Action:
+    - dynamodb:DescribeTable
+    - dynamodb:Query
+    - dynamodb:Scan
+    - dynamodb:GetItem
+    - dynamodb:PutItem
+    - dynamodb:UpdateItem
+    - dynamodb:DeleteItem
+  Resource: "arn:aws:dynamodb:ap-southeast-1:985930350642:table/semesters"
+  # Resource: "arn:aws:dynamodb:ap-southeast-1:*:*"
   # To load environment variables externally
   # rename env.example to env.yml and uncomment
   # the following line. Also, make sure to not
@@ -22,9 +38,11 @@ provider:
   #environment: ${file(env.yml):${self:provider.stage}}
 
 functions:
-  hello:
-    handler: handler.hello
+  createSemester:
+    handler: createSemester.main
     events:
       - http:
-          path: hello
-          method: get
+          path: semesters
+          method: post
+          cors: true
+          authorizer: aws_aim
