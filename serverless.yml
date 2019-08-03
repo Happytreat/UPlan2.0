@@ -70,3 +70,11 @@ functions:
           method: put
           cors: true
           authorizer: aws_aim
+  deleteSemester:
+    handler: deleteSemester.main
+    events:
+      - http:
+          path: semesters/{id}
+          method: delete
+          cors: true
+          authorizer: aws_aim
