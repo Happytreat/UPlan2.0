@@ -1,0 +1,11 @@
+{
+  "body": "{\"name\":\"Y2S1\",\"attachment\":\"Y2S1.txt\", \"description\":\"Second year time to prepare for NOC\"}",
+  "pathParameters": {
+    "id": "98865e60-b5bd-11e9-ada4-f1daab34b90f"
+  },
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "USER-SUB-1234"
+    }
+  }
+}
