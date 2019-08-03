@@ -1,0 +1,8 @@
+{
+  "body": "{\"name\":\"Y1S1\",\"description\":\"First Semester of Uni. Time to join clubs and make frens.\",\"attachment\":\"Y1S1Plans.txt\"}",
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "USER-SUB-1234"
+    }
+  }
+}
