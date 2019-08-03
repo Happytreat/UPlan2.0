@@ -54,3 +54,11 @@ functions:
           method: get
           cors: true
           authorizer: aws_aim
+  getSemesterList:
+    handler: getSemesterList.main
+    events:
+      - http:
+          path: semesters
+          method: get
+          cors: true
+          authorizer: aws_aim
