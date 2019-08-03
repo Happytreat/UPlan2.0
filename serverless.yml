@@ -37,6 +37,11 @@ provider:
   #
   #environment: ${file(env.yml):${self:provider.stage}}
 
+# Create our resources with separate CloudFormation templates
+resources:
+  # API Gateway Errors
+  - ${file(resources/api-gateway-errors.yml)}
+
 functions:
   createSemester:
     handler: createSemester.main
