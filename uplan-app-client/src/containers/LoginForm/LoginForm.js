@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, Button, FormGroup, FormControl } from "react-bootstrap";
+import { Form, FormGroup, FormControl } from "react-bootstrap";
 import { Auth } from "aws-amplify";
 import ProgressButton from '../../components/ProgressButton/ProgressButton';
 import "./LoginForm.css";
