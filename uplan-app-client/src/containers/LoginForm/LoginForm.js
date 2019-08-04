@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import { Form, Button, FormGroup, FormControl } from "react-bootstrap";
 import { Auth } from "aws-amplify";
+import ProgressButton from '../../components/ProgressButton/ProgressButton';
 import "./LoginForm.css";
 
 export default class Login extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      isLoading: false,
       email: "",
       password: ""
     };
@@ -23,8 +25,10 @@ export default class Login extends Component {
     });
   };
 
+  // TODO: Redux
   handleSubmit = async event => {
     event.preventDefault();
+    this.setState({ isLoading: true });
     try {
       await Auth.signIn(this.state.email, this.state.password);
       this.props.userHasAuthenticated(true);
@@ -33,11 +37,13 @@ export default class Login extends Component {
     } catch (e) {
       // TODO: Show text instead
       alert(e.message);
+      this.setState({ isLoading: false });
     }
   };
 
-  // TODO: Add progress button when login
+  // Add-on: Forget password functionality
   render() {
+    const { isLoading, email, password } = this.state;
     return (
       <div>
         <div style={{minHeight: '10vh'}}></div>
@@ -48,26 +54,29 @@ export default class Login extends Component {
               <FormControl
                 autoFocus
                 type="email"
-                value={this.state.email}
+                value={email}
                 onChange={this.handleChange}
               />
             </FormGroup>
             <FormGroup controlId="password" size="large">
               <Form.Label>Password</Form.Label>
               <FormControl
-                value={this.state.password}
+                value={password}
                 onChange={this.handleChange}
                 type="password"
               />
             </FormGroup>
-            <Button
+            <ProgressButton
               block
               size="large"
               disabled={!this.validateForm()}
               type="submit"
+              text="Login"
+              isLoading={isLoading}
+              loadingText=" Logging in..."
             >
               Login
-            </Button>
+            </ProgressButton>
           </Form>
         </div>
       </div>
