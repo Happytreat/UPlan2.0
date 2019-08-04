@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Auth } from "aws-amplify";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import { Navbar, Nav } from "react-bootstrap";
 import Logo from "../../asset/unicorn-icon.png";
@@ -18,7 +18,8 @@ class NavBar extends Component {
   handleLogout = async event => {
     await Auth.signOut();
     this.props.props.userHasAuthenticated(false);
-  }
+    this.props.history.push("/login");
+  };
 
   render() {
     const { isAuthenticated } = this.props.props;
@@ -59,4 +60,4 @@ class NavBar extends Component {
   }
 }
 
-export default NavBar;
+export default withRouter(NavBar);

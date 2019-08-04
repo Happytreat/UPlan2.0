@@ -28,8 +28,8 @@ export default class Login extends Component {
     try {
       await Auth.signIn(this.state.email, this.state.password);
       this.props.userHasAuthenticated(true);
-      alert("Logged in successful.");
-      // TODO: Redirect
+      this.props.history.push("/");
+      alert("Logged in successful."); // Change to snackbar
     } catch (e) {
       // TODO: Show text instead
       alert(e.message);
