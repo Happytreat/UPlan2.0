@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Form, Button, FormGroup, FormControl } from "react-bootstrap";
+import { Auth } from "aws-amplify";
 import "./LoginForm.css";
 
 export default class Login extends Component {
@@ -22,9 +23,15 @@ export default class Login extends Component {
     });
   };
 
-  // TODO: Add cognito login
-  handleSubmit = event => {
+  handleSubmit = async event => {
     event.preventDefault();
+    try {
+      await Auth.signIn(this.state.email, this.state.password);
+      alert("Logged in successful.");
+      // Redirect
+    } catch (e) {
+      alert(e.message);
+    }
   };
 
   render() {
