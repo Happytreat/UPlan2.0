@@ -108,6 +108,10 @@ export default class Semesters extends Component {
     }
   };
 
+  deleteSemester() {
+    return API.del("semesters", `/semesters/${this.props.match.params.id}`);
+  }
+
   handleDelete = async event => {
     event.preventDefault();
     const confirmed = window.confirm(
@@ -116,7 +120,19 @@ export default class Semesters extends Component {
     if (!confirmed) {
       return;
     }
+
     this.setState({ isDeleting: true });
+    try {
+      await this.deleteSemester();
+
+      // Delete attachment of deleted semester
+      await Storage.vault.remove(this.state.semester.attachment);
+
+      this.props.history.push("/");
+    } catch (e) {
+      alert(e);
+      this.setState({ isDeleting: false });
+    }
   };
 
   render() {
