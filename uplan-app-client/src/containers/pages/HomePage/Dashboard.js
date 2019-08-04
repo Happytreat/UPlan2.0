@@ -59,7 +59,7 @@ export default class LoggedIn extends Component {
           ? <LinkContainer
             style={styles.link}
             key={semester.semesterId}
-            to={`/notes/${semester.semesterId}`}
+            to={`/semesters/${semester.semesterId}`}
           >
             <ListGroup.Item>
               <h6><b>{semester.name}</b></h6>

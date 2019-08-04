@@ -6,10 +6,10 @@ import config from "../../config";
 import { s3Upload } from "../../libs/awsLib";
 
 const styles = {
-  textArea: {
-    height: '350px',
-    fontSize: '24',
-  },
+  // textArea: {
+  //   height: '350px',
+  //   fontSize: '24',
+  // },
   form: {
     padding: '1.5rem',
   }
