@@ -3,6 +3,7 @@ import { API, Storage } from "aws-amplify";
 import { Form, FormGroup, FormControl } from "react-bootstrap";
 import ProgressButton from "../../components/ProgressButton/ProgressButton";
 import config from "../../config";
+import { s3Upload } from "../../libs/awsLib";
 
 const styles = {
   form: {
@@ -70,13 +71,41 @@ export default class Semesters extends Component {
     this.file = event.target.files[0];
   };
 
+  saveSemester(semester) {
+    // PUT request to update semester
+    return API.put("semesters", `/semesters/${this.props.match.params.id}`, {
+      body: semester,
+    });
+  }
+
   handleSubmit = async event => {
+    let attachment;
     event.preventDefault();
+
     if (this.file && this.file.size > config.MAX_ATTACHMENT_SIZE) {
       alert(`Please pick a file smaller than ${config.MAX_ATTACHMENT_SIZE/1000000} MB.`);
       return;
     }
     this.setState({ isLoading: true });
+
+    try {
+      if (this.file) {
+        attachment = await s3Upload(this.file);
+      }
+      await this.saveSemester({
+        name: this.state.name,
+        description: this.state.description,
+        attachment: attachment || this.state.semester.attachment
+      });
+
+      // Delete the old attachment
+      await Storage.vault.remove(this.state.semester.attachment);
+
+      this.props.history.push("/");
+    } catch (e) {
+      alert(e);
+      this.setState({ isLoading: false });
+    }
   };
 
   handleDelete = async event => {
