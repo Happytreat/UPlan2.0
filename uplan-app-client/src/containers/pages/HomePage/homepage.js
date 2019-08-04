@@ -3,11 +3,14 @@ import LoggedIn from "./Dashboard";
 import NotLoggedIn from "./NotLoggedIn";
 
 export default class HomePage extends Component {
+  // Consider placing Dashboard at separate route /dashboard
+  // and redirect / to path if authenticated
   render() {
+    const { isAuthenticated } = this.props;
     return (
       <div className="Home">
-        {this.props.isAuthenticated
-          ? <LoggedIn />
+        {isAuthenticated
+          ? <LoggedIn isAuthenticated={isAuthenticated} />
           : <NotLoggedIn />}
       </div>
     );
