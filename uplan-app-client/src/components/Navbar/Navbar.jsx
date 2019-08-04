@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Auth } from "aws-amplify";
 import { Link } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import { Navbar, Nav } from "react-bootstrap";
@@ -14,9 +15,10 @@ const styles = {
 
 class NavBar extends Component {
   // TODO: Use redux
-  handleLogout = event => {
+  handleLogout = async event => {
+    await Auth.signOut();
     this.props.props.userHasAuthenticated(false);
-  };
+  }
 
   render() {
     const { isAuthenticated } = this.props.props;
