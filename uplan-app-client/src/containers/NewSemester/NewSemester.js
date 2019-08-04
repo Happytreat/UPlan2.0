@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Form, FormGroup } from "react-bootstrap";
+import { API } from "aws-amplify";
 import ProgressButton from "../../components/ProgressButton/ProgressButton";
 import config from "../../config";
 
@@ -44,6 +45,25 @@ export default class NewSemester extends Component {
       return;
     }
     this.setState({ isLoading: true });
+
+    try {
+      await this.createSemester({
+        name: this.state.name,
+        description: this.state.description,
+      });
+      this.props.history.push("/");
+    } catch (e) {
+      alert(e);
+      // console.log(e);
+      this.setState({ isLoading: false });
+    }
+  };
+
+  createSemester(note) {
+    // API endpoint in index.js is semesters
+    return API.post("semesters", "/semesters", {
+      body: note,
+    });
   };
 
   render() {
