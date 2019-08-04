@@ -4,6 +4,7 @@ import {
   FormControl,
   Form
 } from "react-bootstrap";
+import { Auth } from "aws-amplify";
 import ProgressButton from "../../components/ProgressButton/ProgressButton";
 import "./SignupForm.css";
 
@@ -24,12 +25,16 @@ export default class Signup extends Component {
       password: "",
       confirmPassword: "",
       confirmationCode: "",
+      nickname: "",
       newUser: null
     };
   }
+
+  // Validate Form password better (special characters etc)
   validateForm() {
     return (
       this.state.email.length > 0 &&
+      this.state.nickname.length > 0 &&
       this.state.password.length > 0 &&
       this.state.password === this.state.confirmPassword
     );
@@ -48,13 +53,50 @@ export default class Signup extends Component {
   handleSubmit = async event => {
     event.preventDefault();
     this.setState({ isLoading: true });
-    this.setState({ newUser: "test" });
+    try {
+      const newUser = await Auth.signUp({
+        username: this.state.email,
+        password: this.state.password,
+        attributes: {
+          nickname: this.state.nickname,
+          email: this.state.email
+        }
+      });
+      this.setState({ newUser });
+    } catch (e) {
+      try {
+        if (e.code === "UsernameExistsException") {
+          await Auth.resendSignUp(this.state.email).then(() => {
+              this.setState({ newUser: { username: this.state.email } });
+              alert("A verification code has been resent to your email.")
+            }
+          )
+        } else {
+          alert(e.message); // to use snack bar
+        }
+      } catch (err) {
+        if (err.message === "User is already confirmed.") {
+          alert("A user of the email entered has already existed.");
+        }
+        console.log('error of second', err);
+      }
+    }
     this.setState({ isLoading: false });
   };
 
   handleConfirmationSubmit = async event => {
     event.preventDefault();
-    this.setState({isLoading: true});
+    this.setState({ isLoading: true });
+
+    try {
+      await Auth.confirmSignUp(this.state.email, this.state.confirmationCode);
+      await Auth.signIn(this.state.email, this.state.password);
+      this.props.userHasAuthenticated(true);
+      this.props.history.push("/");
+    } catch (e) {
+      alert(e.message); // to use snack bar
+      this.setState({ isLoading: false });
+    }
   };
 
   renderConfirmationForm() {
@@ -92,6 +134,14 @@ export default class Signup extends Component {
             type="email"
             value={this.state.email}
             onChange={this.handleChange}
+          />
+        </FormGroup>
+        <FormGroup controlId="nickname" size="large">
+          <Form.Label>Nickname</Form.Label>
+          <FormControl
+            value={this.state.nickname}
+            onChange={this.handleChange}
+            type="text"
           />
         </FormGroup>
         <FormGroup controlId="password" size="large">
