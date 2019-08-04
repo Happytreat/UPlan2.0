@@ -3,6 +3,7 @@ import { Form, FormGroup } from "react-bootstrap";
 import { API } from "aws-amplify";
 import ProgressButton from "../../components/ProgressButton/ProgressButton";
 import config from "../../config";
+import { s3Upload } from "../../libs/awsLib";
 
 const styles = {
   textArea: {
@@ -47,10 +48,17 @@ export default class NewSemester extends Component {
     this.setState({ isLoading: true });
 
     try {
+      // Upload file before creating a note
+      const attachment = this.file
+        ? await s3Upload(this.file)
+        : null;
+
       await this.createSemester({
         name: this.state.name,
         description: this.state.description,
+        attachment,
       });
+
       this.props.history.push("/");
     } catch (e) {
       alert(e);
