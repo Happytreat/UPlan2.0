@@ -27,9 +27,11 @@ export default class Login extends Component {
     event.preventDefault();
     try {
       await Auth.signIn(this.state.email, this.state.password);
+      this.props.userHasAuthenticated(true);
       alert("Logged in successful.");
-      // Redirect
+      // TODO: Redirect
     } catch (e) {
+      // TODO: Show text instead
       alert(e.message);
     }
   };

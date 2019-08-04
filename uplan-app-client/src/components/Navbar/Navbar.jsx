@@ -13,7 +13,14 @@ const styles = {
 };
 
 class NavBar extends Component {
+  // TODO: Use redux
+  handleLogout = event => {
+    this.props.props.userHasAuthenticated(false);
+  };
+
   render() {
+    const { isAuthenticated } = this.props.props;
+
     return (
       <>
         <Navbar fluid="true" collapseOnSelect style={{background: 'ghostwhite'}}>
@@ -26,16 +33,22 @@ class NavBar extends Component {
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
             <Nav>
-              <LinkContainer to="/signup" style={styles.link}>
-                <Nav.Item>
-                  Signup
-                </Nav.Item>
-              </LinkContainer>
-              <LinkContainer to="/login" style={styles.link}>
-                <Nav.Item>
-                  Login
-                </Nav.Item>
-              </LinkContainer>
+              {
+                isAuthenticated
+                ? <Nav.Item style={styles.link} onClick={this.handleLogout}>Logout</Nav.Item>
+                : <>
+                    <LinkContainer to="/signup" style={styles.link}>
+                      <Nav.Item>
+                        Signup
+                      </Nav.Item>
+                    </LinkContainer>
+                    <LinkContainer to="/login" style={styles.link}>
+                      <Nav.Item>
+                        Login
+                      </Nav.Item>
+                    </LinkContainer>
+                  </>
+              }
             </Nav>
           </Navbar.Collapse>
         </Navbar>
