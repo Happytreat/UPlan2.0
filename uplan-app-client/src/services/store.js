@@ -12,7 +12,7 @@ import createRootReducer from './reducer';
 const persistConfig = {
   key: 'root',
   storage,
-  // whitelist: ['auth'],
+  whitelist: ['auth'],
   // blacklist: ['user'] // will not be persisted
 };
 

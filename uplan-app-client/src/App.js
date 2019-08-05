@@ -5,7 +5,6 @@ import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { PersistGate } from 'redux-persist/integration/react';
 import Router from './services/router';
-// import Router from "./routes";
 import { history, persistor, getStore } from './services/store';
 import "./App.css";
 
@@ -13,7 +12,7 @@ class App extends Component {
   render() {
     console.log('UPlan client: v0.1.0');
 
-    // Add navbar to default layout
+    //
     return (
       <div className="App container">
         <Provider store={getStore()}>
