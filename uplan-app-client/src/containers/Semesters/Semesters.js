@@ -4,6 +4,7 @@ import { Form, FormGroup, FormControl } from "react-bootstrap";
 import ProgressButton from "../../components/ProgressButton/ProgressButton";
 import config from "../../config";
 import { s3Upload } from "../../libs/awsLib";
+import LoadingPage from "../../components/LoadingPage/LoadingPage";
 
 const styles = {
   form: {

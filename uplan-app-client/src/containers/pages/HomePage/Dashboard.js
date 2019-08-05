@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { API } from "aws-amplify";
 import { LinkContainer } from "react-router-bootstrap";
 import { ListGroup } from "react-bootstrap";
+import LoadingPage from '../../../components/LoadingPage/LoadingPage';
 
 
 const styles = {
@@ -81,16 +82,22 @@ export default class LoggedIn extends Component {
     );
   }
 
-  // Should show Spinner when loading
+  // TODO: Find delay before showing spinner
   render() {
     return (
       <div style={styles.header}>
         <h3>Your Semesters</h3>
         <br />
-        <ListGroup>
-          {!this.state.isLoading &&
-          this.renderSemestersList(this.state.semesters)}
-        </ListGroup>
+        {
+          this.state.isLoading
+          ? <><LoadingPage isLoading={this.state.isLoading} /></>
+          : (
+              <ListGroup>
+                {!this.state.isLoading &&
+                this.renderSemestersList(this.state.semesters)}
+              </ListGroup>
+            )
+        }
       </div>
     );
   }
