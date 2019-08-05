@@ -41,7 +41,9 @@ export default class Semesters extends Component {
         attachmentURL,
       });
     } catch (e) {
-      alert(e);
+      // console.log('Error in storage.vault.get(). attachment does not belong to user');
+      alert('You are not authorised to view this page.');
+      this.props.history.push("/");
     }
   }
 
