@@ -13,18 +13,15 @@ import Semesters from './containers/Semesters/Semesters';
 // TODO: Connected router connect to pass authenticated props instead
 export default ({ childProps }) =>
   <Switch>
-    <AppliedRoute path="/" exact component={HomePage} props={childProps}
-    />
-    <AppliedRoute path="/login" exact component={Login} props=
-      {childProps} />
-      <UnauthenticatedRoute path="/login" exact component={Login} props=
-        {childProps} />
-      <UnauthenticatedRoute path="/signup" exact component={Signup} props=
-        {childProps} />
-      <AuthenticatedRoute path="/semesters/new" exact component={NewSemester} props=
-        {childProps} />
-      <AuthenticatedRoute path="/semesters/:id" exact component={Semesters} props=
-        {childProps} />
+    <AppliedRoute path="/" exact component={HomePage} props={childProps}/>
+
+    <UnauthenticatedRoute path="/login" exact component={Login} props={childProps} />
+
+    <UnauthenticatedRoute path="/signup" exact component={Signup} props={childProps} />
+
+    <AuthenticatedRoute path="/semesters/new" exact component={NewSemester} props={childProps} />
+
+    <AuthenticatedRoute path="/semesters/:id" exact component={Semesters} props={childProps} />
     { /* Finally, catch all unmatched routes */ }
     <Route component={NotFound} />
   </Switch>;

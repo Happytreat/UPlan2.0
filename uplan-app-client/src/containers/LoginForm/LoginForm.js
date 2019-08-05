@@ -32,7 +32,6 @@ export default class Login extends Component {
     try {
       await Auth.signIn(this.state.email, this.state.password);
       this.props.userHasAuthenticated(true);
-      this.props.history.push("/");
       alert("Logged in successful."); // Change to snackbar
     } catch (e) {
       // TODO: Show text instead
