@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Form, FormGroup } from "react-bootstrap";
 import { API } from "aws-amplify";
-import ProgressButton from "../../components/ProgressButton/ProgressButton";
+import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
 import config from "../../config";
 import { s3Upload } from "../../libs/awsLib";
 

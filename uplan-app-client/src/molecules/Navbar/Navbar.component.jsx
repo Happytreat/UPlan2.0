@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import { Auth } from "aws-amplify";
 import { Link, withRouter } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
+import PropTypes from "prop-types";
 import { Navbar, Nav } from "react-bootstrap";
+
 import Logo from "../../asset/unicorn-icon.png";
 
 const styles = {
@@ -13,16 +15,15 @@ const styles = {
   }
 };
 
-class NavBar extends Component {
-  // TODO: Use redux
+class NavbarComponent extends Component {
   handleLogout = async event => {
     await Auth.signOut();
-    this.props.props.userHasAuthenticated(false);
+    this.props.clearStateOnLogout();
     this.props.history.push("/login");
   };
 
   render() {
-    const { isAuthenticated } = this.props.props;
+    const { isAuth } = this.props;
 
     return (
       <>
@@ -37,7 +38,7 @@ class NavBar extends Component {
           <Navbar.Collapse className="justify-content-end">
             <Nav>
               {
-                isAuthenticated
+                isAuth
                 ? <Nav.Item style={styles.link} onClick={this.handleLogout}>Logout</Nav.Item>
                 : <>
                     <LinkContainer to="/signup" style={styles.link}>
@@ -60,4 +61,10 @@ class NavBar extends Component {
   }
 }
 
-export default withRouter(NavBar);
+
+NavbarComponent.propTypes = {
+  isAuth: PropTypes.bool.isRequired,
+  clearStateOnLogout: PropTypes.func.isRequired,
+};
+
+export default withRouter(NavbarComponent);

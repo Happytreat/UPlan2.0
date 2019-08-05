@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { API } from "aws-amplify";
 import { LinkContainer } from "react-router-bootstrap";
 import { ListGroup } from "react-bootstrap";
-import LoadingPage from '../../../components/LoadingPage/LoadingPage';
+import LoadingPage from '../../../molecules/LoadingPage/LoadingPage';
 
 
 const styles = {
