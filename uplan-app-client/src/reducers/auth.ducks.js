@@ -5,12 +5,14 @@ import { createAction, handleActions } from 'redux-actions';
 export const types = {
   request: 'auth/REQUEST',
   update: 'auth/UPDATE',
+  clear: 'auth/CLEAR',
   success: 'auth/SUCCESS',
   error: 'auth/ERROR',
 };
 
 export const actions = {
   request: createAction(types.request),
+  clear: createAction(types.clear),
   update: createAction(
     types.update,
     identity,
@@ -35,6 +37,12 @@ const reducer = handleActions({
       ...state,
       fetching: true,
       error: false,
+    }),
+  [types.clear]: (state) => (
+    {
+      ...state,
+      fetching: false,
+      ...initialState,
     }),
   [types.success]: (state, action) => (
     {

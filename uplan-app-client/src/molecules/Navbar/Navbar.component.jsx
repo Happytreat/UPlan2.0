@@ -4,6 +4,7 @@ import { Link, withRouter } from "react-router-dom";
 import { LinkContainer } from "react-router-bootstrap";
 import PropTypes from "prop-types";
 import { Navbar, Nav } from "react-bootstrap";
+
 import Logo from "../../asset/unicorn-icon.png";
 
 const styles = {
@@ -17,8 +18,7 @@ const styles = {
 class NavbarComponent extends Component {
   handleLogout = async event => {
     await Auth.signOut();
-    // TODO: Redux update Auth state
-    // this.props.props.userHasAuthenticated(false);
+    this.props.clearStateOnLogout();
     this.props.history.push("/login");
   };
 
@@ -64,6 +64,7 @@ class NavbarComponent extends Component {
 
 NavbarComponent.propTypes = {
   isAuth: PropTypes.bool.isRequired,
+  clearStateOnLogout: PropTypes.func.isRequired,
 };
 
 export default withRouter(NavbarComponent);
