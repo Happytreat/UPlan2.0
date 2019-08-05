@@ -10,6 +10,7 @@ import "./App.css";
 
 class App extends Component {
   render() {
+    // TODO: Get name and version from env
     console.log('UPlan client: v0.1.0');
 
     //
