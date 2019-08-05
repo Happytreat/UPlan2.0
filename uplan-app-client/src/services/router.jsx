@@ -3,22 +3,23 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 
-// import { selectors as auth } from '../reducers/auth.ducks';
+import { selectors as auth } from '../reducers/auth.ducks';
+
 import {
   AppliedRoute,
   AuthenticatedRoute,
   UnauthenticatedRoute,
-} from "../components/Routes/Routes";
+} from "../molecules/Routes/Routes";
 
 // pages
-import NotFoundPage from '../containers/pages/404';
+import NotFoundPage from '../organisms/pages/404';
 // import Dashboard from '../containers/pages/HomePage/Dashboard';
 // import NotLoggedInHome from '../containers/pages/HomePage/NotLoggedIn';
-import LoginPage from '../containers/LoginForm/LoginForm';
-import SignupPage from '../containers/SignupForm/SignupForm';
-import AddSemester from '../containers/NewSemester/NewSemester';
-import HomePage from "../containers/pages/HomePage/homepage";
-import Semesters from "../containers/Semesters/Semesters";
+import LoginPage from '../organisms/LoginForm/LoginForm';
+import SignupPage from '../organisms/SignupForm/SignupForm';
+import AddSemester from '../organisms/NewSemester/NewSemester';
+import HomePage from "../organisms/pages/HomePage/HomePage.container";
+import Semesters from "../organisms/Semesters/Semesters";
 
 import {
   ROUTE_HOME,
@@ -52,8 +53,7 @@ Router.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    isAuth: true,
-    // isAuth: auth.isAuth(state),
+    isAuth: auth.isAuth(state),
     // Required for connected-router to work
     // https://github.com/supasate/connected-react-router/issues/130
     location: state.router.location.pathname,

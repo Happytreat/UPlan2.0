@@ -5,7 +5,7 @@ import {
   Form
 } from "react-bootstrap";
 import { Auth } from "aws-amplify";
-import ProgressButton from "../../components/ProgressButton/ProgressButton";
+import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
 import "./SignupForm.css";
 
 const styles = {

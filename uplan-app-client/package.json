@@ -8,6 +8,7 @@
     "connected-react-router": "^6.5.2",
     "emotion": "^10.0.14",
     "history": "^4.9.0",
+    "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
     "querystring": "^0.2.0",
     "react": "^16.8.6",

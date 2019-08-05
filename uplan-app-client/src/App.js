@@ -13,7 +13,6 @@ class App extends Component {
     // TODO: Get name and version from env
     console.log('UPlan client: v0.1.0');
 
-    //
     return (
       <div className="App container">
         <Provider store={getStore()}>

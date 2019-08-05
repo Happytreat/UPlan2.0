@@ -1,13 +1,21 @@
+import identity from 'lodash/identity';
+import noop from 'lodash/noop';
 import { createAction, handleActions } from 'redux-actions';
 
 export const types = {
   request: 'auth/REQUEST',
+  update: 'auth/UPDATE',
   success: 'auth/SUCCESS',
   error: 'auth/ERROR',
 };
 
 export const actions = {
   request: createAction(types.request),
+  update: createAction(
+    types.update,
+    identity,
+    (payload, resolve = noop, reject = noop) => ({ resolve, reject }),
+  ),
   success: createAction(types.success),
   error: createAction(types.error),
 };
@@ -18,7 +26,7 @@ const initialState = {
   isAuth: false,
   nickname: "",
   email: "",
-  username: "",
+  emailVerified: false,
 };
 
 const reducer = handleActions({
@@ -29,6 +37,12 @@ const reducer = handleActions({
       error: false,
     }),
   [types.success]: (state, action) => (
+    {
+      ...state,
+      fetching: false,
+      ...action.payload,
+    }),
+  [types.update]: (state, action) => (
     {
       ...state,
       fetching: false,
