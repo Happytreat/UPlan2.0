@@ -1,7 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from "react-router-dom";
+import  { render } from 'react-dom';
+// import { BrowserRouter as Router } from "react-router-dom";
 import Amplify from "aws-amplify";
+
 import config from "./config";
 import './index.css';
 import App from './App';
@@ -32,10 +33,8 @@ Amplify.configure({
   }
 });
 
-ReactDOM.render(
-  <Router>
-    <App />
-  </Router>,
+render(
+  <App />,
   document.getElementById("root")
 );
 
