@@ -25,8 +25,6 @@ function querystring(name, url = window.location.href) {
 // E.g. signup and login should not be allowed when user is logged in
 export default ({ component: C, props: cProps, ...rest }) => {
   const redirect = querystring("redirect");
-  console.log('Inside unauthen route: cProps.isAuthenticated ', cProps.isAuthenticated);
-  console.log('redirect', redirect);
   return (
     <Route
       {...rest}
