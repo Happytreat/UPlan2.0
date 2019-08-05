@@ -3,9 +3,10 @@ import { connect } from "react-redux";
 import { Auth } from "aws-amplify";
 import { Form, FormGroup, FormControl } from "react-bootstrap";
 
-import { actions as authActions } from '../../reducers/auth.ducks';
+import {actions as authActions, selectors as auth} from '../../reducers/auth.ducks';
 import ProgressButton from '../../molecules/ProgressButton/ProgressButton';
 import "./LoginForm.css";
+import PropTypes from "prop-types";
 
 class Login extends Component {
   constructor(props) {
@@ -17,6 +18,7 @@ class Login extends Component {
     };
   }
 
+  // TODO: Use Form.Check
   validateForm() {
     return this.state.email.length > 0 && this.state.password.length >
       0;
@@ -30,7 +32,7 @@ class Login extends Component {
 
   handleSubmit = async event => {
     event.preventDefault();
-    this.setState({ isLoading: true });
+    this.setState({ isLoading: true }); // dispatch auth.request too slow
     try {
       const user = await Auth.signIn(this.state.email, this.state.password);
 
@@ -41,18 +43,19 @@ class Login extends Component {
         emailVerified: user.attributes['email_verified'],
       };
 
-      this.props.dispatch(authActions.update(payload));
+      this.props.dispatch(authActions.success(payload));
       alert("Logged in successful."); // Change to snackbar
     } catch (e) {
-      // TODO: Show text instead
-      alert(e.message);
       this.setState({ isLoading: false });
+      alert(e.message); // TODO: Show text instead: wrong credentials
     }
   };
 
   // Add-on: Forget password functionality
   render() {
     const { isLoading, email, password } = this.state;
+    const { error } = this.props;
+
     return (
       <div>
         <div style={{minHeight: '10vh'}}></div>
@@ -93,7 +96,18 @@ class Login extends Component {
   }
 }
 
+Login.propTypes = {
+  error: PropTypes.bool.isRequired,
+};
+
+function mapStateToProps(state) {
+  return {
+    error: auth.error(state),
+  };
+}
+
+
 export default connect(
-  null,
+  mapStateToProps,
   null,
 )(Login);

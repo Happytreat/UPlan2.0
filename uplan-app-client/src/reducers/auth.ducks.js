@@ -4,7 +4,6 @@ import { createAction, handleActions } from 'redux-actions';
 
 export const types = {
   request: 'auth/REQUEST',
-  update: 'auth/UPDATE',
   clear: 'auth/CLEAR',
   success: 'auth/SUCCESS',
   error: 'auth/ERROR',
@@ -13,12 +12,11 @@ export const types = {
 export const actions = {
   request: createAction(types.request),
   clear: createAction(types.clear),
-  update: createAction(
-    types.update,
+  success: createAction(
+    types.success,
     identity,
     (payload, resolve = noop, reject = noop) => ({ resolve, reject }),
   ),
-  success: createAction(types.success),
   error: createAction(types.error),
 };
 
@@ -50,17 +48,11 @@ const reducer = handleActions({
       fetching: false,
       ...action.payload,
     }),
-  [types.update]: (state, action) => (
+  [types.error]: (state) => (
     {
       ...state,
       fetching: false,
-      ...action.payload,
-    }),
-  [types.error]: (state, action) => (
-    {
-      ...state,
-      fetching: false,
-      error: action.payload,
+      error: true,
     }),
 }, initialState);
 
