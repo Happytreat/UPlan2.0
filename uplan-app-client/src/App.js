@@ -52,20 +52,3 @@ export default hot(module)(App);
 //   }
 //   this.setState({ isAuthenticating: false });
 // }
-//
-// userHasAuthenticated = authenticated => {
-//   this.setState({ isAuthenticated: authenticated });
-// };
-
-// const childProps = {
-//   isAuthenticated: this.state.isAuthenticated,
-//   userHasAuthenticated: this.userHasAuthenticated,
-// };
-//
-//   return (
-//     !this.state.isAuthenticating &&
-//     <div className="App container">
-//       <NavBar props={childProps}/>
-//       <Router childProps={childProps} />
-//     </div>
-//   );
