@@ -1,13 +1,13 @@
 import * as dynamoDbLib from "../../libs/dynamodb-lib";
 import { success, failure } from "../../libs/response-lib";
-import { SemestersTable } from "../../consts/tables";
+import { ModulesTable } from "../../consts/tables";
 
 export async function main(event, context) {
   const params = {
-    TableName: SemestersTable,
+    TableName: ModulesTable,
     Key: {
-      userId: event.requestContext.identity.cognitoIdentityId,
-      semesterId: event.pathParameters.id
+      semesterId: event.pathParameters.semesterId,
+      moduleId: event.pathParameters.moduleId
     },
   };
   try {

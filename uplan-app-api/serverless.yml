@@ -113,3 +113,11 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+  getModule:
+    handler: services/modules/getModule.main
+    events:
+      - http:
+          path: modules/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
