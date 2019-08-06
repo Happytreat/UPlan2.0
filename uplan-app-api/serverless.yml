@@ -109,7 +109,7 @@ functions:
     handler: services/modules/createModule.main
     events:
       - http:
-          path: modules
+          path: add-modules
           method: post
           cors: true
           authorizer: aws_iam
@@ -117,7 +117,7 @@ functions:
     handler: services/modules/getModule.main
     events:
       - http:
-          path: modules/{id}
+          path: get-modules
           method: get
           cors: true
           authorizer: aws_iam
@@ -125,7 +125,23 @@ functions:
     handler: services/modules/getModuleList.main
     events:
       - http:
-          path: modules
+          path: get-modules-list
           method: get
+          cors: true
+          authorizer: aws_iam
+  updateModule:
+    handler: services/modules/updateModule.main
+    events:
+      - http:
+          path: update-modules
+          method: put
+          cors: true
+          authorizer: aws_iam
+  deleteModule:
+    handler: services/modules/deleteModule.main
+    events:
+      - http:
+          path: delete-module
+          method: delete
           cors: true
           authorizer: aws_iam
