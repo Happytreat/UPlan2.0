@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import LoggedIn from "./Dashboard";
+import LoggedIn from "./Dashboard.container";
 import NotLoggedIn from "./NotLoggedIn";
 
 export default class HomePage extends Component {
