@@ -121,3 +121,11 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
+  getModuleList:
+    handler: services/modules/getModuleList.main
+    events:
+      - http:
+          path: modules
+          method: get
+          cors: true
+          authorizer: aws_iam

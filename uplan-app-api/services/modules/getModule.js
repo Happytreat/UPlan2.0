@@ -6,13 +6,15 @@ export async function main(event, context) {
   const params = {
     TableName: ModulesTable,
     Key: {
-      semesterId: event.pathParameters.semesterId,
-      moduleId: event.pathParameters.moduleId
+      semesterId: event.body.semesterId,
+      moduleId: event.body.moduleId
     },
   };
   try {
     const result = await dynamoDbLib.call("get", params);
-    return result.Item ? success(result.Item) : failure({ status: false, error: "Item not found." });
+    return result.Item
+      ? success(result.Item)
+      : failure({ status: false, error: "Item not found." });
   } catch (e) {
     return failure({ status: false });
   }
