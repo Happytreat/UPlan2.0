@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { API } from "aws-amplify";
+import { orderBy } from 'lodash';
 import { LinkContainer } from "react-router-bootstrap";
 import { ListGroup } from "react-bootstrap";
 import LoadingPage from '../../../molecules/LoadingPage/LoadingPage';
@@ -54,7 +55,8 @@ export default class LoggedIn extends Component {
   }
 
   renderSemestersList(semesters) {
-    return [{}].concat(semesters).map(
+    const orderedSemesters = orderBy(semesters, ['order'], 'asc');
+    return [{}].concat(orderedSemesters).map(
       (semester, i) =>
         i !== 0
           ? <LinkContainer
