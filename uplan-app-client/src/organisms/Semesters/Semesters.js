@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { API, Storage } from "aws-amplify";
+import { isNumber } from "lodash";
 import { Form, FormGroup, FormControl } from "react-bootstrap";
 import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
 import config from "../../config";
@@ -22,14 +23,15 @@ export default class Semesters extends Component {
       semester: null,
       name: "",
       description: "",
-      attachmentURL: null
+      attachmentURL: null,
+      order: 1,
     };
   }
   async componentDidMount() {
     try {
       let attachmentURL;
       const semester = await this.getSemester();
-      const { name, description, attachment } = semester;
+      const { name, description, attachment, order } = semester;
 
       if (attachment) {
         // Retrieve from S3
@@ -40,6 +42,7 @@ export default class Semesters extends Component {
         name,
         description,
         attachmentURL,
+        order,
       });
     } catch (e) {
       // console.log('Error in storage.vault.get(). attachment does not belong to user');
@@ -54,9 +57,10 @@ export default class Semesters extends Component {
     return API.get("semesters", `/semesters/${this.props.match.params.id}`);
   }
 
-  // TODO: Change to Form.Check
+  // TODO: Change to Formik or validation schema
   validateForm() {
-    return this.state.name.length > 0 && this.state.description.length > 0;
+    const { name, description, order } = this.state;
+    return description.length > 0 && name.length > 0 && isNumber(parseInt(order, 10));
   }
 
   // Strip timestamp from filename
@@ -95,14 +99,19 @@ export default class Semesters extends Component {
       if (this.file) {
         attachment = await s3Upload(this.file);
       }
+
+      const { name, description, order, semester } = this.state;
+      console.log('Order submitted', order);
+
       await this.saveSemester({
-        name: this.state.name,
-        description: this.state.description,
-        attachment: attachment || this.state.semester.attachment
+        name,
+        description,
+        attachment: attachment || semester.attachment,
+        order: parseInt(order, 10),
       });
 
       // Delete the old attachment
-      await Storage.vault.remove(this.state.semester.attachment);
+      await Storage.vault.remove(semester.attachment);
 
       this.props.history.push("/");
     } catch (e) {
@@ -180,6 +189,14 @@ export default class Semesters extends Component {
           {!this.state.semester.attachment &&
           <Form.Label>Attachment</Form.Label>}
           <FormControl onChange={this.handleFileChange} type="file"
+          />
+        </FormGroup>
+        <FormGroup controlId="order">
+          <Form.Label>Semester Order</Form.Label>
+          <Form.Control
+            type="text"
+            onChange={this.handleChange}
+            value={this.state.order}
           />
         </FormGroup>
         <ProgressButton
