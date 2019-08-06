@@ -66,7 +66,7 @@ resources:
 
 functions:
   createSemester:
-    handler: createSemester.main
+    handler: services/semesters/createSemester.main
     events:
       - http:
           path: semesters
@@ -74,7 +74,7 @@ functions:
           cors: true
           authorizer: aws_iam
   getSemester:
-    handler: getSemester.main
+    handler: services/semesters/getSemester.main
     events:
       - http:
           path: semesters/{id}
@@ -82,7 +82,7 @@ functions:
           cors: true
           authorizer: aws_iam
   getSemesterList:
-    handler: getSemesterList.main
+    handler: services/semesters/getSemesterList.main
     events:
       - http:
           path: semesters
@@ -90,7 +90,7 @@ functions:
           cors: true
           authorizer: aws_iam
   updateSemester:
-    handler: updateSemester.main
+    handler: services/semesters/updateSemester.main
     events:
       - http:
           path: semesters/{id}
@@ -98,7 +98,7 @@ functions:
           cors: true
           authorizer: aws_iam
   deleteSemester:
-    handler: deleteSemester.main
+    handler: services/semesters/deleteSemester.main
     events:
       - http:
           path: semesters/{id}
