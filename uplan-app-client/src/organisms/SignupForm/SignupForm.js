@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import {
   FormGroup,
   FormControl,
@@ -79,9 +80,10 @@ class Signup extends Component {
         }
       } catch (err) {
         if (err.message === "User is already confirmed.") {
-          alert("A user of the email entered has already existed.");
+          alert("A user of this email has already existed. Please login.");
+          this.props.history.push("/login");
         }
-        console.log('error of second', err);
+        // console.log('error of second', err);
       }
     }
     this.setState({ isLoading: false });
@@ -202,4 +204,4 @@ class Signup extends Component {
 export default connect(
   null,
   null,
-)(Signup);
+)(withRouter(Signup));
