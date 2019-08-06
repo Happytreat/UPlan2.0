@@ -61,6 +61,7 @@ resources:
   - ${file(resources/api-gateway-errors.yml)}
   - ${file(resources/dynamodb-table.yml)}
   - ${file(resources/s3-bucket.yml)}
+  - ${file(resources/cognito-user-pool.yml)}
 
 functions:
   createSemester:
