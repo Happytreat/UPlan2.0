@@ -9,11 +9,26 @@ plugins:
   - serverless-bundle # Package our functions with Webpack
   - serverless-offline
 
+custom:
+  # Our stage is based on what is passed in when running serverless commands
+  # or fall back to what we have set in the provider section
+  stage: ${opt:stage, self:provider.stage}
+  # Set the table name here so we can use it while testing locally
+  semTableName: ${self:custom.stage}-semesters
+  modTableName: ${self:custom.stage}-modules
+  tagTableName: ${self:custom.stage}-tags
+
 provider:
   name: aws
   runtime: nodejs8.10
   stage: dev
   region: ap-southeast-1
+  # These environment variables are made available to our functions
+  # under process.env.
+  environment:
+    semTableName: ${self:custom.semTableName}
+    modTableName: ${self:custom.modTableName}
+    tagTableName: ${self:custom.tagTableName}
   # 'iamRoleStatements' defines the permission policy for the Lambda
   # function.
   # In this case Lambda functions are granted with permissions to
@@ -28,7 +43,11 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: "arn:aws:dynamodb:ap-southeast-1:985930350642:table/semesters"
+      Resource:
+        - "Fn::GetAtt": [ SemestersTable, Arn ]
+        - "Fn::GetAtt": [ ModulesTable, Arn ]
+        - "Fn::GetAtt": [ TagsTable, Arn ]
+      # Resource: "arn:aws:dynamodb:ap-southeast-1:985930350642:table/semesters"
       # Resource: "arn:aws:dynamodb:ap-southeast-1:*:*"
       # To load environment variables externally
       # rename env.example to env.yml and uncomment
@@ -39,8 +58,8 @@ provider:
 
 # Create our resources with separate CloudFormation templates
 resources:
-  # API Gateway Errors
   - ${file(resources/api-gateway-errors.yml)}
+  - ${file(resources/dynamodb-table.yml)}
 
 functions:
   createSemester:
