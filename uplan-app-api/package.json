@@ -18,6 +18,8 @@
     "serverless-offline": "^5.3.3"
   },
   "dependencies": {
-    "uuid": "^3.3.2"
+    "lodash": "^4.17.15",
+    "uuid": "^3.3.2",
+    "validator": "^11.1.0"
   }
 }
