@@ -1,0 +1,52 @@
+Resources:
+  SemestersTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    Properties:
+      TableName: ${self:custom.semTableName}
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+        - AttributeName: semesterId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH # partition key
+        - AttributeName: semesterId
+          KeyType: RANGE  # sort key
+      # Set the capacity to auto-scale
+      BillingMode: PAY_PER_REQUEST
+
+  ModulesTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    Properties:
+      TableName: ${self:custom.modTableName}
+      AttributeDefinitions:
+        - AttributeName: semesterId
+          AttributeType: S
+        - AttributeName: moduleId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: semesterId
+          KeyType: HASH
+        - AttributeName: moduleId
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST
+
+  TagsTable:
+    Type: AWS::DynamoDB::Table
+    DeletionPolicy: Retain
+    Properties:
+      TableName: ${self:custom.tagTableName}
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+        - AttributeName: tagId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+        - AttributeName: tagId
+          KeyType: RANGE
+      BillingMode: PAY_PER_REQUEST

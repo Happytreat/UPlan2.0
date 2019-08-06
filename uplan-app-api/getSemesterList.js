@@ -1,9 +1,10 @@
 import * as dynamoDbLib from "./libs/dynamodb-lib";
 import { success, failure } from "./libs/response-lib";
+import { SemestersTable } from "./consts/tables";
 
 export async function main(event, context) {
   const params = {
-    TableName: "semesters",
+    TableName: SemestersTable,
     // 'KeyConditionExpression' defines the condition for the query
     // - 'userId = :userId': only return items with matching 'userId'
     // partition key

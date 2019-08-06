@@ -5,8 +5,11 @@ import {
   Form
 } from "react-bootstrap";
 import { Auth } from "aws-amplify";
+
 import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
+import {actions as authActions } from '../../reducers/auth.ducks';
 import "./SignupForm.css";
+import {connect} from "react-redux";
 
 const styles = {
   helpBlock: {
@@ -16,7 +19,7 @@ const styles = {
   }
 };
 
-export default class Signup extends Component {
+class Signup extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -90,8 +93,17 @@ export default class Signup extends Component {
 
     try {
       await Auth.confirmSignUp(this.state.email, this.state.confirmationCode);
-      await Auth.signIn(this.state.email, this.state.password);
-      this.props.userHasAuthenticated(true);
+
+      const user = await Auth.signIn(this.state.email, this.state.password);
+      const payload = {
+        isAuth: true,
+        nickname: user.attributes.nickname,
+        email: user.attributes.email,
+        emailVerified: user.attributes['email_verified'],
+      };
+
+      this.props.dispatch(authActions.success(payload));
+
       this.props.history.push("/");
     } catch (e) {
       alert(e.message); // to use snack bar
@@ -186,3 +198,8 @@ export default class Signup extends Component {
     );
   }
 }
+
+export default connect(
+  null,
+  null,
+)(Signup);
