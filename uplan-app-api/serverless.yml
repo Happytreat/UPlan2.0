@@ -105,3 +105,11 @@ functions:
           method: delete
           cors: true
           authorizer: aws_iam
+  createModule:
+    handler: services/modules/createModule.main
+    events:
+      - http:
+          path: modules
+          method: post
+          cors: true
+          authorizer: aws_iam
