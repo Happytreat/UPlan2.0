@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Form, FormGroup } from "react-bootstrap";
 import { API } from "aws-amplify";
+import { isNumber } from 'lodash';
 import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
 import config from "../../config";
 import { s3Upload } from "../../libs/awsLib";
@@ -23,10 +24,12 @@ export default class NewSemester extends Component {
       isLoading: null,
       description: "",
       name: "",
+      order: 1,
     };
   }
   validateForm() {
-    return this.state.description.length > 0 && this.state.name.length > 0;
+    const { name, description, order } = this.state;
+    return description.length > 0 && name.length > 0 && isNumber(parseInt(order, 10));
   }
 
   handleChange = event => {
@@ -53,10 +56,12 @@ export default class NewSemester extends Component {
         ? await s3Upload(this.file)
         : null;
 
+      const { name, description, order } = this.state;
       await this.createSemester({
-        name: this.state.name,
-        description: this.state.description,
+        name,
+        description,
         attachment,
+        order: parseInt(order, 10),
       });
 
       this.props.history.push("/");
@@ -101,6 +106,14 @@ export default class NewSemester extends Component {
           <FormGroup controlId="file">
             <Form.Label>Attachment</Form.Label>
             <Form.Control onChange={this.handleFileChange} type="file"
+            />
+          </FormGroup>
+          <FormGroup controlId="order">
+            <Form.Label>Semester Order</Form.Label>
+            <Form.Control
+              type="text"
+              onChange={this.handleChange}
+              value={this.state.order}
             />
           </FormGroup>
           <ProgressButton

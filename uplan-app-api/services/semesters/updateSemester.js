@@ -14,14 +14,16 @@ export async function main(event, context) {
     // 'ExpressionAttributeValues' defines the value in the update expression
     // since name is a reserved keyword we need ExpressionAttributeNames
     // https://stackoverflow.com/questions/48653365/update-attribute-timestamp-reserved-word
-    UpdateExpression: "SET #semesterName = :name, attachment =:attachment, description =:description",
+    UpdateExpression: "SET #semesterName = :name, attachment =:attachment, description =:description, #semesterOrder =:order",
     ExpressionAttributeValues: {
       ":attachment": data.attachment || null,
       ":name": data.name || null,
       ":description": data.description || null,
+      ":order": data.order || null,
     },
     ExpressionAttributeNames: {
-      "#semesterName": "name"
+      "#semesterName": "name",
+      "#semesterOrder": "order"
     },
     // 'ReturnValues' specifies if and how to return the item's attributes,
     // where ALL_NEW returns all attributes of the item after the update
@@ -32,7 +34,7 @@ export async function main(event, context) {
     await dynamoDbLib.call("update", params);
     return success({ status: true });
   } catch (e) {
-    // console.log(e);
+    console.log(e);
     return failure({ status: false });
   }
 }
