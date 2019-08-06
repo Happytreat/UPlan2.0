@@ -1,7 +1,7 @@
 {
-  "body": "{\"name\":\"Y2S1\",\"attachment\":\"Y2S1.txt\", \"description\":\"Second year time to prepare for NOC\"}",
+  "body": "{\"name\":\"Y2S1\",\"attachment\":\"Y2S1.txt\", \"description\":\"Second year time to prepare for NOC\", \"order\":2}",
   "pathParameters": {
-    "id": "98865e60-b5bd-11e9-ada4-f1daab34b90f"
+    "id": "6beafbd5-9e76-4be0-bf88-52874bc02e3d"
   },
   "requestContext": {
     "identity": {
