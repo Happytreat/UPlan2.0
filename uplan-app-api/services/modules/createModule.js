@@ -13,7 +13,7 @@ export async function main(event, context) {
   // Validate else throw 422
   const isValid = validate([
     _.isNumber(order),
-    isNonEmptyString([name, description]),
+    isNonEmptyString([name, description, order]),
   ]);
 
   if (!isValid) {
