@@ -1,5 +1,5 @@
 import uuid from "uuid";
-import validator from 'validator';
+import _ from 'lodash';
 import * as dynamoDbLib from "../../libs/dynamodb-lib";
 import { success, failure, validationError } from "../../libs/response-lib";
 import { isNonEmptyString, validate } from '../../utils/validation';
@@ -12,7 +12,7 @@ export async function main(event, context) {
 
   // Validate else throw 422
   const isValid = validate([
-    validator.isNumeric(order),
+    _.isNumber(order),
     isNonEmptyString([name, description, order]),
   ]);
 
