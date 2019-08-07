@@ -153,3 +153,19 @@ functions:
           method: post
           cors: true
           authorizer: aws_iam
+  getTag:
+    handler: services/tags/getTag.main
+    events:
+      - http:
+          path: get-tags/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
+  getTagList:
+    handler: services/tags/getTagList.main
+    events:
+      - http:
+          path: get-tags-list
+          method: get
+          cors: true
+          authorizer: aws_iam
