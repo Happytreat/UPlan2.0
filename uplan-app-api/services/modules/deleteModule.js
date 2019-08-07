@@ -9,21 +9,12 @@ export async function main(event, context) {
     Key: {
       semesterId: data.semesterId,
       moduleId: data.moduleId
-    },
-    UpdateExpression: "SET code = :code, credits =:credits, description =:description",
-    ExpressionAttributeValues: {
-      ":code": data.code || null,
-      ":description": data.description || null,
-      ":credits": data.credits || null,
-    },
-    ReturnValues: "ALL_NEW"
+    }
   };
-
   try {
-    const res = await dynamoDbLib.call("update", params);
-    return success({ updated: res.Attributes });
+   await dynamoDbLib.call("delete", params);
+    return success({ status: true });
   } catch (e) {
-    // console.log(e);
     return failure({ err: e.message });
   }
 }

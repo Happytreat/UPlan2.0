@@ -1,5 +1,5 @@
 {
-  "body": "{\"code\":\"CS2103\",\"description\":\"Introduction to Software Engineering\",\"semesterId\":\"6beafbd5-9e76-4be0-bf88-52874bc02e3d\", \"credits\":4}",
+  "body": "{\"code\":\"CS1231\",\"description\":\"To be deleted\",\"semesterId\":\"6beafbd5-9e76-4be0-bf88-52874bc02e3d\", \"credits\":4}",
   "requestContext": {
     "identity": {
       "cognitoIdentityId": "USER-SUB-1234"
