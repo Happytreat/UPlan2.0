@@ -1,0 +1,8 @@
+{
+  "body": "{\"label\":\"Major 1\",\"description\":\"Mathematics degree.\",\"credits\":120}",
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "USER-SUB-1234"
+    }
+  }
+}
