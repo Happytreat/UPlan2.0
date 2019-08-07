@@ -1,0 +1,11 @@
+{
+  "body": "{\"label\":\"Minor\",\"description\":\"Edited label\", \"credits\":1000}",
+  "pathParameters": {
+    "id": "7d7704c3-b002-412a-a76e-bbb78c6f5263"
+  },
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "USER-SUB-1234"
+    }
+  }
+}

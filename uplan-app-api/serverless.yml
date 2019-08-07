@@ -169,3 +169,19 @@ functions:
           method: get
           cors: true
           authorizer: aws_iam
+  updateTag:
+    handler: services/tags/updateTag.main
+    events:
+      - http:
+          path: update-tag/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+  deleteTag:
+    handler: services/tags/deleteTag.main
+    events:
+      - http:
+          path: delete-tag/{id}
+          method: delete
+          cors: true
+          authorizer: aws_iam
