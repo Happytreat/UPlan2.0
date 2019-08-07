@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { API } from "aws-amplify";
+import { orderBy } from 'lodash';
 import { LinkContainer } from "react-router-bootstrap";
 import { ListGroup } from "react-bootstrap";
 import LoadingPage from '../../../molecules/LoadingPage/LoadingPage';
+import PropTypes from "prop-types";
+import HomePage from "./HomePage.component";
 
 
 const styles = {
@@ -24,6 +27,7 @@ const styles = {
   }
 };
 
+// TODO: Move to new route /home
 export default class LoggedIn extends Component {
   constructor(props) {
     super(props);
@@ -35,8 +39,7 @@ export default class LoggedIn extends Component {
 
   async componentDidMount() {
     // show throw error?
-    // TODO: Move redux
-    if (!this.props.isAuthenticated) {
+    if (!this.props.isAuth) {
       return;
     }
 
@@ -54,7 +57,8 @@ export default class LoggedIn extends Component {
   }
 
   renderSemestersList(semesters) {
-    return [{}].concat(semesters).map(
+    const orderedSemesters = orderBy(semesters, ['order'], 'asc');
+    return [{}].concat(orderedSemesters).map(
       (semester, i) =>
         i !== 0
           ? <LinkContainer
@@ -102,3 +106,7 @@ export default class LoggedIn extends Component {
     );
   }
 }
+
+LoggedIn.propTypes = {
+  isAuth: PropTypes.bool.isRequired,
+};

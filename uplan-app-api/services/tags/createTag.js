@@ -3,17 +3,17 @@ import _ from 'lodash';
 import * as dynamoDbLib from "../../libs/dynamodb-lib";
 import { success, failure, validationError } from "../../libs/response-lib";
 import { isNonEmptyString, validate } from '../../utils/validation';
-import { SemestersTable } from "../../consts/tables";
+import { TagsTable } from "../../consts/tables";
 
 // TODO: Improve validation by creating "middleware"
 export async function main(event, context) {
   const data = JSON.parse(event.body);
-  const { name, description, attachment, order } = data;
+  const { label, description, credits } = data;
 
   // Validate else throw 422
   const isValid = validate([
-    _.isNumber(order),
-    isNonEmptyString([name, description]),
+    _.isNumber(credits), // default as 0
+    isNonEmptyString([label, description]),
   ]);
 
   if (!isValid) {
@@ -21,14 +21,13 @@ export async function main(event, context) {
   }
 
   const params = {
-    TableName: SemestersTable,
+    TableName: TagsTable,
     Item: {
       userId: event.requestContext.identity.cognitoIdentityId,
-      semesterId: uuid.v4(),
-      name,
+      tagId: uuid.v4(),
+      label,
       description,
-      attachment,
-      order,
+      credits, // required credits for tags
     }
   };
 

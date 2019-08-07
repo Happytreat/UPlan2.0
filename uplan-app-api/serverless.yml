@@ -105,3 +105,83 @@ functions:
           method: delete
           cors: true
           authorizer: aws_iam
+  createModule:
+    handler: services/modules/createModule.main
+    events:
+      - http:
+          path: add-modules
+          method: post
+          cors: true
+          authorizer: aws_iam
+  getModule:
+    handler: services/modules/getModule.main
+    events:
+      - http:
+          path: get-modules
+          method: get
+          cors: true
+          authorizer: aws_iam
+  getModuleList:
+    handler: services/modules/getModuleList.main
+    events:
+      - http:
+          path: get-modules-list
+          method: get
+          cors: true
+          authorizer: aws_iam
+  updateModule:
+    handler: services/modules/updateModule.main
+    events:
+      - http:
+          path: update-modules
+          method: put
+          cors: true
+          authorizer: aws_iam
+  deleteModule:
+    handler: services/modules/deleteModule.main
+    events:
+      - http:
+          path: delete-module
+          method: delete
+          cors: true
+          authorizer: aws_iam
+  createTag:
+    handler: services/tags/createTag.main
+    events:
+      - http:
+          path: add-tags
+          method: post
+          cors: true
+          authorizer: aws_iam
+  getTag:
+    handler: services/tags/getTag.main
+    events:
+      - http:
+          path: get-tags/{id}
+          method: get
+          cors: true
+          authorizer: aws_iam
+  getTagList:
+    handler: services/tags/getTagList.main
+    events:
+      - http:
+          path: get-tags-list
+          method: get
+          cors: true
+          authorizer: aws_iam
+  updateTag:
+    handler: services/tags/updateTag.main
+    events:
+      - http:
+          path: update-tag/{id}
+          method: put
+          cors: true
+          authorizer: aws_iam
+  deleteTag:
+    handler: services/tags/deleteTag.main
+    events:
+      - http:
+          path: delete-tag/{id}
+          method: delete
+          cors: true
+          authorizer: aws_iam

@@ -1,0 +1,8 @@
+{
+  "body": "{\"semesterId\":\"6beafbd5-9e76-4be0-bf88-52874bc02e3d\", \"moduleId\":\"e5df65cf-3755-45f8-a8dc-e5d0eba1c4e8\"}",
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "USER-SUB-1234"
+    }
+  }
+}

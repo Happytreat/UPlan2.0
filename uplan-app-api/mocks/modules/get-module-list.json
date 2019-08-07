@@ -1,0 +1,10 @@
+{
+  "body": {
+    "semesterId": "6beafbd5-9e76-4be0-bf88-52874bc02e3d"
+  },
+  "requestContext": {
+    "identity": {
+      "cognitoIdentityId": "USER-SUB-1234"
+    }
+  }
+}
