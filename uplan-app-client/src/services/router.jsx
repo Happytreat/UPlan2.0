@@ -17,7 +17,7 @@ import NotLoggedInHome from '../organisms/pages/HomePage/NotLoggedIn';
 import LoginPage from '../organisms/LoginForm/LoginForm';
 import SignupPage from '../organisms/SignupForm/SignupForm';
 import AddSemester from '../organisms/NewSemester/NewSemester';
-import Semesters from "../organisms/Semesters/Semesters";
+import EditSemester from "../organisms/EditSemester/EditSemester";
 
 import {
   ROUTE_ROOT,
@@ -41,7 +41,7 @@ const Router = ({ isAuth, location }) => (
 
     <AuthenticatedRoute path={ROUTE_NEW_SEMESTER} exact component={AddSemester} isAuth={isAuth} title={"Add Semester"} />
 
-    <AuthenticatedRoute path={ROUTE_DISPLAY_SEMESTER} exact component={Semesters} isAuth={isAuth} title={"My Semester"}/>
+    <AuthenticatedRoute path={ROUTE_DISPLAY_SEMESTER} exact component={EditSemester} isAuth={isAuth} title={"My Semester"}/>
     { /* Finally, catch all unmatched routes */ }
     <Route component={NotFoundPage} />
   </Switch>

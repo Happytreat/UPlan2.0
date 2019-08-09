@@ -64,7 +64,8 @@ export default class NewSemester extends Component {
         order: parseInt(order, 10),
       });
 
-      this.props.history.push("/");
+      // Close Modal
+      this.props.onHide();
     } catch (e) {
       alert(e);
       // console.log(e);

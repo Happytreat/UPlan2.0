@@ -2,12 +2,11 @@ import React, { Component } from "react";
 import { API } from "aws-amplify";
 import PropTypes from "prop-types";
 import { orderBy } from 'lodash';
-import { LinkContainer } from "react-router-bootstrap";
-import { Button, ListGroup, Modal } from "react-bootstrap";
+import { Container, Button, ListGroup, Modal, Col, Row } from "react-bootstrap";
 
 import LoadingPage from '../../../molecules/LoadingPage/LoadingPage';
 import NewSemester from '../../../organisms/NewSemester/NewSemester';
-import EditSemester from '../../../organisms/Semesters/Semesters';
+import EditSemester from '../../../organisms/EditSemester/EditSemester';
 
 const styles = {
   header: {
@@ -22,6 +21,12 @@ const styles = {
   link: {
     cursor: 'pointer',
   },
+  container: {
+    cursor: 'pointer',
+    borderStyle: 'ridge',
+    borderWidth: 'medium',
+    padding: '0.75rem 0 0 0.5rem'
+  },
   description: {
     color: '#666',
     paddingTop: '0.25rem',
@@ -31,7 +36,9 @@ const styles = {
   }
 };
 
-const SemesterModal = ({ title, C, ...props }) => {
+// TODO: Fix header appear first then fetched data (delay header till fetching true)
+// Fix: Fetching in redux store (semesters)
+const SemesterModal = ({ title, C, cProps, ...props }) => {
   return (
     <Modal
       {...props}
@@ -45,7 +52,7 @@ const SemesterModal = ({ title, C, ...props }) => {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <C />
+        <C cProps={cProps} onHide={props.onHide} />
       </Modal.Body>
     </Modal>
   );
@@ -57,7 +64,9 @@ export default class LoggedIn extends Component {
     this.state = {
       isLoading: true,
       semesters: [],
-      newSemModalShow: false
+      newSemModalShow: false,
+      editSemModalShow: false,
+      semId: null,
     };
 
     this.renderSemestersList = this.renderSemestersList.bind(this);
@@ -82,21 +91,20 @@ export default class LoggedIn extends Component {
     return API.get("semesters", "/semesters");
   }
 
+  // TODO: Fix re-rendering of dashboard after adding/updating semesters (fix by adding semester to redux store)
   renderSemestersList(semesters) {
     const orderedSemesters = orderBy(semesters, ['order'], 'asc');
     return [{}].concat(orderedSemesters).map(
       (semester, i) =>
         i !== 0
-          ? <LinkContainer
-            style={styles.link}
-            key={semester.semesterId}
-            to={`/semesters/${semester.semesterId}`}
-          >
-            <ListGroup.Item>
-              <h6><b>{semester.name}</b></h6>
-              <p style={styles.description}>{semester.description.trim().split("\n")[0]}</p>
-            </ListGroup.Item>
-          </LinkContainer>
+          ? (
+            <>
+              <Container key={semester.semesterId} style={styles.container} onClick={() => this.setState({ editSemModalShow: true, semId: semester.semesterId })}>
+                <h6><b>{semester.name}</b></h6>
+                <p style={styles.description}>{semester.description.trim().split("\n")[0]}</p>
+              </Container>
+            </>
+          )
           : (
             <>
               <Button variant="outline-dark" style={styles.link} onClick={() => this.setState({ newSemModalShow: true })}>
@@ -108,6 +116,13 @@ export default class LoggedIn extends Component {
                 C={NewSemester}
                 show={this.state.newSemModalShow}
                 onHide={() => this.setState({ newSemModalShow: false })}
+              />
+              <SemesterModal
+                title="Update a Semester"
+                C={EditSemester}
+                cProps={{id: this.state.semId}}
+                show={this.state.editSemModalShow}
+                onHide={() => this.setState({ editSemModalShow: false })}
               />
             </>
           )
