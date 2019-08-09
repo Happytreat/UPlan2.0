@@ -6,23 +6,22 @@ import { Route, Switch } from 'react-router-dom';
 import { selectors as auth } from '../reducers/auth.ducks';
 
 import {
-  AppliedRoute,
   AuthenticatedRoute,
   UnauthenticatedRoute,
 } from "../molecules/Routes/Routes";
 
 // pages
 import NotFoundPage from '../organisms/pages/404';
-// import Dashboard from '../containers/pages/HomePage/Dashboard';
-// import NotLoggedInHome from '../containers/pages/HomePage/NotLoggedIn';
+import Dashboard from '../organisms/pages/HomePage/Dashboard.container';
+import NotLoggedInHome from '../organisms/pages/HomePage/NotLoggedIn';
 import LoginPage from '../organisms/LoginForm/LoginForm';
 import SignupPage from '../organisms/SignupForm/SignupForm';
 import AddSemester from '../organisms/NewSemester/NewSemester';
-import HomePage from "../organisms/pages/HomePage/HomePage.container";
-import Semesters from "../organisms/Semesters/Semesters";
+import EditSemester from "../organisms/EditSemester/EditSemester";
 
 import {
-  ROUTE_HOME,
+  ROUTE_ROOT,
+  ROUTE_DASHBOARD,
   ROUTE_USER_LOGIN,
   ROUTE_NEW_SEMESTER,
   ROUTE_DISPLAY_SEMESTER,
@@ -32,15 +31,17 @@ import {
 
 const Router = ({ isAuth, location }) => (
   <Switch>
-    <AppliedRoute path={ROUTE_HOME} exact component={HomePage} title={"Home"} />
+    <UnauthenticatedRoute path={ROUTE_ROOT} exact component={NotLoggedInHome} isAuth={isAuth} title={"UPlan"} />
 
     <UnauthenticatedRoute path={ROUTE_USER_LOGIN} exact component={LoginPage} isAuth={isAuth} title={"Login"}/>
 
     <UnauthenticatedRoute path={ROUTE_USER_SIGNUP} exact component={SignupPage} isAuth={isAuth} title={"Signup"}/>
 
+    <AuthenticatedRoute path={ROUTE_DASHBOARD} exact component={Dashboard} isAuth={isAuth} title={"My Dashboard"} />
+
     <AuthenticatedRoute path={ROUTE_NEW_SEMESTER} exact component={AddSemester} isAuth={isAuth} title={"Add Semester"} />
 
-    <AuthenticatedRoute path={ROUTE_DISPLAY_SEMESTER} exact component={Semesters} isAuth={isAuth} title={"My Semester"}/>
+    <AuthenticatedRoute path={ROUTE_DISPLAY_SEMESTER} exact component={EditSemester} isAuth={isAuth} title={"My Semester"}/>
     { /* Finally, catch all unmatched routes */ }
     <Route component={NotFoundPage} />
   </Switch>

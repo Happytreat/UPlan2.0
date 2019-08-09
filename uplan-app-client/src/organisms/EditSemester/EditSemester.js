@@ -13,7 +13,7 @@ const styles = {
   }
 };
 
-export default class Semesters extends Component {
+export default class EditSemester extends Component {
   constructor(props) {
     super(props);
     this.file = null;
@@ -53,8 +53,8 @@ export default class Semesters extends Component {
 
   // path="/semesters/:id"
   getSemester() {
-    // console.log('This match object: ', this.props.match);
-    return API.get("semesters", `/semesters/${this.props.match.params.id}`);
+    console.log('This id: ', this.props.cProps.id);
+    return API.get("semesters", `/semesters/${this.props.cProps.id}`);
   }
 
   // TODO: Change to Formik or validation schema
@@ -80,7 +80,7 @@ export default class Semesters extends Component {
 
   saveSemester(semester) {
     // PUT request to update semester
-    return API.put("semesters", `/semesters/${this.props.match.params.id}`, {
+    return API.put("semesters", `/semesters/${this.props.cProps.id}`, {
       body: semester,
     });
   }
@@ -113,7 +113,7 @@ export default class Semesters extends Component {
       // Delete the old attachment
       await Storage.vault.remove(semester.attachment);
 
-      this.props.history.push("/");
+      this.props.onHide();
     } catch (e) {
       alert(e);
       this.setState({ isLoading: false });
@@ -121,7 +121,7 @@ export default class Semesters extends Component {
   };
 
   deleteSemester() {
-    return API.del("semesters", `/semesters/${this.props.match.params.id}`);
+    return API.del("semesters", `/semesters/${this.props.cProps.id}`);
   }
 
   handleDelete = async event => {
@@ -140,7 +140,7 @@ export default class Semesters extends Component {
       // Delete attachment of deleted semester
       await Storage.vault.remove(this.state.semester.attachment);
 
-      this.props.history.push("/");
+      this.props.onHide();
     } catch (e) {
       alert(e);
       this.setState({ isDeleting: false });
@@ -152,8 +152,6 @@ export default class Semesters extends Component {
     <div className="Semesters">
       {this.state.semester &&
       <Form onSubmit={this.handleSubmit} style={styles.form}>
-        <h3>Update a Semester</h3>
-        <br />
         <FormGroup controlId="name">
           <Form.Label>Semester Name</Form.Label>
           <Form.Control
