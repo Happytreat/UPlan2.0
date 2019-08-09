@@ -52,7 +52,7 @@ export const UnauthenticatedRoute = ({ component: C, isAuth, ...rest }) => {
         !isAuth
           ? renderView(<C {...props} />, rest.title)
           : <Redirect
-            to={redirect === "" || redirect === null ? "/" :
+            to={redirect === "" || redirect === null ? "/dashboard" :
               redirect}
           />}
     />
