@@ -6,7 +6,6 @@ import { Route, Switch } from 'react-router-dom';
 import { selectors as auth } from '../reducers/auth.ducks';
 
 import {
-  AppliedRoute,
   AuthenticatedRoute,
   UnauthenticatedRoute,
 } from "../molecules/Routes/Routes";
@@ -18,7 +17,6 @@ import NotLoggedInHome from '../organisms/pages/HomePage/NotLoggedIn';
 import LoginPage from '../organisms/LoginForm/LoginForm';
 import SignupPage from '../organisms/SignupForm/SignupForm';
 import AddSemester from '../organisms/NewSemester/NewSemester';
-// import HomePage from "../organisms/pages/HomePage/HomePage.container";
 import Semesters from "../organisms/Semesters/Semesters";
 
 import {

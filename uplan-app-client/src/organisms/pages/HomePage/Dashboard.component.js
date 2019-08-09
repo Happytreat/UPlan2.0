@@ -1,12 +1,13 @@
 import React, { Component } from "react";
 import { API } from "aws-amplify";
+import PropTypes from "prop-types";
 import { orderBy } from 'lodash';
 import { LinkContainer } from "react-router-bootstrap";
-import { ListGroup } from "react-bootstrap";
-import LoadingPage from '../../../molecules/LoadingPage/LoadingPage';
-import PropTypes from "prop-types";
-import HomePage from "./HomePage.component";
+import { Button, ListGroup, Modal } from "react-bootstrap";
 
+import LoadingPage from '../../../molecules/LoadingPage/LoadingPage';
+import NewSemester from '../../../organisms/NewSemester/NewSemester';
+import EditSemester from '../../../organisms/Semesters/Semesters';
 
 const styles = {
   header: {
@@ -24,17 +25,42 @@ const styles = {
   description: {
     color: '#666',
     paddingTop: '0.25rem',
+  },
+  modalHeader: {
+    padding: '0.5rem 1rem',
   }
 };
 
-// TODO: Move to new route /home
+const SemesterModal = ({ title, C, ...props }) => {
+  return (
+    <Modal
+      {...props}
+      size="lg"
+      aria-labelledby="contained-modal-title-vcenter"
+      centered
+    >
+      <Modal.Header closeButton>
+        <Modal.Title id="contained-modal-title-vcenter" style={styles.modalHeader}>
+          {title}
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <C />
+      </Modal.Body>
+    </Modal>
+  );
+};
+
 export default class LoggedIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
       isLoading: true,
-      semesters: []
+      semesters: [],
+      newSemModalShow: false
     };
+
+    this.renderSemestersList = this.renderSemestersList.bind(this);
   }
 
   async componentDidMount() {
@@ -71,18 +97,20 @@ export default class LoggedIn extends Component {
               <p style={styles.description}>{semester.description.trim().split("\n")[0]}</p>
             </ListGroup.Item>
           </LinkContainer>
-          : <LinkContainer
-            style={styles.link}
-            key="new"
-            to="/semesters/new"
-          >
-            <ListGroup.Item>
-              <h5 style={styles.link}>
-                <b>{"\uFF0B "}</b>
-                Add a new semester
-              </h5>
-            </ListGroup.Item>
-          </LinkContainer>
+          : (
+            <>
+              <Button variant="outline-dark" style={styles.link} onClick={() => this.setState({ newSemModalShow: true })}>
+                  <b>{"\uFF0B "}</b>
+                  Add a new semester
+              </Button>
+              <SemesterModal
+                title="Add a Semester"
+                C={NewSemester}
+                show={this.state.newSemModalShow}
+                onHide={() => this.setState({ newSemModalShow: false })}
+              />
+            </>
+          )
     );
   }
 

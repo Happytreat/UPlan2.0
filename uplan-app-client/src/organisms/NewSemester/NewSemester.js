@@ -83,8 +83,6 @@ export default class NewSemester extends Component {
     return (
       <div>
         <Form onSubmit={this.handleSubmit} style={styles.form}>
-          <h3>Add a Semester</h3>
-          <br />
           <FormGroup controlId="name">
             <Form.Label>Semester Name</Form.Label>
             <Form.Control
