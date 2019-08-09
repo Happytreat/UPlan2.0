@@ -1,0 +1,27 @@
+{
+  "name": "uplan",
+  "version": "1.0.0",
+  "description": "You plan. We do the rest. :sparkling_heart: :poodle:",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "commit": "git cz"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Happytreat/UPlan2.0.git"
+  },
+  "author": "Melodies Sim",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Happytreat/UPlan2.0/issues"
+  },
+  "homepage": "https://github.com/Happytreat/UPlan2.0#readme",
+  "devDependencies": {
+    "git-cz": "^3.2.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "git-cz"
+    }
+  }
+}
