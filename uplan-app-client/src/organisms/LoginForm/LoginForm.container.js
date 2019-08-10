@@ -11,20 +11,26 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setLoading: () => dispatch(authActions.request()),
-    setError: (err) => dispatch(authActions.error(err)),
-    login: async ({ email, password }) => {
-      const user = await Auth.signIn(email, password);
+    handleSubmit: async ({ values, setSubmitting }) => {
+      try {
+        const { username, password } = values;
+        const user = await Auth.signIn(username, password);
 
-      const payload = {
-        isAuth: true,
-        nickname: user.attributes.nickname,
-        email: user.attributes.email,
-        emailVerified: user.attributes['email_verified'],
-      };
+        const payload = {
+          isAuth: true,
+          nickname: user.attributes.nickname,
+          email: user.attributes.email,
+          emailVerified: user.attributes['email_verified'],
+        };
 
-      dispatch(authActions.success(payload));
-    },
+        dispatch(authActions.success(payload));
+        alert("Logged in successful."); // Change to snackbar
+      } catch (err) {
+        dispatch(authActions.error(err.message));
+      } finally {
+        setSubmitting(false);
+      }
+    }
   };
 }
 

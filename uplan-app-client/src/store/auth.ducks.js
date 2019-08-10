@@ -46,13 +46,14 @@ const reducer = handleActions({
     {
       ...state,
       fetching: false,
+      error: false,
       ...action.payload,
     }),
-  [types.error]: (state) => (
+  [types.error]: (state, action) => (
     {
       ...state,
       fetching: false,
-      error: true,
+      error: action.payload,
     }),
 }, initialState);
 

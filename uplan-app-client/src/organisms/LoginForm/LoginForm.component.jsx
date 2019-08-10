@@ -1,100 +1,97 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { Form, FormGroup, FormControl } from "react-bootstrap";
+import * as yup from 'yup';
+import { Field, Form, Formik } from 'formik';
+import { TextField } from 'formik-material-ui';
+import { Typography } from '@material-ui/core';
 import ProgressButton from '../../molecules/ProgressButton/ProgressButton';
-
 
 const styles = {
   form: {
     margin: '0 auto',
     maxWidth: '320px',
+    padding: '4rem 0',
   },
 };
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: false,
-      email: "",
-      password: ""
-    };
-  }
+const LoginSchema = yup.object().shape({
+  username: yup.string().email('Invalid Email').required('Required'),
+  password: yup.string().min(8, 'Password too short').required('Required'),
+});
 
-  validateForm() {
-    return this.state.email.length > 0 && this.state.password.length >
-      0;
-  }
 
-  handleChange = event => {
-    this.setState({
-      [event.target.id]: event.target.value
-    });
-  };
-
-  handleSubmit = async event => {
-    const { setError, login } = this.props;
-    const { email, password } = this.state;
-    event.preventDefault();
-    this.setState({ isLoading: true }); // dispatch auth.request too slow
-    try {
-      await login({ email, password });
-      alert("Logged in successful."); // Change to snackbar
-    } catch (e) {
-      this.setState({ isLoading: false });
-      alert(e.message); // TODO: Show text instead: wrong credentials
-      setError(e);
-    }
-  };
-
-  // Add-on: Forget password functionality
+class LoginForm extends Component {
   render() {
-    const { isLoading, email, password } = this.state;
-    const { error } = this.props;
-
+    const { handleSubmit } = this.props;
     return (
-      <div>
-        <div style={{minHeight: '10vh'}}></div>
-        <div className="Login">
-          <Form onSubmit={this.handleSubmit} style={styles.form}>
-            <FormGroup controlId="email" size="large">
-              <Form.Label>Email</Form.Label>
-              <FormControl
-                autoFocus
-                type="email"
-                value={email}
-                onChange={this.handleChange}
-              />
-            </FormGroup>
-            <FormGroup controlId="password" size="large">
-              <Form.Label>Password</Form.Label>
-              <FormControl
-                value={password}
-                onChange={this.handleChange}
-                type="password"
-              />
-            </FormGroup>
+      <Formik
+        initialValues={{
+          username: '',
+          password: '',
+        }}
+        validationSchema={LoginSchema}
+        onSubmit={async (values, { setSubmitting }) => {
+          return handleSubmit({ values, setSubmitting });
+        }}
+      >
+        {({ isSubmitting, isValid }) => (
+          <Form style={styles.form}>
+            <br />
+            <Typography variant="body" style={{ fontSize: '0.9rem', fontWeight: 500 }}>
+              Email
+            </Typography>
+            <Field
+              type="email"
+              name="username"
+              floatingLabelFixed
+              margin="dense"
+              component={TextField}
+              fullWidth
+              autoFocus
+              autoComplete="email"
+              variant="outlined"
+            />
+            <Typography variant="body" style={{ fontSize: '0.9rem', fontWeight: 500 }}>
+              Password
+            </Typography>
+            <Field
+              type="password"
+              floatingLabelFixed
+              name="password"
+              margin="dense"
+              component={TextField}
+              autoComplete="current-password"
+              fullWidth
+              variant="outlined"
+              style={{ paddingBottom: '1rem'}}
+            />
+            <Typography align="center" color="error" style={{ fontSize: '0.8rem', fontWeight: 500 }} gutterBottom>
+              {this.props.error ? this.props.error : ''}
+            </Typography>
             <ProgressButton
               block
               size="large"
-              disabled={!this.validateForm()}
+              disabled={!isValid && isSubmitting}
+              isLoading={isSubmitting}
+              variant="outline-primary"
               type="submit"
               text="Login"
-              isLoading={isLoading}
               loadingText=" Logging in..."
+              style={{ margin: '1rem 0' }}
             >
               Login
             </ProgressButton>
           </Form>
-        </div>
-      </div>
+        )}
+      </Formik>
     );
   }
 }
 
-Login.propTypes = {
-  error: PropTypes.bool.isRequired,
-  login: PropTypes.func.isRequired,
+LoginForm.propTypes = {
+  error: PropTypes.object.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
 };
 
-export default Login;
+export default LoginForm;
+
