@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Auth } from "aws-amplify";
+import PropTypes from "prop-types";
 import {
   FormGroup,
   FormControl,
@@ -7,15 +8,9 @@ import {
 } from "react-bootstrap";
 
 import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
-import { actions as authActions } from '../../store/auth.ducks';
-import PropTypes from "prop-types";
+import EmailConfirmationForm from '../EmailConfirmationForm/EmailConfirmationForm.container';
 
 const styles = {
-  helpBlock: {
-    fontSize: '14',
-    padding: '1rem',
-    color: '#999',
-  },
   form: {
     margin: '0 auto',
     maxWidth: '320px',
@@ -30,7 +25,6 @@ class Signup extends Component {
       email: "",
       password: "",
       confirmPassword: "",
-      confirmationCode: "",
       nickname: "",
       newUser: null
     };
@@ -44,10 +38,6 @@ class Signup extends Component {
       this.state.password.length > 0 &&
       this.state.password === this.state.confirmPassword
     );
-  }
-
-  validateConfirmationForm() {
-    return this.state.confirmationCode.length > 0;
   }
 
   handleChange = event => {
@@ -70,7 +60,7 @@ class Signup extends Component {
       try {
         if (e.code === "UsernameExistsException") {
           await Auth.resendSignUp(this.state.email).then(() => {
-              this.setState({ newUser: { username: this.state.email } });
+              this.setState({ newUser: true }); // show confirmation page
               alert("A verification code has been resent to your email.")
             }
           )
@@ -88,56 +78,6 @@ class Signup extends Component {
     this.setState({ isLoading: false });
   };
 
-  handleConfirmationSubmit = async event => {
-    event.preventDefault();
-    this.setState({ isLoading: true });
-
-    try {
-      await Auth.confirmSignUp(this.state.email, this.state.confirmationCode);
-
-      const user = await Auth.signIn(this.state.email, this.state.password);
-      const payload = {
-        isAuth: true,
-        nickname: user.attributes.nickname,
-        email: user.attributes.email,
-        emailVerified: user.attributes['email_verified'],
-      };
-
-      this.props.dispatch(authActions.success(payload));
-
-      this.props.history.push("/");
-    } catch (e) {
-      alert(e.message); // to use snack bar
-      this.setState({ isLoading: false });
-    }
-  };
-
-  renderConfirmationForm() {
-    const { confirmationCode, isLoading } = this.state;
-    return (
-      <Form onSubmit={this.handleConfirmationSubmit} style={styles.form}>
-        <FormGroup controlId="confirmationCode" size="large">
-          <Form.Label>Confirmation Code</Form.Label>
-          <FormControl
-            autoFocus
-            type="tel"
-            value={confirmationCode}
-            onChange={this.handleChange}
-          />
-          <p style={styles.helpBlock}>Please check your email for the code.</p>
-        </FormGroup>
-        <ProgressButton
-          block
-          size="large"
-          disabled={!this.validateConfirmationForm()}
-          type="submit"
-          isLoading={isLoading}
-          text="Verify"
-          loadingText="Verifying…"
-        />
-      </Form>
-    );
-  }
   renderForm() {
     const { email, password, nickname, confirmPassword, isLoading } = this.state;
     return (
@@ -189,13 +129,14 @@ class Signup extends Component {
   }
 
   render() {
+    const { email, password } = this.state;
     return (
       <>
         <div style={{minHeight: '10vh'}}></div>
         <div className="Signup">
           {this.state.newUser === null
             ? this.renderForm()
-            : this.renderConfirmationForm()}
+            : <EmailConfirmationForm email={email} password={password} />}
         </div>
       </>
     );
