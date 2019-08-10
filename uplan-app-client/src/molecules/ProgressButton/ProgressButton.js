@@ -11,6 +11,7 @@ export default ({
                 }) =>
   <Button
     className={`ProgressButton ${className}`}
+    style={{ borderRadius: '15'}}
     disabled={disabled || isLoading}
     {...props}
   >

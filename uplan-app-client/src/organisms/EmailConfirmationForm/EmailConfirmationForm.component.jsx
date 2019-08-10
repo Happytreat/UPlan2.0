@@ -1,10 +1,9 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import {
-  FormGroup,
-  FormControl,
-  Form,
-} from "react-bootstrap";
+import * as yup from 'yup';
+import { Form, Field, Formik } from "formik";
+import { Typography } from "@material-ui/core";
+import { TextField } from "formik-material-ui";
 import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
 
 const styles = {
@@ -19,68 +18,60 @@ const styles = {
   },
 };
 
+const EmailConfirmSchema = yup.object().shape({
+  confirmationCode: yup.string().min(6, 'Confirmation code too short').required('Required'),
+});
+
 class EmailConfirmation extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: false,
-      confirmationCode: "",
-    };
-  }
-
-  validateConfirmationForm() {
-    return this.state.confirmationCode.length === 6;
-  }
-
-  handleChange = event => {
-    this.setState({
-      [event.target.id]: event.target.value
-    });
-  };
-
-  handleConfirmationSubmit = async event => {
-    const {
-      props: { email, password, confirmEmail },
-      state: { confirmationCode },
-    } = this;
-    event.preventDefault();
-    this.setState({ isLoading: true });
-
-    try {
-      await confirmEmail({ email, password, confirmationCode });
-    } catch (e) {
-      alert(e.message); // to use snack bar
-      this.setState({ isLoading: false });
-    }
-  };
 
   render() {
-    const { confirmationCode, isLoading } = this.state;
+    const { email, handleSubmit } = this.props;
     return (
       <>
-        <div style={{minHeight: '10vh'}}></div>
+        <div style={{minHeight: '7vh'}}></div>
         <div className="Signup">
-          <Form onSubmit={this.handleConfirmationSubmit} style={styles.form}>
-            <FormGroup controlId="confirmationCode" size="large">
-              <Form.Label>Confirmation Code</Form.Label>
-              <FormControl
-                autoFocus
-                type="tel"
-                value={confirmationCode}
-                onChange={this.handleChange}
-              />
-              <p style={styles.helpBlock}>Please check your email for the code.</p>
-            </FormGroup>
-            <ProgressButton
-              block
-              size="large"
-              disabled={!this.validateConfirmationForm()}
-              type="submit"
-              isLoading={isLoading}
-              text="Verify"
-              loadingText="Verifying…"
-            />
-          </Form>
+          <Formik
+            initialValues={{
+              confirmationCode: '',
+            }}
+            validationSchema={EmailConfirmSchema}
+            onSubmit={async (values, { setSubmitting }) => {
+              return handleSubmit({ email, values, setSubmitting });
+            }}
+          >
+            {({isSubmitting, isValid}) => (
+              <Form style={styles.form}>
+                <br/>
+                <Typography variant="body1" style={{fontSize: '0.9rem', fontWeight: 500}}>
+                  Confirmation Code
+                </Typography>
+                <Field
+                  type="text"
+                  name="confirmationCode"
+                  margin="dense"
+                  component={TextField}
+                  fullWidth
+                  autoFocus
+                  variant="outlined"
+                />
+                <br />
+                <p style={styles.helpBlock}>Please check your email for the code.</p>
+                <ProgressButton
+                  block
+                  size="large"
+                  disabled={!isValid && isSubmitting}
+                  isLoading={isSubmitting}
+                  variant="outline-primary"
+                  type="submit"
+                  text="Verify Your Email"
+                  loadingText="Verifying..."
+                  style={{margin: '1rem 0'}}
+                >
+                  Verify Your Email
+                </ProgressButton>
+              </Form>
+            )}
+          </Formik>
         </div>
       </>
     );
@@ -88,9 +79,8 @@ class EmailConfirmation extends Component {
 }
 
 EmailConfirmation.propTypes = {
-  confirmEmail: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
   email: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired
 };
 
 export default EmailConfirmation;

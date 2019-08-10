@@ -3,10 +3,13 @@
   "version": "1.1.1",
   "private": true,
   "dependencies": {
+    "@material-ui/core": "^4.3.1",
     "aws-amplify": "^1.1.35",
     "bootstrap": "^4.3.1",
     "connected-react-router": "^6.5.2",
     "emotion": "^10.0.14",
+    "formik": "^1.5.8",
+    "formik-material-ui": "0.0.20",
     "history": "^4.9.0",
     "lodash": "^4.17.15",
     "prop-types": "^15.7.2",
@@ -25,7 +28,8 @@
     "redux-actions": "^2.6.5",
     "redux-devtools-extension": "^2.13.8",
     "redux-persist": "^5.10.0",
-    "redux-saga": "^1.0.5"
+    "redux-saga": "^1.0.5",
+    "yup": "^0.27.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.5.5",

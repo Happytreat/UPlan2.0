@@ -1,14 +1,12 @@
 import React, { Component } from "react";
-import { Auth } from "aws-amplify";
 import PropTypes from "prop-types";
-import {
-  FormGroup,
-  FormControl,
-  Form,
-} from "react-bootstrap";
+import * as yup from 'yup';
+import { Field, Form, Formik } from 'formik';
+import { TextField } from 'formik-material-ui';
+import {Typography} from "@material-ui/core";
 
 import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
-import EmailConfirmationForm from '../EmailConfirmationForm/EmailConfirmationForm.container';
+
 
 const styles = {
   form: {
@@ -17,126 +15,99 @@ const styles = {
   },
 };
 
+const SignupSchema = yup.object().shape({
+  username: yup.string().email('Invalid Email').required('Required'),
+  nickname: yup.string().min(6, 'Nickname too short').required('Required'),
+  password: yup.string().min(8, 'Password too short').required('Required'),
+  passwordConfirmation: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match').required('Required'),
+});
+
 class Signup extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      isLoading: false,
-      email: "",
-      password: "",
-      confirmPassword: "",
-      nickname: "",
-      newUser: null
-    };
-  }
-
-  // Validate Form password better (special characters etc)
-  validateForm() {
-    return (
-      this.state.email.length > 0 &&
-      this.state.nickname.length > 0 &&
-      this.state.password.length > 0 &&
-      this.state.password === this.state.confirmPassword
-    );
-  }
-
-  handleChange = event => {
-    this.setState({
-      [event.target.id]: event.target.value
-    });
-  };
-
-  handleSubmit = async event => {
-    const { setError, signup } = this.props;
-    const { email, password, nickname } = this.state;
-
-    event.preventDefault();
-    this.setState({ isLoading: true });
-
-    try {
-      await signup({ email, password, nickname });
-      this.setState({ newUser: true }); // change route to confirm email
-    } catch (e) {
-      try {
-        if (e.code === "UsernameExistsException") {
-          await Auth.resendSignUp(this.state.email).then(() => {
-              this.setState({ newUser: true }); // show confirmation page
-              alert("A verification code has been resent to your email.")
-            }
-          )
-        } else {
-          alert(e.message); // to use snack bar (server err)
-          setError(e);
-        }
-      } catch (err) {
-        if (err.message === "User is already confirmed.") {
-          alert("A user of this email has already existed. Please login.");
-          this.props.history.push("/login");
-        }
-      }
-    }
-    this.setState({ isLoading: false });
-  };
-
-  renderForm() {
-    const { email, password, nickname, confirmPassword, isLoading } = this.state;
-    return (
-      <Form onSubmit={this.handleSubmit} style={styles.form}>
-        <FormGroup controlId="email" size="large">
-          <Form.Label>Email</Form.Label>
-          <FormControl
-            autoFocus
-            type="email"
-            value={email}
-            onChange={this.handleChange}
-          />
-        </FormGroup>
-        <FormGroup controlId="nickname" size="large">
-          <Form.Label>Nickname</Form.Label>
-          <FormControl
-            value={nickname}
-            onChange={this.handleChange}
-            type="text"
-          />
-        </FormGroup>
-        <FormGroup controlId="password" size="large">
-          <Form.Label>Password</Form.Label>
-          <FormControl
-            value={password}
-            onChange={this.handleChange}
-            type="password"
-          />
-        </FormGroup>
-        <FormGroup controlId="confirmPassword" size="large">
-          <Form.Label>Confirm Password</Form.Label>
-          <FormControl
-            value={confirmPassword}
-            onChange={this.handleChange}
-            type="password"
-          />
-        </FormGroup>
-        <ProgressButton
-          block
-          size="large"
-          disabled={!this.validateForm()}
-          type="submit"
-          isLoading={isLoading}
-          text="Signup"
-          loadingText="Signing up…"
-        />
-      </Form>
-    );
-  }
-
   render() {
-    const { email, password } = this.state;
     return (
       <>
-        <div style={{minHeight: '10vh'}}></div>
+        <div style={{minHeight: '7vh'}}></div>
         <div className="Signup">
-          {this.state.newUser === null
-            ? this.renderForm()
-            : <EmailConfirmationForm email={email} password={password} />}
+          <Formik
+            initialValues={{
+              username: '',
+              password: '',
+              passwordConfirmation: '',
+              nickname: '',
+            }}
+            validationSchema={SignupSchema}
+            onSubmit={async (values, { setSubmitting }) => {
+              return this.props.handleSubmit({ values, setSubmitting });
+            }}
+          >
+            {({ isSubmitting, isValid }) => (
+              <Form style={styles.form}>
+                <br />
+                <Typography variant="body1" style={{ fontSize: '0.9rem', fontWeight: 500 }}>
+                  Username
+                </Typography>
+                <Field
+                  type="email"
+                  name="username"
+                  margin="dense"
+                  component={TextField}
+                  fullWidth
+                  autoFocus
+                  autoComplete="email"
+                  variant="outlined"
+                />
+                <Typography variant="body1" style={{ fontSize: '0.9rem', fontWeight: 500 }}>
+                  Password
+                </Typography>
+                <Field
+                  type="password"
+                  name="password"
+                  margin="dense"
+                  component={TextField}
+                  autoComplete="current-password"
+                  fullWidth
+                  variant="outlined"
+                />
+                <Typography variant="body1" style={{ fontSize: '0.9rem', fontWeight: 500 }}>
+                  Password Confirmation
+                </Typography>
+                <Field
+                  type="password"
+                  name="passwordConfirmation"
+                  margin="dense"
+                  component={TextField}
+                  autoComplete="current-password"
+                  fullWidth
+                  variant="outlined"
+                />
+                <Typography variant="body1" style={{ fontSize: '0.9rem', fontWeight: 500 }}>
+                  Nickname
+                </Typography>
+                <Field
+                  type="text"
+                  name="nickname"
+                  margin="dense"
+                  component={TextField}
+                  fullWidth
+                  variant="outlined"
+                  style={{ paddingBottom: '1rem'}}
+                />
+                <ProgressButton
+                  block
+                  size="large"
+                  disabled={!isValid && isSubmitting}
+                  isLoading={isSubmitting}
+                  variant="outline-primary"
+                  type="submit"
+                  text="Signup"
+                  loadingText="Loading..."
+                  style={{ margin: '1rem 0' }}
+                >
+                  Signup
+                </ProgressButton>
+              </Form>
+            )}
+          </Formik>
         </div>
       </>
     );
@@ -144,8 +115,7 @@ class Signup extends Component {
 }
 
 Signup.propTypes = {
-  error: PropTypes.bool.isRequired,
-  signup: PropTypes.func.isRequired,
+  handleSubmit: PropTypes.func.isRequired,
 };
 
 export default Signup;

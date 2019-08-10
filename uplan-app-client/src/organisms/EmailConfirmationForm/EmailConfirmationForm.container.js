@@ -1,26 +1,31 @@
 import { connect } from "react-redux";
 import { Auth } from "aws-amplify";
+import { push }  from "connected-react-router";
 import EmailConfirmation from './EmailConfirmationForm.component';
-import { actions as authActions } from '../../store/auth.ducks';
+import { selectors as auth } from '../../store/auth.ducks';
+import { getStore } from "../../services/store";
 
 function mapStateToProps(state) {
-  return {};
+  return {
+    email: auth.email(state),
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    confirmEmail: async ({ email, password, confirmationCode }) => {
-      await Auth.confirmSignUp(email, confirmationCode);
-
-      const user = await Auth.signIn(email, password);
-      const payload = {
-        isAuth: true,
-        nickname: user.attributes.nickname,
-        email: user.attributes.email,
-        emailVerified: user.attributes['email_verified'],
-      };
-
-      dispatch(authActions.success(payload));
+    handleSubmit: async ({ email, values, setSubmitting }) => {
+      const { confirmationCode } = values;
+      try {
+        console.log('in');
+        await Auth.confirmSignUp(email, confirmationCode);
+        alert('Email successfully confirmed. Please login.'); // TODO: Change to snack bar
+        getStore().dispatch(push("/login"));
+      } catch (e) {
+        console.log('out', e);
+        alert(e.message); // to use snack bar
+      } finally {
+        setSubmitting(false);
+      }
     },
   };
 }

@@ -113,8 +113,6 @@ export default class LoggedIn extends Component {
       },
     } = this;
 
-    console.log(semesters);
-
     return (
       <div style={styles.header}>
         <h3>Your Semesters</h3>
