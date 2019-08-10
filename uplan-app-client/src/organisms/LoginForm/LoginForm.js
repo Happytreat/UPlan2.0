@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { Auth } from "aws-amplify";
 import { Form, FormGroup, FormControl } from "react-bootstrap";
 
-import {actions as authActions, selectors as auth} from '../../reducers/auth.ducks';
+import {actions as authActions, selectors as auth} from '../../store/auth.ducks';
 import ProgressButton from '../../molecules/ProgressButton/ProgressButton';
 import "./LoginForm.css";
 import PropTypes from "prop-types";

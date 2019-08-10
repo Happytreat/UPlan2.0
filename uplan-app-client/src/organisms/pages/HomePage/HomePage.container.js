@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import HomePage from './HomePage.component';
-import { selectors as auth } from '../../../reducers/auth.ducks';
+import { selectors as auth } from '../../../store/auth.ducks';
 
 function mapStateToProps(state) {
   return {

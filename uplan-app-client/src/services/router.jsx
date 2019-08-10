@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 
-import { selectors as auth } from '../reducers/auth.ducks';
+import { selectors as auth } from '../store/auth.ducks';
 
 import {
   AuthenticatedRoute,
