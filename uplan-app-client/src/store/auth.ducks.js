@@ -4,6 +4,7 @@ import { createAction, handleActions } from 'redux-actions';
 
 export const types = {
   request: 'auth/REQUEST',
+  signup: 'auth/signup',
   clear: 'auth/CLEAR',
   success: 'auth/SUCCESS',
   error: 'auth/ERROR',
@@ -11,6 +12,7 @@ export const types = {
 
 export const actions = {
   request: createAction(types.request),
+  signup: createAction(types.signup),
   clear: createAction(types.clear),
   success: createAction(
     types.success,
@@ -36,6 +38,12 @@ const reducer = handleActions({
       fetching: true,
       error: false,
     }),
+  [types.signup]: (state, action) => (
+    {
+      ...state,
+      error: false,
+      email: action.payload,
+    }),
   [types.clear]: (state) => (
     {
       ...state,
@@ -47,6 +55,7 @@ const reducer = handleActions({
       ...state,
       fetching: false,
       error: false,
+      confirmPage: false,
       ...action.payload,
     }),
   [types.error]: (state, action) => (
@@ -59,6 +68,7 @@ const reducer = handleActions({
 
 export const selectors = {
   error: state => state.auth.error,
+  confirmPage: state => state.auth.confirmPage,
   fetching: state => state.auth.fetching,
   isAuth: state => state.auth.isAuth,
   nickname: state => state.auth.nickname,

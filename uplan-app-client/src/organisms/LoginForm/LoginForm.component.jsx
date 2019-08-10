@@ -38,7 +38,7 @@ class LoginForm extends Component {
           <Form style={styles.form}>
             <br />
             <Typography variant="body" style={{ fontSize: '0.9rem', fontWeight: 500 }}>
-              Email
+              Username
             </Typography>
             <Field
               type="email"

@@ -39,15 +39,15 @@ class EmailConfirmation extends Component {
   };
 
   handleConfirmationSubmit = async event => {
-    const {
-      props: { email, password, confirmEmail },
-      state: { confirmationCode },
-    } = this;
+    const { confirmationCode } = this.state;
+    const { confirmEmail, email } = this.props;
+
     event.preventDefault();
     this.setState({ isLoading: true });
 
     try {
-      await confirmEmail({ email, password, confirmationCode });
+      await confirmEmail({ email, confirmationCode });
+      this.props.history.push("/login");
     } catch (e) {
       alert(e.message); // to use snack bar
       this.setState({ isLoading: false });
@@ -90,7 +90,6 @@ class EmailConfirmation extends Component {
 EmailConfirmation.propTypes = {
   confirmEmail: PropTypes.func.isRequired,
   email: PropTypes.string.isRequired,
-  password: PropTypes.string.isRequired
 };
 
 export default EmailConfirmation;
