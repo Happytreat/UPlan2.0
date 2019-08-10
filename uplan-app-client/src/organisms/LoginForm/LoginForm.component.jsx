@@ -1,12 +1,15 @@
 import React, { Component } from "react";
-import { connect } from "react-redux";
-import { Auth } from "aws-amplify";
-import { Form, FormGroup, FormControl } from "react-bootstrap";
-
-import {actions as authActions, selectors as auth} from '../../store/auth.ducks';
-import ProgressButton from '../../molecules/ProgressButton/ProgressButton';
-import "./LoginForm.css";
 import PropTypes from "prop-types";
+import { Form, FormGroup, FormControl } from "react-bootstrap";
+import ProgressButton from '../../molecules/ProgressButton/ProgressButton';
+
+
+const styles = {
+  form: {
+    margin: '0 auto',
+    maxWidth: '320px',
+  },
+};
 
 class Login extends Component {
   constructor(props) {
@@ -18,7 +21,6 @@ class Login extends Component {
     };
   }
 
-  // TODO: Use Form.Check
   validateForm() {
     return this.state.email.length > 0 && this.state.password.length >
       0;
@@ -31,23 +33,17 @@ class Login extends Component {
   };
 
   handleSubmit = async event => {
+    const { setError, login } = this.props;
+    const { email, password } = this.state;
     event.preventDefault();
     this.setState({ isLoading: true }); // dispatch auth.request too slow
     try {
-      const user = await Auth.signIn(this.state.email, this.state.password);
-
-      const payload = {
-        isAuth: true,
-        nickname: user.attributes.nickname,
-        email: user.attributes.email,
-        emailVerified: user.attributes['email_verified'],
-      };
-
-      this.props.dispatch(authActions.success(payload));
+      login({ email, password });
       alert("Logged in successful."); // Change to snackbar
     } catch (e) {
       this.setState({ isLoading: false });
       alert(e.message); // TODO: Show text instead: wrong credentials
+      setError(e);
     }
   };
 
@@ -60,7 +56,7 @@ class Login extends Component {
       <div>
         <div style={{minHeight: '10vh'}}></div>
         <div className="Login">
-          <Form onSubmit={this.handleSubmit}>
+          <Form onSubmit={this.handleSubmit} style={styles.form}>
             <FormGroup controlId="email" size="large">
               <Form.Label>Email</Form.Label>
               <FormControl
@@ -98,16 +94,7 @@ class Login extends Component {
 
 Login.propTypes = {
   error: PropTypes.bool.isRequired,
+  login: PropTypes.func.isRequired,
 };
 
-function mapStateToProps(state) {
-  return {
-    error: auth.error(state),
-  };
-}
-
-
-export default connect(
-  mapStateToProps,
-  null,
-)(Login);
+export default Login;

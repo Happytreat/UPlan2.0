@@ -14,7 +14,7 @@ import {
 import NotFoundPage from '../organisms/pages/404';
 import Dashboard from '../organisms/pages/HomePage/Dashboard.container';
 import NotLoggedInHome from '../organisms/pages/HomePage/NotLoggedIn';
-import LoginPage from '../organisms/LoginForm/LoginForm';
+import LoginPage from '../organisms/LoginForm/LoginForm.container';
 import SignupPage from '../organisms/SignupForm/SignupForm';
 
 import {
