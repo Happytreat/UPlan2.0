@@ -11,8 +11,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setLoading: () => dispatch(auth.request()),
-    setError: (err) => dispatch(auth.error(err)),
+    setLoading: () => dispatch(authActions.request()),
+    setError: (err) => dispatch(authActions.error(err)),
     login: async ({ email, password }) => {
       const user = await Auth.signIn(email, password);
 

@@ -38,7 +38,7 @@ class Login extends Component {
     event.preventDefault();
     this.setState({ isLoading: true }); // dispatch auth.request too slow
     try {
-      login({ email, password });
+      await login({ email, password });
       alert("Logged in successful."); // Change to snackbar
     } catch (e) {
       this.setState({ isLoading: false });

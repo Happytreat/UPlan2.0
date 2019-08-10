@@ -1,23 +1,26 @@
 import React, { Component } from "react";
 import { withRouter } from "react-router-dom";
+import { Auth } from "aws-amplify";
+import { connect } from "react-redux";
 import {
   FormGroup,
   FormControl,
-  Form
+  Form,
 } from "react-bootstrap";
-import { Auth } from "aws-amplify";
 
 import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
-import {actions as authActions } from '../../store/auth.ducks';
-import "./SignupForm.css";
-import {connect} from "react-redux";
+import { actions as authActions } from '../../store/auth.ducks';
 
 const styles = {
   helpBlock: {
     fontSize: '14',
     padding: '1rem',
     color: '#999',
-  }
+  },
+  form: {
+    margin: '0 auto',
+    maxWidth: '320px',
+  },
 };
 
 class Signup extends Component {
@@ -115,7 +118,7 @@ class Signup extends Component {
 
   renderConfirmationForm() {
     return (
-      <Form onSubmit={this.handleConfirmationSubmit}>
+      <Form onSubmit={this.handleConfirmationSubmit} style={styles.form}>
         <FormGroup controlId="confirmationCode" size="large">
           <Form.Label>Confirmation Code</Form.Label>
           <FormControl
@@ -140,7 +143,7 @@ class Signup extends Component {
   }
   renderForm() {
     return (
-      <Form onSubmit={this.handleSubmit}>
+      <Form onSubmit={this.handleSubmit} style={styles.form}>
         <FormGroup controlId="email" size="large">
           <Form.Label>Email</Form.Label>
           <FormControl
