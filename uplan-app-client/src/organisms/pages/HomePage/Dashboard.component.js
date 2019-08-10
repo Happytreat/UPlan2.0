@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { API } from "aws-amplify";
 import PropTypes from "prop-types";
 import { orderBy } from 'lodash';
-import { Container, Button, ListGroup, Modal } from "react-bootstrap";
+import { Container, Button, ListGroup } from "react-bootstrap";
 
+import MainModal from '../../../molecules/Modal/Modal';
 import LoadingPage from '../../../molecules/LoadingPage/LoadingPage';
 import NewSemester from '../../../organisms/NewSemester/NewSemester';
 import EditSemester from '../../../organisms/EditSemester/EditSemester';
@@ -33,30 +33,6 @@ const styles = {
     color: '#666',
     paddingTop: '0.25rem',
   },
-  modalHeader: {
-    padding: '0.5rem 1rem',
-  }
-};
-
-// TODO: Fix header appear first then fetched data (delay header till fetching true)
-const SemesterModal = ({ title, C, cProps, ...props }) => {
-  return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter" style={styles.modalHeader}>
-          {title}
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <C cProps={cProps} onHide={props.onHide} />
-      </Modal.Body>
-    </Modal>
-  );
 };
 
 export default class LoggedIn extends Component {
@@ -109,13 +85,13 @@ export default class LoggedIn extends Component {
                   <b>{"\uFF0B "}</b>
                   Add a new semester
               </Button>
-              <SemesterModal
+              <MainModal
                 title="Add a Semester"
                 C={NewSemester}
                 show={this.state.newSemModalShow}
                 onHide={() => this.setState({ newSemModalShow: false })}
               />
-              <SemesterModal
+              <MainModal
                 title="Update a Semester"
                 C={EditSemester}
                 cProps={{id: this.state.semId}}
