@@ -37,13 +37,12 @@ class LoginForm extends Component {
         {({ isSubmitting, isValid }) => (
           <Form style={styles.form}>
             <br />
-            <Typography variant="body" style={{ fontSize: '0.9rem', fontWeight: 500 }}>
+            <Typography variant="body1" style={{ fontSize: '0.9rem', fontWeight: 500 }}>
               Username
             </Typography>
             <Field
               type="email"
               name="username"
-              floatingLabelFixed
               margin="dense"
               component={TextField}
               fullWidth
@@ -51,12 +50,11 @@ class LoginForm extends Component {
               autoComplete="email"
               variant="outlined"
             />
-            <Typography variant="body" style={{ fontSize: '0.9rem', fontWeight: 500 }}>
+            <Typography variant="body1" style={{ fontSize: '0.9rem', fontWeight: 500 }}>
               Password
             </Typography>
             <Field
               type="password"
-              floatingLabelFixed
               name="password"
               margin="dense"
               component={TextField}
@@ -89,7 +87,6 @@ class LoginForm extends Component {
 }
 
 LoginForm.propTypes = {
-  error: PropTypes.object.isRequired,
   handleSubmit: PropTypes.func.isRequired,
 };
 
