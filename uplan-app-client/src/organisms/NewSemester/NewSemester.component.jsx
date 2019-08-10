@@ -1,16 +1,12 @@
 import React, { Component } from "react";
 import { Form, FormGroup } from "react-bootstrap";
-import { API } from "aws-amplify";
 import { isNumber } from 'lodash';
 import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
 import config from "../../config";
-import { s3Upload } from "../../libs/awsLib";
+import PropTypes from "prop-types";
+import {s3Upload} from "../../libs/awsLib";
 
 const styles = {
-  // textArea: {
-  //   height: '350px',
-  //   fontSize: '24',
-  // },
   form: {
     padding: '1.5rem',
   }
@@ -21,7 +17,6 @@ export default class NewSemester extends Component {
     super(props);
     this.file = null;
     this.state = {
-      isLoading: null,
       description: "",
       name: "",
       order: 1,
@@ -44,11 +39,13 @@ export default class NewSemester extends Component {
 
   handleSubmit = async event => {
     event.preventDefault();
+    const { setLoading, setError, createSemester, onHide } = this.props;
     if (this.file && this.file.size > config.MAX_ATTACHMENT_SIZE) {
       alert(`Please pick a file smaller than ${config.MAX_ATTACHMENT_SIZE/1000000} MB.`);
       return;
     }
-    this.setState({ isLoading: true });
+
+    setLoading();
 
     try {
       // Upload file before creating a note
@@ -57,30 +54,33 @@ export default class NewSemester extends Component {
         : null;
 
       const { name, description, order } = this.state;
-      await this.createSemester({
+      createSemester({
         name,
         description,
         attachment,
         order: parseInt(order, 10),
       });
 
-      // Close Modal
-      this.props.onHide();
+      onHide(); // Close Modal
     } catch (e) {
       alert(e);
-      // console.log(e);
-      this.setState({ isLoading: false });
+      setError(e);
     }
   };
 
-  createSemester(note) {
-    // API endpoint in index.js is semesters
-    return API.post("semesters", "/semesters", {
-      body: note,
-    });
-  };
-
   render() {
+    const {
+      props: {
+        fetching,
+        error,
+      },
+      state: {
+        order,
+        name,
+        description,
+      },
+    } = this;
+
     return (
       <div>
         <Form onSubmit={this.handleSubmit} style={styles.form}>
@@ -89,7 +89,7 @@ export default class NewSemester extends Component {
             <Form.Control
               type="text"
               onChange={this.handleChange}
-              value={this.state.name}
+              value={name}
             />
           </FormGroup>
           <FormGroup controlId="description">
@@ -99,7 +99,7 @@ export default class NewSemester extends Component {
               as="textarea"
               rows="5"
               onChange={this.handleChange}
-              value={this.state.description}
+              value={description}
             />
           </FormGroup>
           <FormGroup controlId="file">
@@ -112,7 +112,7 @@ export default class NewSemester extends Component {
             <Form.Control
               type="text"
               onChange={this.handleChange}
-              value={this.state.order}
+              value={order}
             />
           </FormGroup>
           <ProgressButton
@@ -121,7 +121,7 @@ export default class NewSemester extends Component {
             size="large"
             disabled={!this.validateForm()}
             type="submit"
-            isLoading={this.state.isLoading}
+            isLoading={fetching}
             text="Create"
             loadingText="Creating…"
           />
@@ -131,4 +131,12 @@ export default class NewSemester extends Component {
   }
 }
 
+NewSemester.propTypes = {
+  fetching: PropTypes.bool.isRequired,
+  error: PropTypes.bool.isRequired,
+  setLoading: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
+  createSemester: PropTypes.func.isRequired,
+  onHide: PropTypes.func.isRequired,
+};
 

@@ -1,13 +1,15 @@
 import React, { Component } from "react";
-import { API } from "aws-amplify";
 import PropTypes from "prop-types";
 import { orderBy } from 'lodash';
-import { Container, Button, ListGroup, Modal, Col, Row } from "react-bootstrap";
+import { Container, Button, ListGroup } from "react-bootstrap";
 
+import MainModal from '../../../molecules/Modal/Modal';
 import LoadingPage from '../../../molecules/LoadingPage/LoadingPage';
-import NewSemester from '../../../organisms/NewSemester/NewSemester';
-import EditSemester from '../../../organisms/EditSemester/EditSemester';
+import NewSemester from '../../NewSemester/NewSemester.container';
+import EditSemester from '../../UpdateSemester/UpdateSemester.container';
 
+
+// TODO: Refactor with Emoticon/Styled component
 const styles = {
   header: {
     padding: '1.5rem',
@@ -31,39 +33,12 @@ const styles = {
     color: '#666',
     paddingTop: '0.25rem',
   },
-  modalHeader: {
-    padding: '0.5rem 1rem',
-  }
-};
-
-// TODO: Fix header appear first then fetched data (delay header till fetching true)
-// Fix: Fetching in redux store (semesters)
-const SemesterModal = ({ title, C, cProps, ...props }) => {
-  return (
-    <Modal
-      {...props}
-      size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
-      centered
-    >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter" style={styles.modalHeader}>
-          {title}
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <C cProps={cProps} onHide={props.onHide} />
-      </Modal.Body>
-    </Modal>
-  );
 };
 
 export default class LoggedIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: true,
-      semesters: [],
       newSemModalShow: false,
       editSemModalShow: false,
       semId: null,
@@ -72,23 +47,22 @@ export default class LoggedIn extends Component {
     this.renderSemestersList = this.renderSemestersList.bind(this);
   }
 
-  async componentDidMount() {
+  componentDidMount() {
+    const { isAuth, setLoading, setError, updateSemesters } = this.props;
     // show throw error?
-    if (!this.props.isAuth) {
+    if (!isAuth) {
       return;
     }
 
+    // TODO: Refactor this in user.saga
+    setLoading();
+
     try {
-      const semesters = await this.semesters();
-      this.setState({ semesters });
+      updateSemesters();
     } catch (e) {
       alert(e);
+      setError(e);
     }
-    this.setState({ isLoading: false });
-  }
-
-  semesters() {
-    return API.get("semesters", "/semesters");
   }
 
   // TODO: Fix re-rendering of dashboard after adding/updating semesters (fix by adding semester to redux store)
@@ -111,13 +85,13 @@ export default class LoggedIn extends Component {
                   <b>{"\uFF0B "}</b>
                   Add a new semester
               </Button>
-              <SemesterModal
+              <MainModal
                 title="Add a Semester"
                 C={NewSemester}
                 show={this.state.newSemModalShow}
                 onHide={() => this.setState({ newSemModalShow: false })}
               />
-              <SemesterModal
+              <MainModal
                 title="Update a Semester"
                 C={EditSemester}
                 cProps={{id: this.state.semId}}
@@ -131,17 +105,26 @@ export default class LoggedIn extends Component {
 
   // TODO: Find delay before showing spinner
   render() {
+    const {
+      props: {
+        fetching,
+        error, // TODO: Create page for error
+        semesters,
+      },
+    } = this;
+
+    console.log(semesters);
+
     return (
       <div style={styles.header}>
         <h3>Your Semesters</h3>
         <br />
         {
-          this.state.isLoading
-          ? <><LoadingPage isLoading={this.state.isLoading} /></>
+          fetching
+          ? <><LoadingPage /></>
           : (
               <ListGroup>
-                {!this.state.isLoading &&
-                this.renderSemestersList(this.state.semesters)}
+                {this.renderSemestersList(semesters)}
               </ListGroup>
             )
         }
@@ -152,4 +135,8 @@ export default class LoggedIn extends Component {
 
 LoggedIn.propTypes = {
   isAuth: PropTypes.bool.isRequired,
+  setLoading: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
+  updateSemesters: PropTypes.func.isRequired,
+  semesters: PropTypes.array.isRequired,
 };

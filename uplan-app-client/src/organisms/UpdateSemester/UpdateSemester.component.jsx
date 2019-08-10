@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { API, Storage } from "aws-amplify";
+import PropTypes from "prop-types";
 import { isNumber } from "lodash";
 import { Form, FormGroup, FormControl } from "react-bootstrap";
 import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
 import config from "../../config";
 import { s3Upload } from "../../libs/awsLib";
-// import LoadingPage from "../../molecules/LoadingPage/LoadingPage";
 
 const styles = {
   form: {
@@ -13,13 +13,11 @@ const styles = {
   }
 };
 
-export default class EditSemester extends Component {
+export default class UpdateSemester extends Component {
   constructor(props) {
     super(props);
     this.file = null;
     this.state = {
-      isLoading: null,
-      isDeleting: null,
       semester: null,
       name: "",
       description: "",
@@ -34,8 +32,7 @@ export default class EditSemester extends Component {
       const { name, description, attachment, order } = semester;
 
       if (attachment) {
-        // Retrieve from S3
-        attachmentURL = await Storage.vault.get(attachment);
+        attachmentURL = await Storage.vault.get(attachment); // Retrieve from S3
       }
       this.setState({
         semester,
@@ -45,7 +42,6 @@ export default class EditSemester extends Component {
         order,
       });
     } catch (e) {
-      // console.log('Error in storage.vault.get(). attachment does not belong to user');
       alert('You are not authorised to view this page.');
       this.props.history.push("/");
     }
@@ -53,7 +49,6 @@ export default class EditSemester extends Component {
 
   // path="/semesters/:id"
   getSemester() {
-    console.log('This id: ', this.props.cProps.id);
     return API.get("semesters", `/semesters/${this.props.cProps.id}`);
   }
 
@@ -78,22 +73,17 @@ export default class EditSemester extends Component {
     this.file = event.target.files[0];
   };
 
-  saveSemester(semester) {
-    // PUT request to update semester
-    return API.put("semesters", `/semesters/${this.props.cProps.id}`, {
-      body: semester,
-    });
-  }
-
   handleSubmit = async event => {
     let attachment;
+    const { setLoading, setError, saveSemester, onHide, cProps: { id } } = this.props;
     event.preventDefault();
 
     if (this.file && this.file.size > config.MAX_ATTACHMENT_SIZE) {
       alert(`Please pick a file smaller than ${config.MAX_ATTACHMENT_SIZE/1000000} MB.`);
       return;
     }
-    this.setState({ isLoading: true });
+
+    setLoading();
 
     try {
       if (this.file) {
@@ -101,63 +91,71 @@ export default class EditSemester extends Component {
       }
 
       const { name, description, order, semester } = this.state;
-      console.log('Order submitted', order);
 
-      await this.saveSemester({
-        name,
-        description,
-        attachment: attachment || semester.attachment,
-        order: parseInt(order, 10),
+      saveSemester({
+        id,
+        semester: {
+          name,
+          description,
+          attachment: attachment || semester.attachment,
+          order: parseInt(order, 10),
+        }
       });
 
       // Delete the old attachment
       await Storage.vault.remove(semester.attachment);
-
-      this.props.onHide();
+      onHide();
     } catch (e) {
       alert(e);
-      this.setState({ isLoading: false });
+      setError(e);
     }
   };
 
-  deleteSemester() {
-    return API.del("semesters", `/semesters/${this.props.cProps.id}`);
-  }
-
   handleDelete = async event => {
+    const { setLoading, setError, deleteSemester, onHide, cProps: { id } } = this.props;
+
     event.preventDefault();
-    const confirmed = window.confirm(
-      "Are you sure you want to delete this semester?"
-    );
-    if (!confirmed) {
-      return;
-    }
+    const confirmed = window.confirm('Are you sure you want to delete this semester?');
+    if (!confirmed) { return; }
 
-    this.setState({ isDeleting: true });
+    setLoading();
+
     try {
-      await this.deleteSemester();
-
+     deleteSemester(id);
       // Delete attachment of deleted semester
       await Storage.vault.remove(this.state.semester.attachment);
-
-      this.props.onHide();
+      onHide();
     } catch (e) {
       alert(e);
-      this.setState({ isDeleting: false });
+      setError(e);
     }
   };
 
   render() {
+    const {
+      props: {
+        fetching,
+        error,
+      },
+      state: {
+        order,
+        name,
+        description,
+        semester,
+        attachmentURL,
+      },
+    } = this;
+
     return (
     <div className="Semesters">
-      {this.state.semester &&
+      {semester &&
       <Form onSubmit={this.handleSubmit} style={styles.form}>
         <FormGroup controlId="name">
           <Form.Label>Semester Name</Form.Label>
           <Form.Control
             type="text"
             onChange={this.handleChange}
-            value={this.state.name}
+            value={name}
           />
         </FormGroup>
         <Form.Label>Semester Description</Form.Label>
@@ -167,24 +165,24 @@ export default class EditSemester extends Component {
             as="textarea"
             rows="5"
             onChange={this.handleChange}
-            value={this.state.description}
+            value={description}
           />
         </FormGroup>
-        {this.state.semester.attachment &&
+        {semester.attachment &&
         <FormGroup>
           <Form.Label>Attachment:</Form.Label>
           <Form.Row style={{paddingLeft: '0.5rem'}}>
             <a
               target="_blank"
               rel="noopener noreferrer"
-              href={this.state.attachmentURL}
+              href={attachmentURL}
             >
-              {this.formatFilename(this.state.semester.attachment)}
+              {this.formatFilename(semester.attachment)}
             </a>
           </Form.Row>
         </FormGroup>}
         <FormGroup controlId="file">
-          {!this.state.semester.attachment &&
+          {!semester.attachment &&
           <Form.Label>Attachment</Form.Label>}
           <FormControl onChange={this.handleFileChange} type="file"
           />
@@ -194,7 +192,7 @@ export default class EditSemester extends Component {
           <Form.Control
             type="text"
             onChange={this.handleChange}
-            value={this.state.order}
+            value={order}
           />
         </FormGroup>
         <ProgressButton
@@ -203,7 +201,7 @@ export default class EditSemester extends Component {
           size="large"
           disabled={!this.validateForm()}
           type="submit"
-          isLoading={this.state.isLoading}
+          isLoading={fetching}
           text="Save"
           loadingText="Saving…"
         />
@@ -211,7 +209,7 @@ export default class EditSemester extends Component {
           block
           variant="danger"
           size="large"
-          isLoading={this.state.isDeleting}
+          isLoading={fetching}
           onClick={this.handleDelete}
           text="Delete"
           loadingText="Deleting…"
@@ -221,3 +219,16 @@ export default class EditSemester extends Component {
     );
   }
 }
+
+
+UpdateSemester.propTypes = {
+  fetching: PropTypes.bool.isRequired,
+  error: PropTypes.bool.isRequired,
+  setLoading: PropTypes.func.isRequired,
+  setError: PropTypes.func.isRequired,
+  saveSemester: PropTypes.func.isRequired,
+  deleteSemester: PropTypes.func.isRequired,
+  onHide: PropTypes.func.isRequired,
+  cProps: PropTypes.object,
+};
+

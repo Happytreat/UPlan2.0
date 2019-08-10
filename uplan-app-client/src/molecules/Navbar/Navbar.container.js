@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import NavBar from './Navbar.component';
-import { selectors as auth, actions as authActions } from '../../reducers/auth.ducks';
+import { selectors as auth, actions as authActions } from '../../store/auth.ducks';
 
 function mapStateToProps(state) {
   return {

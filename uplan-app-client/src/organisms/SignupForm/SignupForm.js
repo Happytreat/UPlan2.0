@@ -8,7 +8,7 @@ import {
 import { Auth } from "aws-amplify";
 
 import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
-import {actions as authActions } from '../../reducers/auth.ducks';
+import {actions as authActions } from '../../store/auth.ducks';
 import "./SignupForm.css";
 import {connect} from "react-redux";
 
