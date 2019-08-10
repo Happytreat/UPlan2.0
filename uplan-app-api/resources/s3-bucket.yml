@@ -1,6 +1,7 @@
 Resources:
   AttachmentsBucket:
     Type: AWS::S3::Bucket
+    DeletionPolicy: Retain
     Properties:
       CorsConfiguration: # Set the CORS policy
         CorsRules:
