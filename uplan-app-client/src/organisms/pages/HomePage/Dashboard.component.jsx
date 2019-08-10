@@ -6,7 +6,7 @@ import { Container, Button, ListGroup } from "react-bootstrap";
 import MainModal from '../../../molecules/Modal/Modal';
 import LoadingPage from '../../../molecules/LoadingPage/LoadingPage';
 import NewSemester from '../../NewSemester/NewSemester.container';
-import EditSemester from '../../../organisms/EditSemester/EditSemester';
+import EditSemester from '../../UpdateSemester/UpdateSemester.container';
 
 
 // TODO: Refactor with Emoticon/Styled component

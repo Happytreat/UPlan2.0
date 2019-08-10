@@ -1,6 +1,6 @@
 import { connect } from "react-redux";
 import { API } from "aws-amplify";
-import NewSemester from './NewSemester.component';
+import UpdateSemester from './UpdateSemester.component';
 import { actions as userActions, selectors as user } from '../../store/user/user.ducks';
 
 function mapStateToProps(state) {
@@ -14,8 +14,13 @@ function mapDispatchToProps(dispatch) {
   return {
     setLoading: () => dispatch(userActions.request()),
     setError: (err) => dispatch(userActions.error(err)),
-    createSemester: async (note) => {
-      await API.post("semesters", "/semesters", { body: note });
+    saveSemester: async ({ id, semester }) => {
+      await API.put("semesters", `/semesters/${id}`, { body: semester });
+      const semesters = await API.get("semesters", "/semesters"); // TODO: put this in saga
+      dispatch(userActions.update({ semesters }));
+    },
+    deleteSemester: async (id) => {
+      await API.del("semesters", `/semesters/${id}`);
       const semesters = await API.get("semesters", "/semesters");
       dispatch(userActions.update({ semesters }));
     },
@@ -25,4 +30,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(NewSemester);
+)(UpdateSemester);
