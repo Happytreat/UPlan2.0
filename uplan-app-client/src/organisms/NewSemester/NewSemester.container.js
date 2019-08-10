@@ -1,13 +1,11 @@
 import { connect } from "react-redux";
 import { API } from "aws-amplify";
-import Dashboard from './Dashboard.component.jsx';
-import { selectors as auth } from '../../../store/auth.ducks';
-import { actions as userActions, selectors as user } from '../../../store/user/user.ducks';
+import NewSemester from './NewSemester.component';
+import { actions as userActions, selectors as user } from '../../store/user/user.ducks';
+import {s3Upload} from "../../libs/awsLib";
 
 function mapStateToProps(state) {
   return {
-    isAuth: auth.isAuth(state),
-    semesters: user.semesters(state),
     fetching: user.fetching(state),
     error: user.error(state),
   };
@@ -17,9 +15,10 @@ function mapDispatchToProps(dispatch) {
   return {
     setLoading: () => dispatch(userActions.request()),
     setError: (err) => dispatch(userActions.error(err)),
-    updateSemesters: async () => {
+    createSemester: async (note) => {
+      await API.post("semesters", "/semesters", { body: note });
       const semesters = await API.get("semesters", "/semesters");
-      dispatch(userActions.update({ semesters }))
+      dispatch(userActions.update({ semesters }));
     },
   };
 }
@@ -27,4 +26,4 @@ function mapDispatchToProps(dispatch) {
 export default connect(
   mapStateToProps,
   mapDispatchToProps,
-)(Dashboard);
+)(NewSemester);
