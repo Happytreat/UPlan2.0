@@ -1,14 +1,32 @@
 import { connect } from "react-redux";
+import { API } from "aws-amplify";
 import Dashboard from './Dashboard.component';
-import { selectors as auth } from '../../../reducers/auth.ducks';
+import { selectors as auth } from '../../../store/auth.ducks';
+import { actions as userActions, selectors as user } from '../../../store/user/user.ducks';
 
 function mapStateToProps(state) {
   return {
     isAuth: auth.isAuth(state),
+    semesters: user.semesters(state),
+    fetching: user.fetching(state),
+    error: user.error(state),
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    setLoading: () => dispatch(userActions.request()),
+    setError: (err) => dispatch(userActions.error(err)),
+    updateSemesters: async () => {
+      const semesters = await API.get("semesters", "/semesters");
+      dispatch(userActions.update({
+        semesters,
+      }))
+    },
   };
 }
 
 export default connect(
   mapStateToProps,
-  null,
+  mapDispatchToProps,
 )(Dashboard);
