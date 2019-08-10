@@ -1,7 +1,5 @@
 import React, { Component } from "react";
-import { withRouter } from "react-router-dom";
 import { Auth } from "aws-amplify";
-import { connect } from "react-redux";
 import {
   FormGroup,
   FormControl,
@@ -10,6 +8,7 @@ import {
 
 import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
 import { actions as authActions } from '../../store/auth.ducks';
+import PropTypes from "prop-types";
 
 const styles = {
   helpBlock: {
@@ -58,18 +57,15 @@ class Signup extends Component {
   };
 
   handleSubmit = async event => {
+    const { setError, signup } = this.props;
+    const { email, password, nickname } = this.state;
+
     event.preventDefault();
     this.setState({ isLoading: true });
+
     try {
-      const newUser = await Auth.signUp({
-        username: this.state.email,
-        password: this.state.password,
-        attributes: {
-          nickname: this.state.nickname,
-          email: this.state.email
-        }
-      });
-      this.setState({ newUser });
+      await signup({ email, password, nickname });
+      this.setState({ newUser: true }); // change route to confirm email
     } catch (e) {
       try {
         if (e.code === "UsernameExistsException") {
@@ -79,14 +75,14 @@ class Signup extends Component {
             }
           )
         } else {
-          alert(e.message); // to use snack bar
+          alert(e.message); // to use snack bar (server err)
+          setError(e);
         }
       } catch (err) {
         if (err.message === "User is already confirmed.") {
           alert("A user of this email has already existed. Please login.");
           this.props.history.push("/login");
         }
-        // console.log('error of second', err);
       }
     }
     this.setState({ isLoading: false });
@@ -117,6 +113,7 @@ class Signup extends Component {
   };
 
   renderConfirmationForm() {
+    const { confirmationCode, isLoading } = this.state;
     return (
       <Form onSubmit={this.handleConfirmationSubmit} style={styles.form}>
         <FormGroup controlId="confirmationCode" size="large">
@@ -124,7 +121,7 @@ class Signup extends Component {
           <FormControl
             autoFocus
             type="tel"
-            value={this.state.confirmationCode}
+            value={confirmationCode}
             onChange={this.handleChange}
           />
           <p style={styles.helpBlock}>Please check your email for the code.</p>
@@ -134,7 +131,7 @@ class Signup extends Component {
           size="large"
           disabled={!this.validateConfirmationForm()}
           type="submit"
-          isLoading={this.state.isLoading}
+          isLoading={isLoading}
           text="Verify"
           loadingText="Verifying…"
         />
@@ -142,6 +139,7 @@ class Signup extends Component {
     );
   }
   renderForm() {
+    const { email, password, nickname, confirmPassword, isLoading } = this.state;
     return (
       <Form onSubmit={this.handleSubmit} style={styles.form}>
         <FormGroup controlId="email" size="large">
@@ -149,14 +147,14 @@ class Signup extends Component {
           <FormControl
             autoFocus
             type="email"
-            value={this.state.email}
+            value={email}
             onChange={this.handleChange}
           />
         </FormGroup>
         <FormGroup controlId="nickname" size="large">
           <Form.Label>Nickname</Form.Label>
           <FormControl
-            value={this.state.nickname}
+            value={nickname}
             onChange={this.handleChange}
             type="text"
           />
@@ -164,7 +162,7 @@ class Signup extends Component {
         <FormGroup controlId="password" size="large">
           <Form.Label>Password</Form.Label>
           <FormControl
-            value={this.state.password}
+            value={password}
             onChange={this.handleChange}
             type="password"
           />
@@ -172,7 +170,7 @@ class Signup extends Component {
         <FormGroup controlId="confirmPassword" size="large">
           <Form.Label>Confirm Password</Form.Label>
           <FormControl
-            value={this.state.confirmPassword}
+            value={confirmPassword}
             onChange={this.handleChange}
             type="password"
           />
@@ -182,7 +180,7 @@ class Signup extends Component {
           size="large"
           disabled={!this.validateForm()}
           type="submit"
-          isLoading={this.state.isLoading}
+          isLoading={isLoading}
           text="Signup"
           loadingText="Signing up…"
         />
@@ -204,7 +202,9 @@ class Signup extends Component {
   }
 }
 
-export default connect(
-  null,
-  null,
-)(withRouter(Signup));
+Signup.propTypes = {
+  error: PropTypes.bool.isRequired,
+  signup: PropTypes.func.isRequired,
+};
+
+export default Signup;
