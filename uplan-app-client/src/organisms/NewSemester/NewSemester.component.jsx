@@ -72,7 +72,6 @@ export default class NewSemester extends Component {
     const {
       props: {
         fetching,
-        error,
       },
       state: {
         order,
@@ -133,7 +132,6 @@ export default class NewSemester extends Component {
 
 NewSemester.propTypes = {
   fetching: PropTypes.bool.isRequired,
-  error: PropTypes.bool.isRequired,
   setLoading: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
   createSemester: PropTypes.func.isRequired,

@@ -1,39 +1,37 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import { orderBy } from 'lodash';
-import { Container, Button, ListGroup } from "react-bootstrap";
+import {
+  Button, Grid,
+} from '@material-ui/core';
+import styled from 'styled-components'
 
 import MainModal from '../../../molecules/Modal/Modal';
 import LoadingPage from '../../../molecules/LoadingPage/LoadingPage';
 import NewSemester from '../../NewSemester/NewSemester.container';
 import EditSemester from '../../UpdateSemester/UpdateSemester.container';
 
+const PageWrapper = styled.div`
+  padding: 1.5rem;
+  font-family: Open Sans, sans-serif;
+  font-weight: 600;
+  overflow: hidden;
+  line-height: 1.5;
+  text-overflow: ellipsis;
+`;
 
-// TODO: Refactor with Emoticon/Styled component
-const styles = {
-  header: {
-    padding: '1.5rem',
-    fontFamily: "Open Sans sans-serif",
-    fontWeight: '600',
-    overflow: 'hidden',
-    lineHeight: '1.5',
-    whiteSpace: 'nowrap',
-    textOverflow: 'ellipsis',
-  },
-  link: {
-    cursor: 'pointer',
-  },
-  container: {
-    cursor: 'pointer',
-    borderStyle: 'ridge',
-    borderWidth: 'medium',
-    padding: '0.75rem 0 0 0.5rem'
-  },
-  description: {
-    color: '#666',
-    paddingTop: '0.25rem',
-  },
-};
+const Description = styled.p`
+  color: #666;
+  padding-top: 0.25rem;
+`;
+
+const StyledGrid = styled(Grid)`
+  cursor: pointer;
+   border-style: ridge;
+   border-width: medium;
+   padding: 0.75rem 0 0 0.5rem;
+   word-wrap: break-word;
+`;
 
 export default class LoggedIn extends Component {
   constructor(props) {
@@ -47,94 +45,79 @@ export default class LoggedIn extends Component {
     this.renderSemestersList = this.renderSemestersList.bind(this);
   }
 
-  componentDidMount() {
-    const { isAuth, setLoading, setError, updateSemesters } = this.props;
-    // show throw error?
+  async componentDidMount() {
+    const { isAuth, updateDashboard } = this.props;
     if (!isAuth) {
-      return;
+      return; // show throw error?
     }
 
-    // TODO: Refactor this in user.saga
-    setLoading();
-
-    try {
-      updateSemesters();
-    } catch (e) {
-      alert(e);
-      setError(e);
-    }
+    await updateDashboard();
   }
 
-  // TODO: Fix re-rendering of dashboard after adding/updating semesters (fix by adding semester to redux store)
   renderSemestersList(semesters) {
     const orderedSemesters = orderBy(semesters, ['order'], 'asc');
-    return [{}].concat(orderedSemesters).map(
-      (semester, i) =>
-        i !== 0
-          ? (
-            <>
-              <Container key={semester.semesterId} style={styles.container} onClick={() => this.setState({ editSemModalShow: true, semId: semester.semesterId })}>
-                <h6><b>{semester.name}</b></h6>
-                <p style={styles.description}>{semester.description.trim().split("\n")[0]}</p>
-              </Container>
-            </>
-          )
-          : (
-            <>
-              <Button variant="outline-dark" style={styles.link} onClick={() => this.setState({ newSemModalShow: true })}>
-                  <b>{"\uFF0B "}</b>
-                  Add a new semester
-              </Button>
-              <MainModal
-                title="Add a Semester"
-                C={NewSemester}
-                show={this.state.newSemModalShow}
-                onHide={() => this.setState({ newSemModalShow: false })}
-              />
-              <MainModal
-                title="Update a Semester"
-                C={EditSemester}
-                cProps={{id: this.state.semId}}
-                show={this.state.editSemModalShow}
-                onHide={() => this.setState({ editSemModalShow: false })}
-              />
-            </>
-          )
+    const result = [];
+    result.push(
+      <div key='unique-id123'>
+        <Button onClick={() => this.setState({ newSemModalShow: true })}>
+          <b>{"\uFF0B "}</b>
+          Add a new semester
+        </Button>
+        <MainModal
+          title="Add a Semester"
+          C={NewSemester}
+          show={this.state.newSemModalShow}
+          onHide={() => this.setState({ newSemModalShow: false })}
+        />
+        <MainModal
+          title="Update a Semester"
+          C={EditSemester}
+          cProps={{id: this.state.semId}}
+          show={this.state.editSemModalShow}
+          onHide={() => this.setState({ editSemModalShow: false })}
+        />
+      </div>
+    );
+    return result.concat(orderedSemesters.map(
+      (semester) =>
+        <StyledGrid item xs={12} key={semester.semesterId} onClick={() => this.setState({ editSemModalShow: true, semId: semester.semesterId })}>
+          <h6><b>{semester.name}</b></h6>
+          <Description>{semester.description.trim().split("\n")[0]}</Description>
+        </StyledGrid>
+      )
     );
   }
+
 
   // TODO: Find delay before showing spinner
   render() {
     const {
       props: {
         fetching,
-        error, // TODO: Create page for error
         semesters,
       },
     } = this;
 
     return (
-      <div style={styles.header}>
+      <PageWrapper>
         <h3>Your Semesters</h3>
         <br />
         {
           fetching
           ? <><LoadingPage /></>
           : (
-              <ListGroup>
-                {this.renderSemestersList(semesters)}
-              </ListGroup>
+            <Grid container>
+              {this.renderSemestersList(semesters)}
+            </Grid>
             )
         }
-      </div>
+      </PageWrapper>
     );
   }
 }
 
 LoggedIn.propTypes = {
   isAuth: PropTypes.bool.isRequired,
-  setLoading: PropTypes.func.isRequired,
-  setError: PropTypes.func.isRequired,
-  updateSemesters: PropTypes.func.isRequired,
+  updateDashboard: PropTypes.func.isRequired,
   semesters: PropTypes.array.isRequired,
 };

@@ -6,7 +6,6 @@ import { actions as userActions, selectors as user } from '../../store/user/user
 function mapStateToProps(state) {
   return {
     fetching: user.fetching(state),
-    error: user.error(state),
   };
 }
 
@@ -15,8 +14,8 @@ function mapDispatchToProps(dispatch) {
     setLoading: () => dispatch(userActions.request()),
     setError: (err) => dispatch(userActions.error(err)),
     createSemester: async (note) => {
-      await API.post("semesters", "/semesters", { body: note });
-      const semesters = await API.get("semesters", "/semesters");
+      await API.post("api", "/semesters", { body: note });
+      const semesters = await API.get("api", "/semesters");
       dispatch(userActions.update({ semesters }));
     },
   };

@@ -49,7 +49,7 @@ export default class UpdateSemester extends Component {
 
   // path="/semesters/:id"
   getSemester() {
-    return API.get("semesters", `/semesters/${this.props.cProps.id}`);
+    return API.get("api", `/semesters/${this.props.cProps.id}`);
   }
 
   // TODO: Change to Formik or validation schema
@@ -135,7 +135,6 @@ export default class UpdateSemester extends Component {
     const {
       props: {
         fetching,
-        error,
       },
       state: {
         order,
@@ -223,7 +222,6 @@ export default class UpdateSemester extends Component {
 
 UpdateSemester.propTypes = {
   fetching: PropTypes.bool.isRequired,
-  error: PropTypes.bool.isRequired,
   setLoading: PropTypes.func.isRequired,
   setError: PropTypes.func.isRequired,
   saveSemester: PropTypes.func.isRequired,

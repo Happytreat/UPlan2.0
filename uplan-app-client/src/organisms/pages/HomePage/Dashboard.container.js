@@ -9,17 +9,20 @@ function mapStateToProps(state) {
     isAuth: auth.isAuth(state),
     semesters: user.semesters(state),
     fetching: user.fetching(state),
-    error: user.error(state),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    setLoading: () => dispatch(userActions.request()),
-    setError: (err) => dispatch(userActions.error(err)),
-    updateSemesters: async () => {
-      const semesters = await API.get("semesters", "/semesters");
-      dispatch(userActions.update({ semesters }))
+    updateDashboard: async () => {
+      dispatch(userActions.request());
+      try {
+        const userInfo = await API.get("api", "/user");
+        dispatch(userActions.update( userInfo ));
+      } catch (e) {
+        alert(e);
+        dispatch(userActions.error(e.message));
+      }
     },
   };
 }
