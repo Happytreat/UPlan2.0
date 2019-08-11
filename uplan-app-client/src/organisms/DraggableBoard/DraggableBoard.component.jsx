@@ -43,7 +43,6 @@ class DraggableBoard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      draggableList: this.props.modules,
       /**
        * Should look like:
        * draggableList: {
@@ -51,6 +50,7 @@ class DraggableBoard extends Component {
        *   "semId": [{moduleId: ...}, {moduleId: ...}],
        * }
        * */
+      draggableList: this.props.modules,
     };
 
     this.getList = this.getList.bind(this);
@@ -109,7 +109,7 @@ class DraggableBoard extends Component {
         {
           map(semesterList, sem => {
             return (
-              <DraggableModulelist sem={sem} moduleList={draggableList[sem.semesterId]} />
+              <DraggableModulelist showModal={this.props.showModal} sem={sem} moduleList={draggableList[sem.semesterId]} />
             )
           })
         }
@@ -123,6 +123,7 @@ DraggableBoard.propTypes = {
   semesters: PropTypes.array.isRequired,
   // tags: PropTypes.array.isRequired,
   modules: PropTypes.object.isRequired,
+  showModal: PropTypes.func.isRequired, // show Update semester modal
 };
 
 export default DraggableBoard;

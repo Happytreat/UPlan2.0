@@ -46,12 +46,13 @@ const DroppableCol = styled.div`
   @media only screen and (min-width: 768px) {
     height: 60vh;
   }
+  height: 40vh;
 `;
 
-const DraggableModuleList = ({ sem, moduleList }) => {
+const DraggableModuleList = ({ sem, moduleList, showModal }) => {
   return (
     <div key={sem.semesterId}>
-      <StyledGrid item key={sem.semesterId}>
+      <StyledGrid item key={sem.semesterId} onClick={() => showModal(sem.semesterId)}>
         <SemesterName><b>{sem.name}</b></SemesterName>
         <Description>{sem.description.trim().split("\n")[0]}</Description>
       </StyledGrid>

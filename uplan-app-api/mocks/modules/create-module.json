@@ -1,8 +1,8 @@
 {
-  "body": "{\"code\":\"CS1231\",\"description\":\"To be deleted\",\"semesterId\":\"2906de50-b7f4-11e9-b253-377b3bc388c9\", \"credits\":4}",
+  "body": "{\"code\":\"CS2040\",\"description\":\"Worst mod!!!!!!!\",\"semesterId\":\"b93637e1-b9cf-471b-a617-46ed97f254ed\", \"credits\":4}",
   "requestContext": {
     "identity": {
-      "cognitoIdentityId": "USER-SUB-1234"
+      "cognitoIdentityId": "e0d6f19b-ab7d-4bee-99af-64bcbb96781a"
     }
   }
 }

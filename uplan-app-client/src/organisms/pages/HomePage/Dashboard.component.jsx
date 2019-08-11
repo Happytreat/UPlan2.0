@@ -114,7 +114,7 @@ export default class LoggedIn extends Component {
           : (
             <Grid container>
               {this.renderSemestersList(semesters)}
-              <DraggableBoard />
+              <DraggableBoard showModal={(semId) => this.setState({ editSemModalShow: true, semId })}/>
             </Grid>
             )
         }
