@@ -14,15 +14,11 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateSemesters: async () => {
+    updateDashboard: async () => {
       dispatch(userActions.request());
       try {
-        const { semesters, moduleList: modules, tags } = await API.get("api", "/user");
-        dispatch(userActions.update({
-          semesters,
-          modules,
-          tags,
-        }))
+        const userInfo = await API.get("api", "/user");
+        dispatch(userActions.update( userInfo ));
       } catch (e) {
         alert(e);
         dispatch(userActions.error(e.message));

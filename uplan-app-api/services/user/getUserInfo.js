@@ -12,7 +12,8 @@ export async function main(event, context) {
   };
   try {
     const { Items: semesters } = await dynamoDbLib.call("query", params);
-    const moduleList = await Promise.all(semesters.map(async (s) => {
+    // will be an array of pair (semId: modules of the sem)
+    const modules = await Promise.all(semesters.map(async (s) => {
       params = {
         TableName: ModulesTable,
         KeyConditionExpression: "semesterId = :semesterId",
@@ -21,8 +22,8 @@ export async function main(event, context) {
         }
       };
 
-      const { Items: modules } = await dynamoDbLib.call("query", params);
-      return modules;
+      const { Items: moduleList } = await dynamoDbLib.call("query", params);
+      return { [s.semesterId]: moduleList };
     }));
 
     params = {
@@ -37,7 +38,7 @@ export async function main(event, context) {
 
     return success({
       semesters,
-      moduleList,
+      modules,
       tags,
     });
   } catch (e) {

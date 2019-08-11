@@ -46,12 +46,12 @@ export default class LoggedIn extends Component {
   }
 
   async componentDidMount() {
-    const { isAuth, updateSemesters } = this.props;
+    const { isAuth, updateDashboard } = this.props;
     if (!isAuth) {
       return; // show throw error?
     }
 
-    await updateSemesters();
+    await updateDashboard();
   }
 
   renderSemestersList(semesters) {
@@ -118,6 +118,6 @@ export default class LoggedIn extends Component {
 
 LoggedIn.propTypes = {
   isAuth: PropTypes.bool.isRequired,
-  updateSemesters: PropTypes.func.isRequired,
+  updateDashboard: PropTypes.func.isRequired,
   semesters: PropTypes.array.isRequired,
 };
