@@ -67,6 +67,8 @@ export const selectors = {
   error: state => state.user.error,
   fetching: state => state.user.fetching,
   semesters: state => state.user.semesters,
+  tags: state => state.user.tags,
+  modules: state => state.user.modules,
 };
 
 export default reducer;

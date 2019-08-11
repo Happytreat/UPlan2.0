@@ -10,6 +10,7 @@ import MainModal from '../../../molecules/Modal/Modal';
 import LoadingPage from '../../../molecules/LoadingPage/LoadingPage';
 import NewSemester from '../../NewSemester/NewSemester.container';
 import EditSemester from '../../UpdateSemester/UpdateSemester.container';
+import DraggableBoard from '../../DraggableBoard/DraggableBoard.container';
 
 const PageWrapper = styled.div`
   padding: 1.5rem;
@@ -18,6 +19,8 @@ const PageWrapper = styled.div`
   overflow: hidden;
   line-height: 1.5;
   text-overflow: ellipsis;
+  // display: flex;
+  // justify-content: space-between;
 `;
 
 const Description = styled.p`
@@ -51,14 +54,15 @@ export default class LoggedIn extends Component {
       return; // show throw error?
     }
 
-    await updateDashboard();
+    // don't need? since the props automatically update when changed
+    await updateDashboard(); // Move this update to draggable board?
   }
 
   renderSemestersList(semesters) {
     const orderedSemesters = orderBy(semesters, ['order'], 'asc');
     const result = [];
     result.push(
-      <div key='unique-id123'>
+      <Grid item xs={12} key="unique-id-123">
         <Button onClick={() => this.setState({ newSemModalShow: true })}>
           <b>{"\uFF0B "}</b>
           Add a new semester
@@ -76,16 +80,18 @@ export default class LoggedIn extends Component {
           show={this.state.editSemModalShow}
           onHide={() => this.setState({ editSemModalShow: false })}
         />
-      </div>
+      </Grid>
     );
-    return result.concat(orderedSemesters.map(
-      (semester) =>
-        <StyledGrid item xs={12} key={semester.semesterId} onClick={() => this.setState({ editSemModalShow: true, semId: semester.semesterId })}>
-          <h6><b>{semester.name}</b></h6>
-          <Description>{semester.description.trim().split("\n")[0]}</Description>
-        </StyledGrid>
-      )
-    );
+
+    return result;
+    // return result.concat(orderedSemesters.map(
+    //   (semester) =>
+    //     <StyledGrid item xs={12} key={semester.semesterId} onClick={() => this.setState({ editSemModalShow: true, semId: semester.semesterId })}>
+    //       <h6><b>{semester.name}</b></h6>
+    //       <Description>{semester.description.trim().split("\n")[0]}</Description>
+    //     </StyledGrid>
+    //   )
+    // );
   }
 
 
@@ -108,6 +114,7 @@ export default class LoggedIn extends Component {
           : (
             <Grid container>
               {this.renderSemestersList(semesters)}
+              <DraggableBoard />
             </Grid>
             )
         }
@@ -121,3 +128,5 @@ LoggedIn.propTypes = {
   updateDashboard: PropTypes.func.isRequired,
   semesters: PropTypes.array.isRequired,
 };
+
+// <DraggableBoard />
