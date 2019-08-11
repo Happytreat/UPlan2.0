@@ -15,11 +15,15 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    setLoading: () => dispatch(userActions.request()),
-    setError: (err) => dispatch(userActions.error(err)),
     updateSemesters: async () => {
-      const semesters = await API.get("semesters", "/semesters");
-      dispatch(userActions.update({ semesters }))
+      dispatch(userActions.request());
+      try {
+        const semesters = await API.get("semesters", "/semesters");
+        dispatch(userActions.update({ semesters }))
+      } catch (e) {
+        alert(e);
+        dispatch(userActions.error(e.message));
+      }
     },
   };
 }

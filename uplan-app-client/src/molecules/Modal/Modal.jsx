@@ -31,7 +31,6 @@ const MainModal = ({ title, C, cProps, ...props }) => {
 
 MainModal.propTypes = {
   title: PropTypes.string.isRequired,
-  C: PropTypes.node.isRequired,
 };
 
 export default MainModal;

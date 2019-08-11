@@ -1,7 +1,12 @@
 {
   "presets": ["@babel/preset-react", "@babel/preset-env"],
   "plugins": [
-    "emotion",
+    [
+      "babel-plugin-styled-components",
+      {
+        "displayName": false
+      }
+    ],
     "@babel/plug in-syntax-dynamic-import",
     "@babel/plugin-proposal-object-rest-spread",
     "@babel/plugin-transform-regenerator",
