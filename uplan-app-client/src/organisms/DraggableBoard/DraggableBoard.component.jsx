@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import PropTypes from "prop-types";
 import { orderBy, map } from "lodash";
+import styled  from 'styled-components';
 import DraggableModulelist from '../../molecules/DraggableModuleList/DraggableModuleList';
 
 // a little function to help us with reordering the result
@@ -29,6 +30,14 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 
   return result;
 };
+
+const ScrollContainer = styled.div`
+  display: flex;
+  overflow: scroll;
+  @media only screen and (min-width: 768px) {
+    height: 70vh;
+  }
+`;
 
 class DraggableBoard extends Component {
   constructor(props) {
@@ -88,7 +97,7 @@ class DraggableBoard extends Component {
   };
 
   render() {
-    // Fix: draggableList should be updated when semesters and modules change
+    // TODO: Fix draggableList should be updated when semesters and modules change
     const { draggableList } = this.state;
     const semesterList = orderBy(this.props.semesters, ['order'], 'asc');
 
@@ -96,11 +105,15 @@ class DraggableBoard extends Component {
 
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
+        <ScrollContainer>
         {
           map(semesterList, sem => {
-            return <DraggableModulelist sem={sem} moduleList={draggableList[sem.semesterId]} />
+            return (
+              <DraggableModulelist sem={sem} moduleList={draggableList[sem.semesterId]} />
+            )
           })
         }
+        </ScrollContainer>
       </DragDropContext>
     );
   }
@@ -109,7 +122,7 @@ class DraggableBoard extends Component {
 DraggableBoard.propTypes = {
   semesters: PropTypes.array.isRequired,
   // tags: PropTypes.array.isRequired,
-  modules: PropTypes.array.isRequired,
+  modules: PropTypes.object.isRequired,
 };
 
 export default DraggableBoard;

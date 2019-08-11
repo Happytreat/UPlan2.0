@@ -7,9 +7,10 @@ import { Grid } from "@material-ui/core";
 const grid = 8;
 
 const getListStyle = isDraggingOver => ({
-  background: isDraggingOver ? 'pink' : 'pink',
+  background: isDraggingOver ? 'lightgrey' : 'white',
   padding: grid*2,
   borderStyle: 'ridge',
+  borderWidth: 'thin',
   width: 300,
 });
 
@@ -41,6 +42,12 @@ const StyledGrid = styled(Grid)`
   }
 `;
 
+const DroppableCol = styled.div`
+  @media only screen and (min-width: 768px) {
+    height: 60vh;
+  }
+`;
+
 const DraggableModuleList = ({ sem, moduleList }) => {
   return (
     <div key={sem.semesterId}>
@@ -50,14 +57,14 @@ const DraggableModuleList = ({ sem, moduleList }) => {
       </StyledGrid>
       <Droppable droppableId={sem.semesterId}>
         {(provided, snapshot) => (
-          <div
+          <DroppableCol
             ref={provided.innerRef}
             style={getListStyle(snapshot.isDraggingOver)}>
             {moduleList.map((mod, index) => (
               <DraggableModule mod={mod} index={index} />
             ))}
             {provided.placeholder}
-          </div>
+          </DroppableCol>
         )}
       </Droppable>
     </div>
