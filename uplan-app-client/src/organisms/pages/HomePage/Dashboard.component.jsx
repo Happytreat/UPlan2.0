@@ -7,7 +7,6 @@ import {
 import styled from 'styled-components'
 
 import MainModal from '../../../molecules/Modal/Modal';
-import LoadingPage from '../../../molecules/LoadingPage/LoadingPage';
 import NewSemester from '../../NewSemester/NewSemester.container';
 import EditSemester from '../../UpdateSemester/UpdateSemester.container';
 import DraggableBoard from '../../DraggableBoard/DraggableBoard.container';
@@ -44,8 +43,6 @@ export default class LoggedIn extends Component {
       editSemModalShow: false,
       semId: null,
     };
-
-    this.renderSemestersList = this.renderSemestersList.bind(this);
   }
 
   async componentDidMount() {
@@ -58,66 +55,34 @@ export default class LoggedIn extends Component {
     await updateDashboard(); // Move this update to draggable board?
   }
 
-  renderSemestersList(semesters) {
-    const orderedSemesters = orderBy(semesters, ['order'], 'asc');
-    const result = [];
-    result.push(
-      <Grid item xs={12} key="unique-id-123">
-        <Button onClick={() => this.setState({ newSemModalShow: true })}>
-          <b>{"\uFF0B "}</b>
-          Add a new semester
-        </Button>
-        <MainModal
-          title="Add a Semester"
-          C={NewSemester}
-          show={this.state.newSemModalShow}
-          onHide={() => this.setState({ newSemModalShow: false })}
-        />
-        <MainModal
-          title="Update a Semester"
-          C={EditSemester}
-          cProps={{id: this.state.semId}}
-          show={this.state.editSemModalShow}
-          onHide={() => this.setState({ editSemModalShow: false })}
-        />
-      </Grid>
-    );
-
-    return result;
-    // return result.concat(orderedSemesters.map(
-    //   (semester) =>
-    //     <StyledGrid item xs={12} key={semester.semesterId} onClick={() => this.setState({ editSemModalShow: true, semId: semester.semesterId })}>
-    //       <h6><b>{semester.name}</b></h6>
-    //       <Description>{semester.description.trim().split("\n")[0]}</Description>
-    //     </StyledGrid>
-    //   )
-    // );
-  }
-
-
   // TODO: Find delay before showing spinner
   render() {
-    const {
-      props: {
-        fetching,
-        semesters,
-      },
-    } = this;
-
     return (
       <PageWrapper>
         <h3>Your Semesters</h3>
         <br />
-        {
-          fetching
-          ? <><LoadingPage /></>
-          : (
-            <Grid container>
-              {this.renderSemestersList(semesters)}
-              <DraggableBoard showModal={(semId) => this.setState({ editSemModalShow: true, semId })}/>
-            </Grid>
-            )
-        }
+        <Grid container>
+          <Grid item xs={12} key="unique-id-123">
+            <Button onClick={() => this.setState({ newSemModalShow: true })}>
+              <b>{"\uFF0B "}</b>
+              Add a new semester
+            </Button>
+            <MainModal
+              title="Add a Semester"
+              C={NewSemester}
+              show={this.state.newSemModalShow}
+              onHide={() => this.setState({ newSemModalShow: false })}
+            />
+            <MainModal
+              title="Update a Semester"
+              C={EditSemester}
+              cProps={{id: this.state.semId}}
+              show={this.state.editSemModalShow}
+              onHide={() => this.setState({ editSemModalShow: false })}
+            />
+          </Grid>
+          <DraggableBoard showModal={(semId) => this.setState({ editSemModalShow: true, semId })}/>
+        </Grid>
       </PageWrapper>
     );
   }

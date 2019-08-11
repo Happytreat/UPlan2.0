@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import PropTypes from "prop-types";
-import { orderBy, map } from "lodash";
+import { map } from "lodash";
 import styled  from 'styled-components';
 import DraggableModulelist from '../../molecules/DraggableModuleList/DraggableModuleList';
 
@@ -43,13 +43,7 @@ class DraggableBoard extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      /**
-       * Should look like:
-       * draggableList: {
-       *   "semId": [{moduleId: ...}, {moduleId: ...}],
-       *   "semId": [{moduleId: ...}, {moduleId: ...}],
-       * }
-       * */
+      // Create local state to create seamless no loading dnd
       draggableList: this.props.modules,
     };
 
@@ -79,6 +73,7 @@ class DraggableBoard extends Component {
       let draggableList = this.state.draggableList;
       draggableList[source.droppableId] = reordered;
       this.setState({ draggableList });
+      this.props.updateDraggableList(draggableList);
 
     } else {
       const reordered = move(
@@ -93,13 +88,14 @@ class DraggableBoard extends Component {
       draggableList[source.droppableId] = reordered[source.droppableId];
       draggableList[destination.droppableId] = reordered[destination.droppableId];
       this.setState({ draggableList }); // update store
+      this.props.updateDraggableList(draggableList);
     }
   };
 
   render() {
     // TODO: Fix draggableList should be updated when semesters and modules change
     const { draggableList } = this.state;
-    const semesterList = orderBy(this.props.semesters, ['order'], 'asc');
+    const { semesters } = this.props;
 
     console.log('draggableList', draggableList);
 
@@ -107,7 +103,7 @@ class DraggableBoard extends Component {
       <DragDropContext onDragEnd={this.onDragEnd}>
         <ScrollContainer>
         {
-          map(semesterList, sem => {
+          map(semesters, sem => {
             return (
               <DraggableModulelist showModal={this.props.showModal} sem={sem} moduleList={draggableList[sem.semesterId]} />
             )
@@ -124,6 +120,7 @@ DraggableBoard.propTypes = {
   // tags: PropTypes.array.isRequired,
   modules: PropTypes.object.isRequired,
   showModal: PropTypes.func.isRequired, // show Update semester modal
+  updateDraggableList: PropTypes.func.isRequired,
 };
 
 export default DraggableBoard;

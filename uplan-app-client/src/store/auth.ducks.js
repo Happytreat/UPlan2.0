@@ -55,7 +55,6 @@ const reducer = handleActions({
       ...state,
       fetching: false,
       error: false,
-      confirmPage: false,
       ...action.payload,
     }),
   [types.error]: (state, action) => (
@@ -68,7 +67,6 @@ const reducer = handleActions({
 
 export const selectors = {
   error: state => state.auth.error,
-  confirmPage: state => state.auth.confirmPage,
   fetching: state => state.auth.fetching,
   isAuth: state => state.auth.isAuth,
   nickname: state => state.auth.nickname,

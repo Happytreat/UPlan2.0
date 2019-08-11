@@ -12,7 +12,9 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    updateDraggableList: draggableList => dispatch(userActions.request(draggableList))
+  };
 }
 
 export default connect(
