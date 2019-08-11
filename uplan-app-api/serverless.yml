@@ -185,3 +185,11 @@ functions:
           method: delete
           cors: true
           authorizer: aws_iam
+  getUserInfo:
+    handler: services/user/getUserInfo.main
+    events:
+      - http:
+          path: user
+          method: get
+          cors: true
+          authorizer: aws_iam
