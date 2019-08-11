@@ -6,6 +6,7 @@ import { Form, FormGroup, FormControl } from "react-bootstrap";
 import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
 import config from "../../config";
 import { s3Upload } from "../../libs/awsLib";
+import LoadingPage from "../../molecules/LoadingPage/LoadingPage";
 
 const styles = {
   form: {
@@ -147,73 +148,82 @@ export default class UpdateSemester extends Component {
 
     return (
     <div className="Semesters">
-      {semester &&
-      <Form onSubmit={this.handleSubmit} style={styles.form}>
-        <FormGroup controlId="name">
-          <Form.Label>Semester Name</Form.Label>
-          <Form.Control
-            type="text"
-            onChange={this.handleChange}
-            value={name}
-          />
-        </FormGroup>
-        <Form.Label>Semester Description</Form.Label>
-        <p style={{ color: '#999' }}>Record your goals for this semester: e.g. Applying for NOC AI startup - requires Intro to AI module</p>
-        <FormGroup controlId="description">
-          <Form.Control
-            as="textarea"
-            rows="5"
-            onChange={this.handleChange}
-            value={description}
-          />
-        </FormGroup>
-        {semester.attachment &&
-        <FormGroup>
-          <Form.Label>Attachment:</Form.Label>
-          <Form.Row style={{paddingLeft: '0.5rem'}}>
-            <a
-              target="_blank"
-              rel="noopener noreferrer"
-              href={attachmentURL}
-            >
-              {this.formatFilename(semester.attachment)}
-            </a>
-          </Form.Row>
-        </FormGroup>}
-        <FormGroup controlId="file">
-          {!semester.attachment &&
-          <Form.Label>Attachment</Form.Label>}
-          <FormControl onChange={this.handleFileChange} type="file"
-          />
-        </FormGroup>
-        <FormGroup controlId="order">
-          <Form.Label>Semester Order</Form.Label>
-          <Form.Control
-            type="text"
-            onChange={this.handleChange}
-            value={order}
-          />
-        </FormGroup>
-        <ProgressButton
-          block
-          variant="primary"
-          size="large"
-          disabled={!this.validateForm()}
-          type="submit"
-          isLoading={fetching}
-          text="Save"
-          loadingText="Saving…"
-        />
-        <ProgressButton
-          block
-          variant="danger"
-          size="large"
-          isLoading={fetching}
-          onClick={this.handleDelete}
-          text="Delete"
-          loadingText="Deleting…"
-        />
-      </Form>}
+      {
+        !semester ?
+          (
+            <div style={{ minHeight: '50vh' }}>
+              <LoadingPage />
+            </div>
+          )
+          : (
+          <Form onSubmit={this.handleSubmit} style={styles.form}>
+            <FormGroup controlId="name">
+              <Form.Label>Semester Name</Form.Label>
+              <Form.Control
+                type="text"
+                onChange={this.handleChange}
+                value={name}
+              />
+            </FormGroup>
+            <Form.Label>Semester Description</Form.Label>
+            <p style={{ color: '#999' }}>Record your goals for this semester: e.g. Applying for NOC AI startup - requires Intro to AI module</p>
+            <FormGroup controlId="description">
+              <Form.Control
+                as="textarea"
+                rows="5"
+                onChange={this.handleChange}
+                value={description}
+              />
+            </FormGroup>
+            {semester.attachment &&
+            <FormGroup>
+              <Form.Label>Attachment:</Form.Label>
+              <Form.Row style={{paddingLeft: '0.5rem'}}>
+                <a
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  href={attachmentURL}
+                >
+                  {this.formatFilename(semester.attachment)}
+                </a>
+              </Form.Row>
+            </FormGroup>}
+            <FormGroup controlId="file">
+              {!semester.attachment &&
+              <Form.Label>Attachment</Form.Label>}
+              <FormControl onChange={this.handleFileChange} type="file"
+              />
+            </FormGroup>
+            <FormGroup controlId="order">
+              <Form.Label>Semester Order</Form.Label>
+              <Form.Control
+                type="text"
+                onChange={this.handleChange}
+                value={order}
+              />
+            </FormGroup>
+            <ProgressButton
+              block
+              variant="primary"
+              size="large"
+              disabled={!this.validateForm()}
+              type="submit"
+              isLoading={fetching}
+              text="Save"
+              loadingText="Saving…"
+            />
+            <ProgressButton
+              block
+              variant="danger"
+              size="large"
+              isLoading={fetching}
+              onClick={this.handleDelete}
+              text="Delete"
+              loadingText="Deleting…"
+            />
+          </Form>
+        )
+      }
     </div>
     );
   }
