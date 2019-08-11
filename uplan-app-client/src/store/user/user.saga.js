@@ -17,5 +17,5 @@ export function* workerUpdateDrag(action) {
 
 // Watcher Saga
 export function* watchUpdateDrag() {
-  yield takeLatest(types.request, workerUpdateDrag)
+  yield takeLatest(types.dragRequest, workerUpdateDrag)
 }

@@ -44,9 +44,8 @@ const reducer = handleActions({
       error: false,
       email: action.payload,
     }),
-  [types.clear]: (state) => (
+  [types.clear]: () => (
     {
-      ...state,
       fetching: false,
       ...initialState,
     }),

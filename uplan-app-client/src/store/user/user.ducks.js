@@ -6,6 +6,7 @@ export const types = {
   request: 'user/REQUEST',
   clear: 'user/CLEAR',
   update: 'user/UPDATE',
+  dragRequest: 'user/DRAGREQUEST',
   dragUpdate: 'user/DRAGUPDATE', // update from draggable components
   success: 'user/SUCCESS',
   error: 'user/ERROR',
@@ -13,6 +14,7 @@ export const types = {
 
 export const actions = {
   request: createAction(types.request),
+  dragRequest: createAction(types.dragRequest),
   clear: createAction(types.clear),
   success: createAction(types.success),
   dragUpdate: createAction(types.dragUpdate),
@@ -40,9 +42,8 @@ const reducer = handleActions({
       fetching: true,
       error: false,
     }),
-  [types.clear]: (state) => (
+  [types.clear]: () => (
     {
-      ...state,
       fetching: false,
       ...initialState,
     }),

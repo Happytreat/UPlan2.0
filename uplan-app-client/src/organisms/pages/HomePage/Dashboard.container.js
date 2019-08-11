@@ -8,6 +8,7 @@ function mapStateToProps(state) {
   return {
     isAuth: auth.isAuth(state),
     semesters: user.semesters(state),
+    modules: user.modules(state),
     fetching: user.fetching(state),
   };
 }
