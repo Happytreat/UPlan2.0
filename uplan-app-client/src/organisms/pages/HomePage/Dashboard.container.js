@@ -9,7 +9,6 @@ function mapStateToProps(state) {
     isAuth: auth.isAuth(state),
     semesters: user.semesters(state),
     fetching: user.fetching(state),
-    error: user.error(state),
   };
 }
 
@@ -18,8 +17,12 @@ function mapDispatchToProps(dispatch) {
     updateSemesters: async () => {
       dispatch(userActions.request());
       try {
-        const semesters = await API.get("semesters", "/semesters");
-        dispatch(userActions.update({ semesters }))
+        const { semesters, moduleList: modules, tags } = await API.get("api", "/user");
+        dispatch(userActions.update({
+          semesters,
+          modules,
+          tags,
+        }))
       } catch (e) {
         alert(e);
         dispatch(userActions.error(e.message));

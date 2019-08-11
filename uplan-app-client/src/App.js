@@ -1,6 +1,5 @@
 import { hot } from 'react-hot-loader';
 import React, { Component } from "react";
-import { Auth } from "aws-amplify";
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { PersistGate } from 'redux-persist/integration/react';

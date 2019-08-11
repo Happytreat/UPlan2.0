@@ -26,6 +26,8 @@ const initialState = {
   fetching: false,
   error: false,
   semesters: [],
+  modules: [],
+  tags: [],
 };
 
 const reducer = handleActions({

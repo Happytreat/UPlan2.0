@@ -3,7 +3,7 @@
 //
 // import { actions, types } from './user.ducks';
 //
-// const apiUserInfo = () => new Promise(() => API.get("semesters", "/semesters"));
+// const apiUserInfo = () => new Promise(() => API.get("api", "/semesters"));
 // // Worker Saga: Performs the async increment task
 // function* workerUser() {
 //   try {

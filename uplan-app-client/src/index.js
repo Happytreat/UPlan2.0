@@ -24,7 +24,7 @@ Amplify.configure({
     // can add multiple endpoints
     endpoints: [
       {
-        name: "semesters",
+        name: "api",
         endpoint: config.apiGateway.URL,
         region: config.apiGateway.REGION
       },

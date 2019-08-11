@@ -94,7 +94,6 @@ export default class LoggedIn extends Component {
     const {
       props: {
         fetching,
-        error, // TODO: Create page for error
         semesters,
       },
     } = this;
@@ -119,8 +118,6 @@ export default class LoggedIn extends Component {
 
 LoggedIn.propTypes = {
   isAuth: PropTypes.bool.isRequired,
-  setLoading: PropTypes.func.isRequired,
-  setError: PropTypes.func.isRequired,
   updateSemesters: PropTypes.func.isRequired,
   semesters: PropTypes.array.isRequired,
 };
