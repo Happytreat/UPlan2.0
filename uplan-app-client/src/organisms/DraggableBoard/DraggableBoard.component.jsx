@@ -4,32 +4,8 @@ import PropTypes from "prop-types";
 import { map } from "lodash";
 import styled  from 'styled-components';
 import DraggableModulelist from '../../molecules/DraggableModuleList/DraggableModuleList';
+import { reorder, move } from "./DraggableUtils";
 
-// a little function to help us with reordering the result
-const reorder = (list, startIndex, endIndex) => {
-  const result = Array.from(list);
-  const [removed] = result.splice(startIndex, 1);
-  result.splice(endIndex, 0, removed);
-
-  return result;
-};
-
-/**
- * Moves an item from one list to another list.
- */
-const move = (source, destination, droppableSource, droppableDestination) => {
-  const sourceClone = Array.from(source);
-  const destClone = Array.from(destination);
-  const [removed] = sourceClone.splice(droppableSource.index, 1);
-
-  destClone.splice(droppableDestination.index, 0, removed);
-
-  const result = {};
-  result[droppableSource.droppableId] = sourceClone;
-  result[droppableDestination.droppableId] = destClone;
-
-  return result;
-};
 
 const ScrollContainer = styled.div`
   display: flex;
@@ -49,13 +25,28 @@ class DraggableBoard extends Component {
 
     this.getList = this.getList.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
+    this.updateDraggableStateAndProps = this.updateDraggableStateAndProps.bind(this);
   }
 
   // Get module list for a particular semester
   getList = semId => this.state.draggableList[semId];
 
+  // Update local state draggableList and propagate changes to store modules
+  updateDraggableStateAndProps = ({ sourceId, destinationId, reordered }) => {
+    let draggableList = this.state.draggableList;
+    if (sourceId === destinationId) {
+      draggableList[sourceId] = reordered;
+    } else {
+      draggableList[sourceId] = reordered[sourceId];
+      draggableList[destinationId] = reordered[destinationId];
+    }
+    this.setState({ draggableList });
+    this.props.updateDraggableList(draggableList);
+  };
+
   onDragEnd = result => {
     const { source, destination } = result;
+    const { getList, updateDraggableStateAndProps } = this;
 
     // dropped outside the list
     if (!destination) {
@@ -64,38 +55,28 @@ class DraggableBoard extends Component {
 
     if (source.droppableId === destination.droppableId) {
       const reordered = reorder(
-        this.getList(source.droppableId),
+        getList(source.droppableId),
         source.index,
         destination.index
       );
 
-      // Update order of sem's moduleList
-      let draggableList = this.state.draggableList;
-      draggableList[source.droppableId] = reordered;
-      this.setState({ draggableList });
-      this.props.updateDraggableList(draggableList);
-
+      updateDraggableStateAndProps({ sourceId: source.droppableId, destinationId: destination.droppableId, reordered });
     } else {
       const reordered = move(
-        this.getList(source.droppableId),
-        this.getList(destination.droppableId),
+        getList(source.droppableId),
+        getList(destination.droppableId),
         source,
         destination
       );
 
-      // Update order of both sems' moduleList
-      let draggableList = this.state.draggableList;
-      draggableList[source.droppableId] = reordered[source.droppableId];
-      draggableList[destination.droppableId] = reordered[destination.droppableId];
-      this.setState({ draggableList }); // update store
-      this.props.updateDraggableList(draggableList);
+      updateDraggableStateAndProps({ sourceId: source.droppableId, destinationId: destination.droppableId, reordered });
     }
   };
 
   render() {
-    // TODO: Fix draggableList should be updated when semesters and modules change
+    // When sem are added, modules not changed
     const { draggableList } = this.state;
-    const { semesters } = this.props;
+    const { semesters, updateDraggableList } = this.props;
 
     console.log('draggableList', draggableList);
 
@@ -104,9 +85,14 @@ class DraggableBoard extends Component {
         <ScrollContainer>
         {
           map(semesters, sem => {
-            return (
-              <DraggableModulelist showModal={this.props.showModal} sem={sem} moduleList={draggableList[sem.semesterId]} />
-            )
+            const moduleList = draggableList[sem.semesterId] !== undefined ? draggableList[sem.semesterId] : [];
+            if (draggableList[sem.semesterId] === undefined) {
+              const updated = draggableList;
+              updated[sem.semesterId] = [];
+              this.setState({ draggableList: updated });
+              updateDraggableList(updated);
+            }
+            return <DraggableModulelist showModal={this.props.showModal} sem={sem} moduleList={moduleList} />
           })
         }
         </ScrollContainer>

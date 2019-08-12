@@ -14,9 +14,9 @@ export const types = {
 
 export const actions = {
   request: createAction(types.request),
-  dragRequest: createAction(types.dragRequest),
   clear: createAction(types.clear),
-  success: createAction(types.success),
+  success: createAction(types.success), // For saga
+  dragRequest: createAction(types.dragRequest),
   dragUpdate: createAction(types.dragUpdate),
   update: createAction(
     types.update,
@@ -32,7 +32,6 @@ const initialState = {
   semesters: [],
   modules: [],
   tags: [],
-  draggableList: [],
 };
 
 const reducer = handleActions({
@@ -63,7 +62,7 @@ const reducer = handleActions({
     {
       ...state,
       fetching: false,
-      draggableList: action.payload,
+      modules: action.payload, // update modules directly as draggableList
     }),
   [types.error]: (state) => (
     {
