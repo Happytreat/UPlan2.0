@@ -1,6 +1,10 @@
 {
   "body": {
-    "semesterId": "6beafbd5-9e76-4be0-bf88-52874bc02e3d"
+    "semesters": [
+      "6beafbd5-9e76-4be0-bf88-52874bc02e3d",
+      "2906de50-b7f4-11e9-b253-377b3bc388c9",
+      "30915a7c-96a2-452e-833e-02320a16e0d2"
+    ]
   },
   "requestContext": {
     "identity": {
