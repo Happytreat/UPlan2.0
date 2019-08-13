@@ -23,12 +23,12 @@ Resources:
     Properties:
       TableName: ${self:custom.modTableName}
       AttributeDefinitions:
-        - AttributeName: semesterId
+        - AttributeName: userId
           AttributeType: S
         - AttributeName: moduleId
           AttributeType: S
       KeySchema:
-        - AttributeName: semesterId
+        - AttributeName: userId
           KeyType: HASH
         - AttributeName: moduleId
           KeyType: RANGE

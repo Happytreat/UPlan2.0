@@ -23,8 +23,9 @@ export async function main(event, context) {
   const params = {
     TableName: ModulesTable,
     Item: {
-      semesterId: semesterId,
+      userId: event.requestContext.identity.cognitoIdentityId,
       moduleId: uuid.v4(),
+      semesterId,
       code,
       description,
       credits,
@@ -35,6 +36,6 @@ export async function main(event, context) {
     await dynamoDbLib.call("put", params);
     return success(params.Item);
   } catch (e) {
-    return failure({ status: false });
+    return failure({ status: false, err: e });
   }
 }
