@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import PropTypes from "prop-types";
-import { map } from "lodash";
+import { map, find } from "lodash";
 import styled  from 'styled-components';
 import DraggableModulelist from '../../molecules/DraggableModuleList/DraggableModuleList';
 import { reorder, move } from "./DraggableUtils";
@@ -12,6 +12,7 @@ const ScrollContainer = styled.div`
   overflow: scroll;
   @media only screen and (min-width: 768px) {
     height: 70vh;
+    min-width: 100%;
   }
 `;
 
@@ -32,11 +33,12 @@ class DraggableBoard extends Component {
   getList = semId => this.state.draggableList[semId];
 
   // Update local state draggableList and propagate changes to store modules
-  updateDraggableStateAndProps = ({ sourceId, destinationId, reordered }) => {
+  updateDraggableStateAndProps = ({ module, sourceId, destinationId, reordered }) => {
     let draggableList = this.state.draggableList;
     if (sourceId === destinationId) {
       draggableList[sourceId] = reordered;
     } else {
+      this.props.updateModulePosition(module);
       draggableList[sourceId] = reordered[sourceId];
       draggableList[destinationId] = reordered[destinationId];
     }
@@ -46,13 +48,21 @@ class DraggableBoard extends Component {
 
   onDragEnd = result => {
     const { source, destination } = result;
-    const { getList, updateDraggableStateAndProps } = this;
+    const { getList, updateDraggableStateAndProps, state: { draggableList } } = this;
 
     // dropped outside the list
     if (!destination) {
       return;
     }
 
+    // Update the semesterId of module
+    const module = {
+      // module which has been dragged
+      ...find(draggableList[source.droppableId], mod => mod.moduleId === result.draggableId),
+      semesterId: destination.droppableId,
+    };
+
+    // TODO: Not sure to disable this as won't be stored in db (unless implement order)
     if (source.droppableId === destination.droppableId) {
       const reordered = reorder(
         getList(source.droppableId),
@@ -60,7 +70,7 @@ class DraggableBoard extends Component {
         destination.index
       );
 
-      updateDraggableStateAndProps({ sourceId: source.droppableId, destinationId: destination.droppableId, reordered });
+      updateDraggableStateAndProps({ module, sourceId: source.droppableId, destinationId: destination.droppableId, reordered });
     } else {
       const reordered = move(
         getList(source.droppableId),
@@ -69,7 +79,7 @@ class DraggableBoard extends Component {
         destination
       );
 
-      updateDraggableStateAndProps({ sourceId: source.droppableId, destinationId: destination.droppableId, reordered });
+      updateDraggableStateAndProps({ module, sourceId: source.droppableId, destinationId: destination.droppableId, reordered });
     }
   };
 

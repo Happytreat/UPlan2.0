@@ -13,7 +13,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateDraggableList: draggableList => dispatch(userActions.dragRequest(draggableList))
+    updateDraggableList: draggableList => dispatch(userActions.dragRequest(draggableList)),
+    updateModulePosition: module => dispatch(userActions.updateModule(module)),
   };
 }
 

@@ -8,6 +8,7 @@ export const types = {
   update: 'user/UPDATE',
   dragRequest: 'user/DRAGREQUEST',
   dragUpdate: 'user/DRAGUPDATE', // update from draggable components
+  updateModule: 'user/UPDATEMODULE', // does not update fetching for seamless xp
   success: 'user/SUCCESS',
   error: 'user/ERROR',
 };
@@ -18,6 +19,7 @@ export const actions = {
   success: createAction(types.success), // For saga
   dragRequest: createAction(types.dragRequest),
   dragUpdate: createAction(types.dragUpdate),
+  updateModule: createAction(types.updateModule),
   update: createAction(
     types.update,
     identity,
