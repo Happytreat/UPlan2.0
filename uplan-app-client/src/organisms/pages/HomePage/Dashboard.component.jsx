@@ -51,7 +51,6 @@ export default class LoggedIn extends Component {
       return; // show throw error?
     }
 
-    // don't need? since the props automatically update when changed
     await updateDashboard(); // Move this update to draggable board?
   }
 

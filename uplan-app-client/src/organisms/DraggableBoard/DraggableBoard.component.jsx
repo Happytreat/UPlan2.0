@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import { map, find } from "lodash";
 import styled  from 'styled-components';
 import DraggableModulelist from '../../molecules/DraggableModuleList/DraggableModuleList';
-import { reorder, move } from "./DraggableUtils";
+import { reorder, move } from "../../utils/DraggableUtils";
 
 
 const ScrollContainer = styled.div`

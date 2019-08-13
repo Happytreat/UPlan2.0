@@ -3,19 +3,10 @@ import { Droppable } from "react-beautiful-dnd";
 import DraggableModule from '../DraggableModule/DraggableModule';
 import styled from "styled-components";
 import { Grid } from "@material-ui/core";
-
-const grid = 8;
-
-const getListStyle = isDraggingOver => ({
-  background: isDraggingOver ? 'lightgrey' : 'white',
-  padding: grid*2,
-  borderStyle: 'ridge',
-  borderWidth: 'thin',
-  width: 300,
-});
+import { getListStyle } from '../../utils/DraggableUtils';
 
 const SemesterName = styled.h6`
-  padding-top: 0.25rem;
+  padding-top: 1rem;
 `;
 
 const Description = styled.p`
@@ -30,7 +21,6 @@ const StyledGrid = styled(Grid)`
   word-wrap: break-word;
   text-align: center;
   max-width: 300px;
-  white-space: nowrap;
   height: 5rem;
   // For iphone5
   @media only screen and (max-width: 320px) {
@@ -49,12 +39,21 @@ const DroppableCol = styled.div`
   height: 40vh;
 `;
 
+const trimDescription = (description) => {
+  const text = description.substring(0, 40).trim().split("\n")[0];
+  return description.length > 40
+    ? `${text}...`
+    : text
+};
+
 const DraggableModuleList = ({ sem, moduleList, showModal }) => {
   return (
     <div key={sem.semesterId}>
       <StyledGrid item key={sem.semesterId} onClick={() => showModal(sem.semesterId)}>
         <SemesterName><b>{sem.name}</b></SemesterName>
-        <Description>{sem.description.trim().split("\n")[0]}</Description>
+        <Description>
+          {trimDescription(sem.description)}
+        </Description>
       </StyledGrid>
       <Droppable droppableId={sem.semesterId}>
         {(provided, snapshot) => (
