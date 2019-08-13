@@ -38,6 +38,7 @@ class DraggableBoard extends Component {
     if (sourceId === destinationId) {
       draggableList[sourceId] = reordered;
     } else {
+      // TODO: To refactor
       this.props.updateModulePosition(module);
       draggableList[sourceId] = reordered[sourceId];
       draggableList[destinationId] = reordered[destinationId];
@@ -117,6 +118,7 @@ DraggableBoard.propTypes = {
   modules: PropTypes.object.isRequired,
   showModal: PropTypes.func.isRequired, // show Update semester modal
   updateDraggableList: PropTypes.func.isRequired,
+  updateModulePosition: PropTypes.func.isRequired,
 };
 
 export default DraggableBoard;

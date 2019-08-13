@@ -6,10 +6,10 @@ import {
 import styled from 'styled-components'
 
 import LoadingPage from '../../../molecules/LoadingPage/LoadingPage';
-import MainModal from '../../../molecules/Modal/Modal';
-import NewSemester from '../../NewSemester/NewSemester.container';
-import EditSemester from '../../UpdateSemester/UpdateSemester.container';
+import { renderModal } from "./DashboardModal";
+import { ModalModes } from "../../../consts/modal";
 import DraggableBoard from '../../DraggableBoard/DraggableBoard.container';
+
 
 const PageWrapper = styled.div`
   padding: 1.5rem;
@@ -20,11 +20,6 @@ const PageWrapper = styled.div`
   text-overflow: ellipsis;
   // display: flex;
   // justify-content: space-between;
-`;
-
-const Description = styled.p`
-  color: #666;
-  padding-top: 0.25rem;
 `;
 
 const StyledGrid = styled(Grid)`
@@ -39,9 +34,9 @@ export default class LoggedIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      newSemModalShow: false,
-      editSemModalShow: false,
       semId: null,
+      mode: '',
+      showModal: false,
     };
   }
 
@@ -55,8 +50,10 @@ export default class LoggedIn extends Component {
   }
 
   // TODO: Find delay before showing spinner
+  // TODO: Fix loading when editing/adding semester ==> update the local state first
   render() {
     const { fetching } = this.props;
+    const { mode, showModal, semId } = this.state;
     return (
       <PageWrapper>
         <h3>Your Semesters</h3>
@@ -66,25 +63,15 @@ export default class LoggedIn extends Component {
           : (
               <Grid container>
                 <Grid item xs={12} key="unique-id-123">
-                  <Button onClick={() => this.setState({ newSemModalShow: true })}>
+                  <Button onClick={() => this.setState({ showModal: true, mode: ModalModes.NEW_SEMESTER })}>
                     <b>{"\uFF0B "}</b>
                     Add a new semester
                   </Button>
-                  <MainModal
-                    title="Add a Semester"
-                    C={NewSemester}
-                    show={this.state.newSemModalShow}
-                    onHide={() => this.setState({ newSemModalShow: false })}
-                  />
-                  <MainModal
-                    title="Update a Semester"
-                    C={EditSemester}
-                    cProps={{id: this.state.semId}}
-                    show={this.state.editSemModalShow}
-                    onHide={() => this.setState({ editSemModalShow: false })}
-                  />
+                  {
+                    renderModal({ mode, showModal, onHide: () => this.setState({ showModal: false, mode: '' }), semId })
+                  }
                 </Grid>
-                <DraggableBoard showModal={(semId) => this.setState({ editSemModalShow: true, semId })}/>
+                <DraggableBoard showModal={(semId) => this.setState({ showModal: true, semId, mode: ModalModes.UPDATE_SEMESTER })}/>
               </Grid>
             )
         }
@@ -99,5 +86,3 @@ LoggedIn.propTypes = {
   semesters: PropTypes.array.isRequired,
   fetching: PropTypes.bool.isRequired,
 };
-
-// <DraggableBoard />
