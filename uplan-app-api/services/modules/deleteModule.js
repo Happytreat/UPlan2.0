@@ -7,12 +7,12 @@ export async function main(event, context) {
   const params = {
     TableName: ModulesTable,
     Key: {
-      semesterId: data.semesterId,
+      userId: event.requestContext.identity.cognitoIdentityId,
       moduleId: data.moduleId
     }
   };
   try {
-   await dynamoDbLib.call("delete", params);
+    await dynamoDbLib.call("delete", params);
     return success({ status: true });
   } catch (e) {
     return failure({ err: e.message });

@@ -7,14 +7,15 @@ export async function main(event, context) {
   const params = {
     TableName: ModulesTable,
     Key: {
-      semesterId: data.semesterId,
+      userId: event.requestContext.identity.cognitoIdentityId,
       moduleId: data.moduleId
     },
-    UpdateExpression: "SET code = :code, credits =:credits, description =:description",
+    UpdateExpression: "SET code = :code, credits =:credits, description =:description, semesterId =:semesterId",
     ExpressionAttributeValues: {
       ":code": data.code || null,
       ":description": data.description || null,
       ":credits": data.credits || null,
+      ":semesterId": data.semesterId || null,
     },
     ReturnValues: "ALL_NEW"
   };
