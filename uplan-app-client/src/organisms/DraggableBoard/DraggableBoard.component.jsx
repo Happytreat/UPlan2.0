@@ -27,6 +27,7 @@ class DraggableBoard extends Component {
     this.getList = this.getList.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
     this.updateDraggableStateAndProps = this.updateDraggableStateAndProps.bind(this);
+    this.renderModuleLists = this.renderModuleLists.bind(this);
   }
 
   // Get module list for a particular semester
@@ -84,28 +85,29 @@ class DraggableBoard extends Component {
     }
   };
 
-  render() {
-    // When sem are added, modules not changed
+  renderModuleLists = () => {
     const { draggableList } = this.state;
-    const { semesters, updateDraggableList } = this.props;
+    const { semesters, updateDraggableList, showModal } = this.props;
+    return (
+      map(semesters, sem => {
+        const moduleList = draggableList[sem.semesterId] !== undefined ? draggableList[sem.semesterId] : [];
+        if (draggableList[sem.semesterId] === undefined) {
+          const updated = draggableList;
+          updated[sem.semesterId] = [];
+          this.setState({ draggableList: updated });
+          updateDraggableList(updated);
+        }
+        return <DraggableModulelist showModal={showModal} sem={sem} moduleList={moduleList} />
+      })
+    )
+  };
 
-    console.log('draggableList', draggableList);
-
+  render() {
+    console.log('draggableList', this.state.draggableList);
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
         <ScrollContainer>
-        {
-          map(semesters, sem => {
-            const moduleList = draggableList[sem.semesterId] !== undefined ? draggableList[sem.semesterId] : [];
-            if (draggableList[sem.semesterId] === undefined) {
-              const updated = draggableList;
-              updated[sem.semesterId] = [];
-              this.setState({ draggableList: updated });
-              updateDraggableList(updated);
-            }
-            return <DraggableModulelist showModal={this.props.showModal} sem={sem} moduleList={moduleList} />
-          })
-        }
+        { this.renderModuleLists() }
         </ScrollContainer>
       </DragDropContext>
     );

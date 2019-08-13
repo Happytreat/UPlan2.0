@@ -5,7 +5,7 @@ import {
 } from '@material-ui/core';
 import styled from 'styled-components'
 
-import LoadingPage from '../../../molecules/LoadingPage/LoadingPage';
+// import LoadingPage from '../../../molecules/LoadingPage/LoadingPage';
 import { renderModal } from "./DashboardModal";
 import { ModalModes } from "../../../consts/modal";
 import DraggableBoard from '../../DraggableBoard/DraggableBoard.container';
@@ -50,31 +50,24 @@ export default class LoggedIn extends Component {
   }
 
   // TODO: Find delay before showing spinner
-  // TODO: Fix loading when editing/adding semester ==> update the local state first
   render() {
-    const { fetching } = this.props;
     const { mode, showModal, semId } = this.state;
     return (
       <PageWrapper>
         <h3>Your Semesters</h3>
         <br />
-        {
-          fetching ? <LoadingPage />
-          : (
-              <Grid container>
-                <Grid item xs={12} key="unique-id-123">
-                  <Button onClick={() => this.setState({ showModal: true, mode: ModalModes.NEW_SEMESTER })}>
-                    <b>{"\uFF0B "}</b>
-                    Add a new semester
-                  </Button>
-                  {
-                    renderModal({ mode, showModal, onHide: () => this.setState({ showModal: false, mode: '' }), semId })
-                  }
-                </Grid>
-                <DraggableBoard showModal={(semId) => this.setState({ showModal: true, semId, mode: ModalModes.UPDATE_SEMESTER })}/>
-              </Grid>
-            )
-        }
+        <Grid container>
+          <Grid item xs={12} key="unique-id-123">
+            <Button onClick={() => this.setState({ showModal: true, mode: ModalModes.NEW_SEMESTER })}>
+              <b>{"\uFF0B "}</b>
+              Add a new semester
+            </Button>
+            {
+              renderModal({ mode, showModal, onHide: () => this.setState({ showModal: false, mode: '' }), semId })
+            }
+          </Grid>
+          <DraggableBoard showModal={(semId) => this.setState({ showModal: true, semId, mode: ModalModes.UPDATE_SEMESTER })}/>
+        </Grid>
       </PageWrapper>
     );
   }
@@ -84,5 +77,4 @@ LoggedIn.propTypes = {
   isAuth: PropTypes.bool.isRequired,
   updateDashboard: PropTypes.func.isRequired,
   semesters: PropTypes.array.isRequired,
-  fetching: PropTypes.bool.isRequired,
 };
