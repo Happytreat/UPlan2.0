@@ -1,6 +1,7 @@
 import * as dynamoDbLib from "../../libs/dynamodb-lib";
 import { success, failure } from "../../libs/response-lib";
 import { SemestersTable, ModulesTable, TagsTable } from "../../consts/tables";
+import {groupBy} from "lodash";
 
 export async function main(event, context) {
   let params = {
@@ -19,19 +20,16 @@ export async function main(event, context) {
      *   "semId": [{moduleId: ...}, {moduleId: ...}],
      * }
      * */
-    let modules = {};
-    await Promise.all(semesters.map(async (s) => {
-      params = {
-        TableName: ModulesTable,
-        KeyConditionExpression: "semesterId = :semesterId",
-        ExpressionAttributeValues: {
-          ":semesterId": s.semesterId,
-        }
-      };
+    params = {
+      TableName: ModulesTable,
+      KeyConditionExpression: "userId = :userId",
+      ExpressionAttributeValues: {
+        ":userId": event.requestContext.identity.cognitoIdentityId
+      }
+    };
 
-      const { Items: moduleList } = await dynamoDbLib.call("query", params);
-      modules[s.semesterId] = moduleList;
-    }));
+    const { Items: allModules } = await dynamoDbLib.call("query", params);
+    const modules = groupBy(allModules, mod => mod.semesterId);
 
     params = {
       TableName: TagsTable,

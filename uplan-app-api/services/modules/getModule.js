@@ -6,7 +6,7 @@ export async function main(event, context) {
   const params = {
     TableName: ModulesTable,
     Key: {
-      semesterId: event.body.semesterId,
+      userId: event.requestContext.identity.cognitoIdentityId,
       moduleId: event.body.moduleId
     },
   };

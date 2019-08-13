@@ -15,7 +15,7 @@ custom:
   stage: ${opt:stage, self:provider.stage}
   # Set the table name here so we can use it while testing locally
   semTableName: ${self:custom.stage}-semesters
-  modTableName: ${self:custom.stage}-modules
+  modTableName: ${self:custom.stage}-Modules
   tagTableName: ${self:custom.stage}-tags
 
 provider:
