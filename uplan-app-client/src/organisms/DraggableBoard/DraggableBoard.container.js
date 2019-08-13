@@ -8,6 +8,8 @@ function mapStateToProps(state) {
     semesters: user.semesters(state),
     modules: user.modules(state),
     fetching: user.fetching(state),
+    // TODO: Change this to module List
+    alt: user.alt(state), // since redux cannot differentiate tht modules deep equal has changed
   };
 }
 

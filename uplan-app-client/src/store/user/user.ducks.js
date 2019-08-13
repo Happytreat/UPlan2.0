@@ -11,6 +11,7 @@ export const types = {
   updateModule: 'user/UPDATEMODULE', // does not update fetching for seamless xp
   success: 'user/SUCCESS',
   error: 'user/ERROR',
+  alt: 'user/ALT',
 };
 
 export const actions = {
@@ -26,6 +27,7 @@ export const actions = {
     (payload, resolve = noop, reject = noop) => ({ resolve, reject }),
   ),
   error: createAction(types.error),
+  alt: createAction(types.alt),
 };
 
 const initialState = {
@@ -34,6 +36,7 @@ const initialState = {
   semesters: [],
   modules: [],
   tags: [],
+  alt: true,
 };
 
 const reducer = handleActions({
@@ -60,6 +63,12 @@ const reducer = handleActions({
       fetching: false,
       ...action.payload,
     }),
+  [types.alt]: (state) => (
+    {
+      ...state,
+      fetching: false,
+      alt: !state.alt,
+    }),
   [types.dragUpdate]: (state, action) => (
     {
       ...state,
@@ -83,6 +92,7 @@ export const selectors = {
   ),
   tags: state => state.user.tags,
   modules: state => state.user.modules,
+  alt: state => state.user.alt,
 };
 
 export default reducer;

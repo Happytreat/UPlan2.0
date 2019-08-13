@@ -19,6 +19,7 @@ const apiUpdateModule = (module) => API.put("api", "/update-modules", { body: mo
 
 export function* workerUpdateModule(action) {
   try {
+    yield put(actions.alt());
     yield call(apiUpdateModule, action.payload);
   } catch (error) {
     // Set a default error

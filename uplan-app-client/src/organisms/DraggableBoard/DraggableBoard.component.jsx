@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {PureComponent} from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import PropTypes from "prop-types";
 import { map, find } from "lodash";
@@ -16,13 +16,9 @@ const ScrollContainer = styled.div`
   }
 `;
 
-class DraggableBoard extends Component {
+class DraggableBoard extends PureComponent {
   constructor(props) {
     super(props);
-    this.state = {
-      // Create local state to create seamless no loading dnd
-      draggableList: this.props.modules,
-    };
 
     this.getList = this.getList.bind(this);
     this.onDragEnd = this.onDragEnd.bind(this);
@@ -31,26 +27,25 @@ class DraggableBoard extends Component {
   }
 
   // Get module list for a particular semester
-  getList = semId => this.state.draggableList[semId];
+  getList = semId => this.props.modules[semId];
 
   // Update local state draggableList and propagate changes to store modules
   updateDraggableStateAndProps = ({ module, sourceId, destinationId, reordered }) => {
-    let draggableList = this.state.draggableList;
+    let draggableList = this.props.modules;
     if (sourceId === destinationId) {
       draggableList[sourceId] = reordered;
     } else {
-      // TODO: To refactor
-      this.props.updateModulePosition(module);
       draggableList[sourceId] = reordered[sourceId];
       draggableList[destinationId] = reordered[destinationId];
     }
-    this.setState({ draggableList });
+    // TODO: To refactor
+    this.props.updateModulePosition(module);
     this.props.updateDraggableList(draggableList);
   };
 
   onDragEnd = result => {
     const { source, destination } = result;
-    const { getList, updateDraggableStateAndProps, state: { draggableList } } = this;
+    const { getList, updateDraggableStateAndProps, props: { modules: draggableList } } = this;
 
     // dropped outside the list
     if (!destination) {
@@ -86,15 +81,13 @@ class DraggableBoard extends Component {
   };
 
   renderModuleLists = () => {
-    const { draggableList } = this.state;
-    const { semesters, updateDraggableList, showModal } = this.props;
+    const { semesters, updateDraggableList, showModal, modules: draggableList } = this.props;
     return (
       map(semesters, sem => {
         const moduleList = draggableList[sem.semesterId] !== undefined ? draggableList[sem.semesterId] : [];
         if (draggableList[sem.semesterId] === undefined) {
           const updated = draggableList;
           updated[sem.semesterId] = [];
-          this.setState({ draggableList: updated });
           updateDraggableList(updated);
         }
         return <DraggableModulelist showModal={showModal} sem={sem} moduleList={moduleList} />
@@ -103,7 +96,6 @@ class DraggableBoard extends Component {
   };
 
   render() {
-    console.log('draggableList', this.state.draggableList);
     return (
       <DragDropContext onDragEnd={this.onDragEnd}>
         <ScrollContainer>
