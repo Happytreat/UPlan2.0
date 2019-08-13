@@ -10,6 +10,8 @@ import { reorder, move } from "../../utils/DraggableUtils";
 const ScrollContainer = styled.div`
   display: flex;
   overflow: scroll;
+  padding: 1rem 1rem 0 1rem;
+  background-color: lightgoldenrodyellow;
   @media only screen and (min-width: 768px) {
     height: 70vh;
     min-width: 100%;

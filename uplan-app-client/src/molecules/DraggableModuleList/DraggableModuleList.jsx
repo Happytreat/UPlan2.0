@@ -16,11 +16,12 @@ const Description = styled.p`
 
 const StyledGrid = styled(Grid)`
   cursor: pointer;
+  background-color: #faf8f5;
   border-style: ridge;
   border-width: thin;
   word-wrap: break-word;
   text-align: center;
-  max-width: 300px;
+  max-width: 250px;
   height: 5rem;
   // For iphone5
   @media only screen and (max-width: 320px) {
@@ -33,14 +34,15 @@ const StyledGrid = styled(Grid)`
 `;
 
 const DroppableCol = styled.div`
+  margin: 0 0.75rem 0.6rem 0;
   @media only screen and (min-width: 768px) {
-    height: 60vh;
+    height: 55vh;
   }
   height: 40vh;
 `;
 
 const trimDescription = (description) => {
-  const text = description.substring(0, 40).trim().split("\n")[0];
+  const text = description.substring(0, 30).trim().split("\n")[0];
   return description.length > 40
     ? `${text}...`
     : text

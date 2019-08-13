@@ -27,11 +27,11 @@ export const move = (source, destination, droppableSource, droppableDestination)
 const grid = 8;
 
 export const getListStyle = isDraggingOver => ({
-  background: isDraggingOver ? 'lightgrey' : 'white',
+  background: isDraggingOver ? 'lightgrey' : '#faf8f5',
   padding: grid*2,
   borderStyle: 'ridge',
   borderWidth: 'thin',
-  width: 300,
+  width: 250,
 });
 
 export const getItemStyle = (isDragging, draggableStyle) => ({
