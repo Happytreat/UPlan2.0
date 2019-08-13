@@ -10,8 +10,8 @@ import { reorder, move } from "../../utils/DraggableUtils";
 const ScrollContainer = styled.div`
   display: flex;
   overflow: scroll;
-  padding: 1rem 1rem 0 1rem;
-  background-color: lightgoldenrodyellow;
+  padding: 1rem 1rem 0 0;
+  background-color: white;
   @media only screen and (min-width: 768px) {
     height: 70vh;
     min-width: 100%;
@@ -92,7 +92,7 @@ class DraggableBoard extends PureComponent {
           updated[sem.semesterId] = [];
           updateDraggableList(updated);
         }
-        return <DraggableModulelist showModal={showModal} sem={sem} moduleList={moduleList} />
+        return <DraggableModulelist key={`${sem.semesterId}-moduleList`} showModal={showModal} sem={sem} moduleList={moduleList} />
       })
     )
   };

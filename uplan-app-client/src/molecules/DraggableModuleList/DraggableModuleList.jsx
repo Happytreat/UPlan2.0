@@ -2,8 +2,9 @@ import React from 'react';
 import { Droppable } from "react-beautiful-dnd";
 import DraggableModule from '../DraggableModule/DraggableModule';
 import styled from "styled-components";
-import { Grid } from "@material-ui/core";
+import { Button, Grid } from "@material-ui/core";
 import { getListStyle } from '../../utils/DraggableUtils';
+import { ModalModes } from "../../consts/modal";
 
 const SemesterName = styled.h6`
   padding-top: 1rem;
@@ -51,7 +52,7 @@ const trimDescription = (description) => {
 const DraggableModuleList = ({ sem, moduleList, showModal }) => {
   return (
     <div key={sem.semesterId}>
-      <StyledGrid item key={sem.semesterId} onClick={() => showModal(sem.semesterId)}>
+      <StyledGrid item onClick={() => showModal(ModalModes.UPDATE_SEMESTER)(sem.semesterId)}>
         <SemesterName><b>{sem.name}</b></SemesterName>
         <Description>
           {trimDescription(sem.description)}
@@ -63,9 +64,13 @@ const DraggableModuleList = ({ sem, moduleList, showModal }) => {
             ref={provided.innerRef}
             style={getListStyle(snapshot.isDraggingOver)}>
             {moduleList.map((mod, index) => (
-              <DraggableModule mod={mod} index={index} />
+              <DraggableModule key={`${sem.semesterId}${mod.moduleId}-draggableModule`} mod={mod} index={index} />
             ))}
             {provided.placeholder}
+            <Button style={{ color: '#999', textTransform: 'none', marginLeft: '1rem'}} onClick={() => showModal(ModalModes.NEW_MODULE)(sem.semesterId)}>
+              <b>{"\uFF0B "}</b>
+              Add a new module
+            </Button>
           </DroppableCol>
         )}
       </Droppable>

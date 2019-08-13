@@ -22,14 +22,6 @@ const PageWrapper = styled.div`
   // justify-content: space-between;
 `;
 
-const StyledGrid = styled(Grid)`
-  cursor: pointer;
-   border-style: ridge;
-   border-width: medium;
-   padding: 0.75rem 0 0 0.5rem;
-   word-wrap: break-word;
-`;
-
 export default class LoggedIn extends Component {
   constructor(props) {
     super(props);
@@ -66,7 +58,7 @@ export default class LoggedIn extends Component {
               renderModal({ mode, showModal, onHide: () => this.setState({ showModal: false, mode: '' }), semId })
             }
           </Grid>
-          <DraggableBoard showModal={(semId) => this.setState({ showModal: true, semId, mode: ModalModes.UPDATE_SEMESTER })}/>
+          <DraggableBoard showModal={(mode) => (semId) => this.setState({ showModal: true, semId, mode })}/>
         </Grid>
       </PageWrapper>
     );

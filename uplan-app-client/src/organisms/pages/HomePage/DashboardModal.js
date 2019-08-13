@@ -4,6 +4,7 @@ import MainModal from "../../../molecules/Modal/Modal";
 
 import NewSemester from "../../NewSemester/NewSemester.container";
 import EditSemester from "../../UpdateSemester/UpdateSemester.container";
+import NewModule from '../../../molecules/NewModule/NewModule.container';
 
 // renderModal({ mode, showModal, onHide: () => this.setState({ showModal: false, mode: '' }), semId })
 export const renderModal = ({ mode, onHide, showModal, ...cProps }) => {
@@ -23,6 +24,16 @@ export const renderModal = ({ mode, onHide, showModal, ...cProps }) => {
           title="Update a Semester"
           C={EditSemester}
           cProps={{ id: cProps.semId }}
+          show={showModal}
+          onHide={onHide}
+        />
+      );
+    case `${ModalModes.NEW_MODULE}`:
+      return (
+        <MainModal
+          title="Add a Module"
+          C={NewModule}
+          cProps={{ semesterId: cProps.semId }}
           show={showModal}
           onHide={onHide}
         />
