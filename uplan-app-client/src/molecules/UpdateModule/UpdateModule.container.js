@@ -11,7 +11,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getModule: async (moduleId) => {
       try {
-        const m = await API.get("api", "/get-modules", { body: moduleId });
+        const m = await API.post("api", "/get-module", { body: moduleId });
         console.log('m', m);
         return {
           code: m.code,

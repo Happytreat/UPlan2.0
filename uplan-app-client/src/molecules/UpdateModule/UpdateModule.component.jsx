@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import { API } from "aws-amplify";
 import * as yup from 'yup';
 import { Field, Form, Formik } from 'formik';
 import { TextField } from 'formik-material-ui';
@@ -24,14 +23,7 @@ class UpdateModuleForm extends Component {
 
   async componentDidMount() {
     const { getModule, cProps: { moduleId } } = this.props;
-    // this.initialValues = await getModule(moduleId);
-    const m = await API.get("api", "/get-modules", { body: moduleId });
-    console.log('m', m);
-    this.initialValues = {
-      code: m.code,
-      description: m.description,
-      credits: parseFloat(m.credits),
-    };
+    this.initialValues = await getModule(moduleId);
     console.log('initialValues', this.initialValues);
     console.log('moduleId', moduleId);
   }
