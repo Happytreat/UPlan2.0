@@ -6,6 +6,7 @@ import { TextField } from 'formik-material-ui';
 import { Typography } from '@material-ui/core';
 import ProgressButton from '../../molecules/ProgressButton/ProgressButton';
 
+
 const styles = {
   form: {
     padding: '0 1.5rem 1.5rem 1.5rem',
@@ -19,26 +20,34 @@ const EditModSchema = yup.object().shape({
 });
 
 class UpdateModuleForm extends Component {
-  initialValues = {};
+  constructor(props) {
+    super(props);
+    this.state = {
+      // Have to use state to re-render formik once initValues is fetched via API
+      initialValues: {}
+    };
+  }
 
-  async componentDidMount() {
+  async componentWillMount() {
     const { getModule, cProps: { moduleId } } = this.props;
-    this.initialValues = await getModule(moduleId);
-    console.log('initialValues', this.initialValues);
-    console.log('moduleId', moduleId);
+    this.setState({ initialValues: await getModule(moduleId)});
   }
 
   render() {
-    const { handleSubmit, onHide } = this.props;
+    const {
+      props: { handleSubmit, onHide, handleDelete },
+      state: { initialValues },
+    } = this;
     return (
       <Formik
-        initialValues={this.initialValues}
+        enableReinitialize={true}
+        initialValues={initialValues}
         validationSchema={EditModSchema}
         onSubmit={async (values, { setSubmitting }) => {
           return handleSubmit({ values, onHide, setSubmitting });
         }}
       >
-        {({ isSubmitting, isValid }) => (
+        {({ isSubmitting, isValid, values, setSubmitting }) => (
           <Form style={styles.form}>
             <br />
             <Typography variant="body2" style={{ fontWeight: 500 }}>
@@ -61,6 +70,7 @@ class UpdateModuleForm extends Component {
               name="credits"
               margin="dense"
               component={TextField}
+              value={values.credits}
               fullWidth
               variant="outlined"
             />
@@ -76,6 +86,7 @@ class UpdateModuleForm extends Component {
               name="description"
               margin="dense"
               component={TextField}
+              value={values.description}
               multiline
               rows="5"
               fullWidth
@@ -98,7 +109,7 @@ class UpdateModuleForm extends Component {
               variant="danger"
               size="large"
               // isLoading={fetching}
-              onClick={this.props.handleDelete}
+              onClick={() => handleDelete({ moduleId: this.props.cProps.moduleId, setSubmitting, onHide: this.props.onHide })}
               text="Delete"
               loadingText="Deleting Module…"
             />
@@ -111,6 +122,7 @@ class UpdateModuleForm extends Component {
 
 UpdateModuleForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  handleDelete: PropTypes.func.isRequired,
   cProps: PropTypes.object.isRequired,
   onHide: PropTypes.func.isRequired,
 };

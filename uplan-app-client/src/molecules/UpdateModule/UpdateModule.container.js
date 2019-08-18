@@ -11,8 +11,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getModule: async (moduleId) => {
       try {
-        const m = await API.post("api", "/get-module", { body: moduleId });
-        console.log('m', m);
+        const m = await API.get("api", `/get-module/${moduleId}`);
         return {
           code: m.code,
           description: m.description,
@@ -26,8 +25,9 @@ function mapDispatchToProps(dispatch) {
       try {
         const confirmed = window.confirm('Are you sure you want to delete this module?');
         if (!confirmed) { return; }
-        await API.del("api", "/delete-module", { body: moduleId });
-      } catch {
+        await API.del("api", `/delete-module/${moduleId}`);
+      } catch (err) {
+        console.log('delete Error', err);
         dispatch(userActions.error());
       } finally {
         setSubmitting(false);
@@ -40,7 +40,7 @@ function mapDispatchToProps(dispatch) {
           ...values,
           credits: parseFloat(values.credits),
         };
-        await API.post("api", "/update-modules", { body: module });
+        await API.put("api", "/update-modules", { body: module });
       } catch (err) {
         console.log('err', err);
         dispatch(userActions.error());
