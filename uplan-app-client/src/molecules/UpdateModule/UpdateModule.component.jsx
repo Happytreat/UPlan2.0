@@ -24,13 +24,19 @@ class UpdateModuleForm extends Component {
     super(props);
     this.state = {
       // Have to use state to re-render formik once initValues is fetched via API
-      initialValues: {}
+      initialValues: {},
+      module: null,
     };
   }
 
   async componentWillMount() {
     const { getModule, cProps: { moduleId } } = this.props;
-    this.setState({ initialValues: await getModule(moduleId)});
+    const module = await getModule(moduleId);
+    this.setState({ module, initialValues: {
+        code: module.code,
+        description: module.description,
+        credits: parseFloat(module.credits),
+      }});
   }
 
   render() {
@@ -44,7 +50,7 @@ class UpdateModuleForm extends Component {
         initialValues={initialValues}
         validationSchema={EditModSchema}
         onSubmit={async (values, { setSubmitting }) => {
-          return handleSubmit({ values, onHide, setSubmitting });
+          return handleSubmit({ initValues: this.state.module, values, onHide, setSubmitting });
         }}
       >
         {({ isSubmitting, isValid, values, setSubmitting }) => (
@@ -70,7 +76,6 @@ class UpdateModuleForm extends Component {
               name="credits"
               margin="dense"
               component={TextField}
-              value={values.credits}
               fullWidth
               variant="outlined"
             />
@@ -86,7 +91,6 @@ class UpdateModuleForm extends Component {
               name="description"
               margin="dense"
               component={TextField}
-              value={values.description}
               multiline
               rows="5"
               fullWidth

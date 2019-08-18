@@ -11,12 +11,7 @@ function mapDispatchToProps(dispatch) {
   return {
     getModule: async (moduleId) => {
       try {
-        const m = await API.get("api", `/get-module/${moduleId}`);
-        return {
-          code: m.code,
-          description: m.description,
-          credits: parseFloat(m.credits),
-        };
+        return await API.get("api", `/get-module/${moduleId}`);
       } catch {
         dispatch(userActions.error());
       }
@@ -26,6 +21,9 @@ function mapDispatchToProps(dispatch) {
         const confirmed = window.confirm('Are you sure you want to delete this module?');
         if (!confirmed) { return; }
         await API.del("api", `/delete-module/${moduleId}`);
+        const { modules } = await API.get("api", "/get-modules-list");
+        dispatch(userActions.update({ modules }));
+        dispatch(userActions.alt());
       } catch (err) {
         console.log('delete Error', err);
         dispatch(userActions.error());
@@ -34,9 +32,10 @@ function mapDispatchToProps(dispatch) {
         onHide();
       }
     },
-    handleSubmit: async ({ values, onHide, setSubmitting }) => {
+    handleSubmit: async ({ initValues, values, onHide, setSubmitting }) => {
       try {
         const module = {
+          ...initValues, //semesterId, moduleId did not change
           ...values,
           credits: parseFloat(values.credits),
         };
