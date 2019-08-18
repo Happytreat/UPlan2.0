@@ -7,7 +7,7 @@ export async function main(event, context) {
     TableName: ModulesTable,
     Key: {
       userId: event.requestContext.identity.cognitoIdentityId,
-      moduleId: event.body.moduleId
+      moduleId: event.pathParameters.id
     },
   };
   try {

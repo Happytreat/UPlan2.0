@@ -117,8 +117,8 @@ functions:
     handler: services/modules/getModule.main
     events:
       - http:
-          path: get-module
-          method: post
+          path: get-module/{id}
+          method: get
           cors: true
           authorizer: aws_iam
   getModuleList:
