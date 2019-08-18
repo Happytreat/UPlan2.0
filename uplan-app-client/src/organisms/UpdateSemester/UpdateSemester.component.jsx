@@ -7,6 +7,7 @@ import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
 import config from "../../config";
 import { s3Upload } from "../../libs/awsLib";
 import LoadingPage from "../../molecules/LoadingPage/LoadingPage";
+import { withRouter } from "react-router-dom";
 
 const styles = {
   form: {
@@ -14,7 +15,7 @@ const styles = {
   }
 };
 
-export default class UpdateSemester extends Component {
+class UpdateSemester extends Component {
   constructor(props) {
     super(props);
     this.file = null;
@@ -43,6 +44,7 @@ export default class UpdateSemester extends Component {
         order,
       });
     } catch (e) {
+      // console.log('error from update sem', e);
       alert('You are not authorised to view this page.');
       this.props.history.push("/");
     }
@@ -50,7 +52,7 @@ export default class UpdateSemester extends Component {
 
   // path="/semesters/:id"
   getSemester() {
-    return API.get("api", `/semesters/${this.props.cProps.id}`);
+    return API.get("api", `/semesters/${this.props.cProps.semesterId}`);
   }
 
   // TODO: Change to Formik or validation schema
@@ -76,7 +78,7 @@ export default class UpdateSemester extends Component {
 
   handleSubmit = async event => {
     let attachment;
-    const { setLoading, setError, saveSemester, onHide, cProps: { id } } = this.props;
+    const { setLoading, setError, saveSemester, onHide, cProps: { semesterId: id } } = this.props;
     event.preventDefault();
 
     if (this.file && this.file.size > config.MAX_ATTACHMENT_SIZE) {
@@ -113,10 +115,10 @@ export default class UpdateSemester extends Component {
   };
 
   handleDelete = async event => {
-    const { setLoading, setError, deleteSemester, onHide, cProps: { id } } = this.props;
+    const { setLoading, setError, deleteSemester, onHide, cProps: { semesterId: id } } = this.props;
 
     event.preventDefault();
-    const confirmed = window.confirm('Are you sure you want to delete this semester?');
+    const confirmed = window.confirm('Are you sure you want to delete this semester and all the modules in it?');
     if (!confirmed) { return; }
 
     setLoading();
@@ -239,4 +241,6 @@ UpdateSemester.propTypes = {
   onHide: PropTypes.func.isRequired,
   cProps: PropTypes.object,
 };
+
+export default withRouter(UpdateSemester);
 

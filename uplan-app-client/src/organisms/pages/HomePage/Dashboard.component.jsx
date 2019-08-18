@@ -26,7 +26,7 @@ export default class LoggedIn extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      semId: null,
+      id: null, // General id : can be moduleId or semId
       mode: '',
       showModal: false,
     };
@@ -43,7 +43,7 @@ export default class LoggedIn extends Component {
 
   // TODO: Find delay before showing spinner
   render() {
-    const { mode, showModal, semId } = this.state;
+    const { mode, showModal, id } = this.state;
     return (
       <PageWrapper>
         <h3>Your Semesters</h3>
@@ -55,10 +55,10 @@ export default class LoggedIn extends Component {
               Add a new semester
             </Button>
             {
-              renderModal({ mode, showModal, onHide: () => this.setState({ showModal: false, mode: '' }), semId })
+              renderModal({ mode, showModal, onHide: () => this.setState({ showModal: false, mode: '' }), id })
             }
           </Grid>
-          <DraggableBoard showModal={(mode) => (semId) => this.setState({ showModal: true, semId, mode })}/>
+          <DraggableBoard showModal={(mode) => (id) => this.setState({ showModal: true, id, mode })}/>
         </Grid>
       </PageWrapper>
     );

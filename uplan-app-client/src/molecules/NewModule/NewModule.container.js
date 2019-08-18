@@ -16,7 +16,7 @@ function mapDispatchToProps(dispatch) {
           credits: parseFloat(values.credits),
           semesterId,
         };
-        const m = await API.post("api", "/add-modules", { body: module });
+        await API.post("api", "/add-modules", { body: module });
         const { modules } = await API.get("api", "/get-modules-list");
         dispatch(userActions.update({ modules }));
         dispatch(userActions.alt());

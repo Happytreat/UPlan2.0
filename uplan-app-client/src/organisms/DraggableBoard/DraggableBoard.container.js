@@ -1,5 +1,4 @@
 import { connect } from "react-redux";
-import { API } from "aws-amplify";
 import DraggableBoard from './DraggableBoard.component';
 import { actions as userActions, selectors as user } from '../../store/user/user.ducks';
 

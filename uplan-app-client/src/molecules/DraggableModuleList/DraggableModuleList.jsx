@@ -64,7 +64,7 @@ const DraggableModuleList = ({ sem, moduleList, showModal }) => {
             ref={provided.innerRef}
             style={getListStyle(snapshot.isDraggingOver)}>
             {moduleList.map((mod, index) => (
-              <DraggableModule key={`${sem.semesterId}${mod.moduleId}-draggableModule`} mod={mod} index={index} />
+              <DraggableModule key={`${sem.semesterId}${mod.moduleId}-draggableModule`} mod={mod} index={index} onClick={() => showModal(ModalModes.UPDATE_MODULE)(mod.moduleId)}/>
             ))}
             {provided.placeholder}
             <Button style={{ color: '#999', textTransform: 'none', marginLeft: '1rem'}} onClick={() => showModal(ModalModes.NEW_MODULE)(sem.semesterId)}>
