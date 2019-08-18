@@ -1,6 +1,6 @@
 {
-  "body": {
-    "moduleId": "7a3a2bb2-e68c-4253-988c-00865885d7b9"
+  "pathParameters": {
+    "id": "7a3a2bb2-e68c-4253-988c-00865885d7b9"
   },
   "requestContext": {
     "identity": {
