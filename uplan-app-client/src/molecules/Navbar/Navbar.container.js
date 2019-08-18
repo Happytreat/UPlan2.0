@@ -1,6 +1,7 @@
 import { connect } from "react-redux";
 import NavBar from './Navbar.component';
 import { selectors as auth, actions as authActions } from '../../store/auth.ducks';
+import { actions as userActions } from '../../store/user/user.ducks';
 
 function mapStateToProps(state) {
   return {
@@ -10,7 +11,10 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    clearStateOnLogout: () => dispatch(authActions.clear()),
+    clearStateOnLogout: () => {
+      dispatch(authActions.clear());
+      dispatch(userActions.clear());
+    },
   };
 }
 

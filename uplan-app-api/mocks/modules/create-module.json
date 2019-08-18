@@ -1,8 +1,8 @@
 {
-  "body": "{\"code\":\"CS2040\",\"description\":\"Second mod in same sem\",\"semesterId\":\"2906de50-b7f4-11e9-b253-377b3bc388c9\", \"credits\":4}",
+  "body": "{\"code\":\"MA2202\",\"description\":\"Math mod for once!\",\"semesterId\":\"b93637e1-b9cf-471b-a617-46ed97f254ed\", \"credits\":4}",
   "requestContext": {
     "identity": {
-      "cognitoIdentityId": "USER-SUB-1234"
+      "cognitoIdentityId": "ap-southeast-1:99a87cf5-918e-4bd4-acd8-e0cd3e507aef"
     }
   }
 }

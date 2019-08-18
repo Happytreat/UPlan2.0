@@ -8,17 +8,23 @@ function mapStateToProps(state) {
   return {
     isAuth: auth.isAuth(state),
     semesters: user.semesters(state),
+    modules: user.modules(state),
     fetching: user.fetching(state),
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
+    // TODO: Move to saga (with debouncing)
     updateDashboard: async () => {
       dispatch(userActions.request());
       try {
-        const userInfo = await API.get("api", "/user");
-        dispatch(userActions.update( userInfo ));
+        const { semesters, modules, tags } = await API.get("api", "/user");
+        dispatch(userActions.update( {
+          semesters,
+          modules,
+          tags,
+        } ));
       } catch (e) {
         alert(e);
         dispatch(userActions.error(e.message));

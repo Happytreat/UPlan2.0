@@ -1,13 +1,9 @@
 import { all } from 'redux-saga/effects';
-import { getStore, sagaMiddleware } from './store';
 
-import user from '../store/user/user.saga';
+import { watchUpdateDrag } from '../store/user/user.saga';
 
-function* rootSaga() {
+export function* rootSaga() {
   yield all([
-    //...user,
+    watchUpdateDrag(),
   ]);
 }
-
-getStore();
-sagaMiddleware.run(rootSaga);

@@ -17,9 +17,11 @@ const styles = {
 
 class NavbarComponent extends Component {
   handleLogout = async event => {
+    event.preventDefault();
+    const { clearStateOnLogout, history } = this.props;
     await Auth.signOut();
-    this.props.clearStateOnLogout();
-    this.props.history.push("/login");
+    clearStateOnLogout();
+    history.push("/login");
   };
 
   render() {

@@ -7,6 +7,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import { routerMiddleware } from 'connected-react-router';
 
 import createRootReducer from './reducer';
+import { rootSaga } from "./saga";
 
 /* Configuration persisted redux store */
 const persistConfig = {
@@ -37,6 +38,7 @@ export const getStore = () => {
 };
 
 store = getStore();
+sagaMiddleware.run(rootSaga);
 export const persistor = persistStore(store);
 
 if (module.hot) {

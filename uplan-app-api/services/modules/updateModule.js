@@ -2,6 +2,7 @@ import * as dynamoDbLib from "../../libs/dynamodb-lib";
 import { success, failure } from "../../libs/response-lib";
 import { ModulesTable } from "../../consts/tables";
 
+// TODO: Update array of modules - supports multiple dnd feature implemented
 export async function main(event, context) {
   const data = JSON.parse(event.body);
   const params = {
