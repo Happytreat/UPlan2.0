@@ -25,7 +25,7 @@ function mapDispatchToProps(dispatch) {
         dispatch(userActions.update({ modules }));
         dispatch(userActions.alt());
       } catch (err) {
-        console.log('delete Error', err);
+        // console.log('delete Error', err);
         dispatch(userActions.error());
       } finally {
         setSubmitting(false);

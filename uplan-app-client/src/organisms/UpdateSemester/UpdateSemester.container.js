@@ -6,6 +6,7 @@ import { actions as userActions, selectors as user } from '../../store/user/user
 function mapStateToProps(state) {
   return {
     fetching: user.fetching(state),
+    modules: user.modules(state),
   };
 }
 
@@ -18,10 +19,27 @@ function mapDispatchToProps(dispatch) {
       const semesters = await API.get("api", "/semesters"); // TODO: put this in saga
       dispatch(userActions.update({ semesters }));
     },
-    deleteSemester: async (id) => {
-      await API.del("api", `/semesters/${id}`);
-      const semesters = await API.get("api", "/semesters");
-      dispatch(userActions.update({ semesters }));
+    deleteSemester: async (id, moduleList) => {
+      try {
+        // Delete all modules in that semester
+        // TODO: Consider moving this to backend - delete all mod of sem
+        // Since backend will have most updated module
+        await Promise.all(moduleList[id].map(async (mod) => {
+          return API.del("api", `/delete-module/${mod.moduleId}`);
+        }));
+
+        // Update store's modules
+        const { modules } = await API.get("api", "/get-modules-list");
+
+        await API.del("api", `/semesters/${id}`);
+        const semesters = await API.get("api", "/semesters");
+
+        dispatch(userActions.update({ modules }));
+        dispatch(userActions.update({ semesters }));
+      } catch (err) {
+        console.log('delete err', err);
+        dispatch(userActions.error());
+      }
     },
   };
 }

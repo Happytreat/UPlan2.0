@@ -124,7 +124,7 @@ class UpdateSemester extends Component {
     setLoading();
 
     try {
-     deleteSemester(id);
+     deleteSemester(id, this.props.modules);
       // Delete attachment of deleted semester
       await Storage.vault.remove(this.state.semester.attachment);
       onHide();
@@ -240,6 +240,7 @@ UpdateSemester.propTypes = {
   deleteSemester: PropTypes.func.isRequired,
   onHide: PropTypes.func.isRequired,
   cProps: PropTypes.object,
+  modules: PropTypes.object.isRequired,
 };
 
 export default withRouter(UpdateSemester);
