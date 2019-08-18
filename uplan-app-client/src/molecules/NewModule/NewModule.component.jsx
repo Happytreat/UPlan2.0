@@ -22,7 +22,7 @@ const NewModSchema = yup.object().shape({
 class NewModuleForm extends Component {
   render() {
     const { handleSubmit, cProps: { semesterId }, onHide } = this.props;
-    console.log('props of modal', this.props);
+    // console.log('props of modal', this.props);
     return (
       <Formik
         initialValues={{

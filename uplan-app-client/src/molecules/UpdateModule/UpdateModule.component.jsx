@@ -53,7 +53,7 @@ class UpdateModuleForm extends Component {
           return handleSubmit({ initValues: this.state.module, values, onHide, setSubmitting });
         }}
       >
-        {({ isSubmitting, isValid, values, setSubmitting }) => (
+        {({ isSubmitting, isValid, setSubmitting }) => (
           <Form style={styles.form}>
             <br />
             <Typography variant="body2" style={{ fontWeight: 500 }}>
