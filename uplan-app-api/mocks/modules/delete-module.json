@@ -1,5 +1,7 @@
 {
-  "body": "{\"moduleId\":\"728805d7-510f-4b5a-9afc-102f7f311954\"}",
+  "pathParameters": {
+    "id": "7a3a2bb2-e68c-4253-988c-00865885d7b9"
+  },
   "requestContext": {
     "identity": {
       "cognitoIdentityId": "USER-SUB-1234"

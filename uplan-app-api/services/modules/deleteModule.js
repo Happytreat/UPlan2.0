@@ -3,12 +3,11 @@ import { success, failure } from "../../libs/response-lib";
 import { ModulesTable } from "../../consts/tables";
 
 export async function main(event, context) {
-  const data = JSON.parse(event.body);
   const params = {
     TableName: ModulesTable,
     Key: {
       userId: event.requestContext.identity.cognitoIdentityId,
-      moduleId: data.moduleId
+      moduleId: event.pathParameters.id
     }
   };
   try {

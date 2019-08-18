@@ -141,7 +141,7 @@ functions:
     handler: services/modules/deleteModule.main
     events:
       - http:
-          path: delete-module
+          path: delete-module/{id}
           method: delete
           cors: true
           authorizer: aws_iam
