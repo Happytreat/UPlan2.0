@@ -1,4 +1,4 @@
-# UPlan
+# UPlan 
 You plan. We do the rest. :sparkling_heart: :poodle:
 
  An original University module Planning app which aids freshmen/college students plan their 3-5 years college modules with ease. 
@@ -14,8 +14,10 @@ You plan. We do the rest. :sparkling_heart: :poodle:
  * Goals can be added as a note/attachment to each semester (e.g. In Year2 Sem2, aim to apply for Software Engineering Internship: Skills required are Networking, Web Dev)
 
  * Export added and tagged modules in CSV/Excel format
+ 
+ * Keep a record of your CAP and also calculate stats regarding future CAP
 
 
  A web app built with React-Redux, NodeJS, Serverless Framework (in progress). 
 
- ##### Expected Release Date: August-Sept 2019
+ ##### Expected Release Date: December 2019
