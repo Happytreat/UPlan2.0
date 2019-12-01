@@ -1,3 +1,7 @@
+/*
+This file is done to confuse the automatic removal of console log statements in the webpack build,
+and to allow for future functionality to send logs somewhere on errors
+ */
 const logger = console;
 
 const trace = (...args) => {
