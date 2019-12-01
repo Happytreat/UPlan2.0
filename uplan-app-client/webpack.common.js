@@ -1,25 +1,12 @@
-const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // Cleans the build folder
 const CopyWebpackPlugin = require('copy-webpack-plugin'); // Copys files
-const path = require('path');
 const { paths } = require('./paths');
 
 module.exports = {
-  mode: "development",
-  entry: ['@babel/polyfill', './src/index.js'],
   output: {
     path: paths.DIST,
     filename: '[name].[hash].js',
     publicPath: '',
-  },
-  devServer: {
-    // publicPath: paths.DIST,
-    contentBase: paths.DIST,
-    historyApiFallback: true,
-    // hot: true,
-    https: false,
-    overlay: true,
-    port: 3010,
   },
   resolve: {
     extensions: [".js", ".jsx"]
@@ -30,9 +17,6 @@ module.exports = {
     new CopyWebpackPlugin([
       { from: `${paths.PUBLIC}/`, to: `${paths.DIST}/` },
     ], {}),
-    new HtmlWebpackPlugin({
-      template: path.join(paths.SRC, 'index.html'),
-    }),
   ],
   module: {
     rules: [
@@ -42,12 +26,6 @@ module.exports = {
           loader: 'babel-loader',
           query: {compact: false}
         }},
-      // {
-      //   test: /\.(jpg|png)$/,
-      //   use: {
-      //     loader: 'url-loader',
-      //   },
-      // },
       {
         test: /\.(gif|png|jpe?g|svg)$/i,
         use: [
@@ -60,11 +38,8 @@ module.exports = {
           },
         ],
       },
-      {
-        test: /\.css$/i,
-        use: ['style-loader', 'css-loader'],
-      },
     ]
-  },
-  devtool: 'source-map'
+  }
 };
+
+exports.paths = paths;
