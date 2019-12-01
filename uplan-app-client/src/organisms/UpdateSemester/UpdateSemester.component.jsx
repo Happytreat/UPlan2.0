@@ -66,17 +66,17 @@ class UpdateSemester extends Component {
     return str.replace(/^\w+-/, "");
   }
 
-  handleChange = event => {
+  handleChange(event) {
     this.setState({
       [event.target.id]: event.target.value
     });
   };
 
-  handleFileChange = event => {
+  handleFileChange(event) {
     this.file = event.target.files[0];
   };
 
-  handleSubmit = async event => {
+  async handleSubmit(event) {
     let attachment;
     const { setLoading, setError, saveSemester, onHide, cProps: { semesterId: id } } = this.props;
     event.preventDefault();

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { hot } from 'react-hot-loader';
+// import { hot } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { PersistGate } from 'redux-persist/integration/react';
@@ -26,8 +26,8 @@ class App extends Component {
   }
 }
 
-// export default App;
-export default hot(module)(App);
+export default App;
+// export default hot(module)(App);
 
 // constructor(props) {
 //   super(props);
