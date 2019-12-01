@@ -1,6 +1,6 @@
 {
   "name": "uplan-app-client",
-  "version": "1.2.0",
+  "version": "1.0.0",
   "private": false,
   "dependencies": {
     "@babel/runtime": "7.4.4",

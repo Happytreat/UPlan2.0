@@ -1,6 +1,9 @@
 const { CleanWebpackPlugin } = require('clean-webpack-plugin'); // Cleans the build folder
 const CopyWebpackPlugin = require('copy-webpack-plugin'); // Copys files
+const webpack = require('webpack');
+
 const { paths } = require('./paths');
+const { version } = require('./package.json');
 
 module.exports = {
   output: {
@@ -17,6 +20,11 @@ module.exports = {
     new CopyWebpackPlugin([
       { from: `${paths.PUBLIC}/`, to: `${paths.DIST}/` },
     ], {}),
+    new webpack.DefinePlugin({
+      VERSION: JSON.stringify(version),
+      DEF_NAME: JSON.stringify('UPlan'),
+      DEF_COMPANY: JSON.stringify('UPlan.'),
+    }),
   ],
   module: {
     rules: [

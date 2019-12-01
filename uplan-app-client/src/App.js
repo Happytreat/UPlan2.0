@@ -6,11 +6,11 @@ import { PersistGate } from 'redux-persist/integration/react';
 import Router from './services/router';
 import { history, persistor, getStore } from './services/store';
 import "./App.css";
+import log from './utils/logger';
 
 class App extends Component {
   render() {
-    // TODO: Get name and version from env
-    console.log('UPlan client: v1.1.1');
+    log.info(`${DEF_NAME} client: v${VERSION}`);
 
     return (
       <div className="App container">
