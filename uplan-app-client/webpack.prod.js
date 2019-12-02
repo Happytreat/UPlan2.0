@@ -17,7 +17,7 @@ const { paths } = require('./paths');
 
 module.exports = merge(common, {
   entry: ['@babel/polyfill', path.join(paths.SRC, 'index.js')],
-  mode: 'production',
+  mode: 'production', // Sets process.env.NODE_ENV on DefinePlugin to value production
   devtool: 'none',
   optimization: {
     minimizer: [
@@ -49,9 +49,6 @@ module.exports = merge(common, {
         minifyCSS: true,
         minifyURLs: true,
       },
-    }),
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('production'),
     }),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
