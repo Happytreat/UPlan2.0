@@ -1,19 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import * as yup from 'yup';
-import { Field, Form, Formik } from 'formik';
+import { Formik } from 'formik';
 import { TextField } from 'formik-material-ui';
-import {Typography} from "@material-ui/core";
 
+import { StyledForm, StyledFormHeader, ThemedField } from '../../molecules/FormStyles/formStyledComponents';
 import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
-
-
-const styles = {
-  form: {
-    margin: '0 auto',
-    maxWidth: '320px',
-  },
-};
 
 const SignupSchema = yup.object().shape({
   username: yup.string().email('Invalid Email').required('Required'),
@@ -25,91 +17,77 @@ const SignupSchema = yup.object().shape({
 class Signup extends Component {
   render() {
     return (
-      <>
-        <div style={{minHeight: '7vh'}}></div>
-        <div className="Signup">
-          <Formik
-            initialValues={{
-              username: '',
-              password: '',
-              passwordConfirmation: '',
-              nickname: '',
-            }}
-            validationSchema={SignupSchema}
-            onSubmit={async (values, { setSubmitting }) => {
-              return this.props.handleSubmit({ values, setSubmitting });
-            }}
-          >
-            {({ isSubmitting, isValid }) => (
-              <Form style={styles.form}>
-                <br />
-                <Typography variant="body1" style={{ fontSize: '0.9rem', fontWeight: 500 }}>
-                  Username
-                </Typography>
-                <Field
-                  type="email"
-                  name="username"
-                  margin="dense"
-                  component={TextField}
-                  fullWidth
-                  autoFocus
-                  autoComplete="email"
-                  variant="outlined"
-                />
-                <Typography variant="body1" style={{ fontSize: '0.9rem', fontWeight: 500 }}>
-                  Password
-                </Typography>
-                <Field
-                  type="password"
-                  name="password"
-                  margin="dense"
-                  component={TextField}
-                  autoComplete="current-password"
-                  fullWidth
-                  variant="outlined"
-                />
-                <Typography variant="body1" style={{ fontSize: '0.9rem', fontWeight: 500 }}>
-                  Password Confirmation
-                </Typography>
-                <Field
-                  type="password"
-                  name="passwordConfirmation"
-                  margin="dense"
-                  component={TextField}
-                  autoComplete="current-password"
-                  fullWidth
-                  variant="outlined"
-                />
-                <Typography variant="body1" style={{ fontSize: '0.9rem', fontWeight: 500 }}>
-                  Nickname
-                </Typography>
-                <Field
-                  type="text"
-                  name="nickname"
-                  margin="dense"
-                  component={TextField}
-                  fullWidth
-                  variant="outlined"
-                  style={{ paddingBottom: '1rem'}}
-                />
-                <ProgressButton
-                  block
-                  size="large"
-                  disabled={!isValid && isSubmitting}
-                  isLoading={isSubmitting}
-                  variant="outline-primary"
-                  type="submit"
-                  text="Signup"
-                  loadingText="Loading..."
-                  style={{ margin: '1rem 0' }}
-                >
-                  Signup
-                </ProgressButton>
-              </Form>
-            )}
-          </Formik>
-        </div>
-      </>
+      <Formik
+        initialValues={{
+          username: '',
+          password: '',
+          passwordConfirmation: '',
+          nickname: '',
+        }}
+        validationSchema={SignupSchema}
+        onSubmit={async (values, { setSubmitting }) => {
+          return this.props.handleSubmit({ values, setSubmitting });
+        }}
+      >
+        {({ isSubmitting, isValid }) => (
+          <StyledForm>
+            <br />
+            <StyledFormHeader variant="body1">Username</StyledFormHeader>
+            <ThemedField
+              type="email"
+              name="username"
+              margin="dense"
+              component={TextField}
+              fullWidth
+              autoFocus
+              autoComplete="email"
+              variant="outlined"
+            />
+            <StyledFormHeader variant="body1">Password</StyledFormHeader>
+            <ThemedField
+              type="password"
+              name="password"
+              margin="dense"
+              component={TextField}
+              autoComplete="current-password"
+              fullWidth
+              variant="outlined"
+            />
+            <StyledFormHeader variant="body1">Password Confirmation</StyledFormHeader>
+            <ThemedField
+              type="password"
+              name="passwordConfirmation"
+              margin="dense"
+              component={TextField}
+              autoComplete="current-password"
+              fullWidth
+              variant="outlined"
+            />
+            <StyledFormHeader variant="body1">Nickname</StyledFormHeader>
+            <ThemedField
+              type="text"
+              name="nickname"
+              margin="dense"
+              component={TextField}
+              fullWidth
+              variant="outlined"
+            />
+            <ProgressButton
+              block
+              size="large"
+              disabled={!isValid && isSubmitting}
+              isLoading={isSubmitting}
+              variant="outline-primary"
+              type="submit"
+              text="Signup"
+              loadingText="Loading..."
+              style={{ margin: '1rem 0' }}
+            >
+              Signup
+            </ProgressButton>
+          </StyledForm>
+        )}
+      </Formik>
     );
   }
 }

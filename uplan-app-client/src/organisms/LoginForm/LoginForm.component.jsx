@@ -1,28 +1,21 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
-import * as yup from 'yup';
-import { Field, Form, Formik } from 'formik';
-import { TextField } from 'formik-material-ui';
-import { Typography } from '@material-ui/core';
+import * as yup from "yup";
+import { Formik } from "formik";
+import { TextField } from "formik-material-ui";
+
+import { StyledForm, StyledFormHeader, StyledError, ThemedField } from '../../molecules/FormStyles/formStyledComponents';
 import ProgressButton from '../../molecules/ProgressButton/ProgressButton';
 
-const styles = {
-  form: {
-    margin: '0 auto',
-    maxWidth: '320px',
-    padding: '4rem 0',
-  },
-};
 
 const LoginSchema = yup.object().shape({
   username: yup.string().email('Invalid Email').required('Required'),
   password: yup.string().min(8, 'Password too short').required('Required'),
 });
 
-
 class LoginForm extends Component {
   render() {
-    const { handleSubmit } = this.props;
+    const { handleSubmit, error } = this.props;
     return (
       <Formik
         initialValues={{
@@ -35,12 +28,10 @@ class LoginForm extends Component {
         }}
       >
         {({ isSubmitting, isValid }) => (
-          <Form style={styles.form}>
+          <StyledForm>
             <br />
-            <Typography variant="body1" style={{ fontSize: '0.9rem', fontWeight: 500 }}>
-              Username
-            </Typography>
-            <Field
+            <StyledFormHeader variant="body1">Username</StyledFormHeader>
+            <ThemedField
               type="email"
               name="username"
               margin="dense"
@@ -50,10 +41,8 @@ class LoginForm extends Component {
               autoComplete="email"
               variant="outlined"
             />
-            <Typography variant="body1" style={{ fontSize: '0.9rem', fontWeight: 500 }}>
-              Password
-            </Typography>
-            <Field
+            <StyledFormHeader variant="body1">Password</StyledFormHeader>
+            <ThemedField
               type="password"
               name="password"
               margin="dense"
@@ -61,11 +50,10 @@ class LoginForm extends Component {
               autoComplete="current-password"
               fullWidth
               variant="outlined"
-              style={{ paddingBottom: '1rem'}}
             />
-            <Typography align="center" color="error" style={{ fontSize: '0.8rem', fontWeight: 500 }} gutterBottom>
-              {this.props.error ? this.props.error : ''}
-            </Typography>
+            <StyledError align="center" color="error">
+              {error || ''}
+            </StyledError>
             <ProgressButton
               block
               size="large"
@@ -79,7 +67,7 @@ class LoginForm extends Component {
             >
               Login
             </ProgressButton>
-          </Form>
+          </StyledForm>
         )}
       </Formik>
     );
@@ -88,6 +76,7 @@ class LoginForm extends Component {
 
 LoginForm.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  error: PropTypes.object // TODO: Define what error is (type)
 };
 
 export default LoginForm;

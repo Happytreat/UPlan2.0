@@ -3,4 +3,6 @@ export const lightTheme = {
   secondary: "palevioletred",
   bg: "palevioletred",
   success: "mediumseagreen",
+  alternate: "sandybrown",
+  fontFamily: "Montserrat"
 };
