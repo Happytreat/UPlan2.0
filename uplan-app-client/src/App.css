@@ -1,12 +1,6 @@
 .App {
-  margin-top: 15px;
+  margin-top: 5px;
 }
 .App .navbar-brand {
   font-weight: bold;
-}
-
-.link {
-  color: #999;
-  padding: 1rem;
-  cursor: pointer;
 }

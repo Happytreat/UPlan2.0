@@ -1,5 +1,6 @@
 export const lightTheme = {
-  primary: "palevioletred",
-  bg: "ghostwhite",
+  primary: "white",
+  secondary: "palevioletred",
+  bg: "palevioletred",
   success: "mediumseagreen",
 };

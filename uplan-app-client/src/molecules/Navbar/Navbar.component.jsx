@@ -1,63 +1,73 @@
 import React, { Component } from "react";
-import { Auth } from "aws-amplify";
-import { Link, withRouter } from "react-router-dom";
-import { LinkContainer } from "react-router-bootstrap";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
+import { LinkContainer } from "react-router-bootstrap";
 import { Navbar, Nav } from "react-bootstrap";
+import styled from 'styled-components'
 
-import Logo from "../../asset/unicorn-icon.png";
+import Logo from "../../asset/unicorn-icon-transparent.png";
 
-const styles = {
-  link: {
-    color: '#999',
-    padding: '1rem',
-    cursor: 'pointer',
+const { Item } = Nav;
+const { Toggle, Collapse, Brand } = Navbar;
+const ThemedLinkContainer = styled(LinkContainer)`
+  color: ${props => props.theme.primary};
+  padding: 1rem;
+  cursor: pointer;
+`;
+
+const ThemedNavItem = styled(Item)`
+  color: ${props => props.theme.primary};
+  padding: 1rem;
+  cursor: pointer;
+`;
+
+const ThemedNavbar = styled(Navbar)`
+  background: ${props => props.theme.bg};
+`;
+
+const NavLogo = styled.img`
+  height: 6vh;
+  padding: 0 0.5rem 0 1rem;
+`;
+
+const NavLogoAndTitle = styled(Link)`
+  color: ${props => props.theme.primary};
+  &:hover {
+    color: ${props => props.theme.primary};
   }
-};
+`
 
 class NavbarComponent extends Component {
-  handleLogout = async event => {
-    event.preventDefault();
-    const { clearStateOnLogout, history } = this.props;
-    await Auth.signOut();
-    clearStateOnLogout();
-    history.push("/login");
-  };
-
   render() {
-    const { isAuth } = this.props;
+    const { isAuth, handleLogout } = this.props;
 
     return (
       <>
-        <Navbar fluid="true" collapseOnSelect style={{background: 'ghostwhite'}}>
-          <Navbar.Brand>
-            <Link to="/">
-              <img src={Logo} alt={Logo} style={{maxHeight: '7vh'}} />
+        <ThemedNavbar fluid="true" collapseOnSelect>
+          <Brand>
+            <NavLogoAndTitle to="/">
+              <NavLogo src={Logo} alt={Logo} />
               UPlan
-            </Link>
-          </Navbar.Brand>
-          <Navbar.Toggle />
-          <Navbar.Collapse className="justify-content-end">
+            </NavLogoAndTitle>
+          </Brand>
+          <Toggle />
+          <Collapse className="justify-content-end">
             <Nav>
               {
                 isAuth
-                ? <Nav.Item style={styles.link} onClick={this.handleLogout}>Logout</Nav.Item>
+                ? <ThemedNavItem onClick={handleLogout}>Logout</ThemedNavItem>
                 : <>
-                    <LinkContainer to="/signup" style={styles.link}>
-                      <Nav.Item>
-                        Signup
-                      </Nav.Item>
-                    </LinkContainer>
-                    <LinkContainer to="/login" style={styles.link}>
-                      <Nav.Item>
-                        Login
-                      </Nav.Item>
-                    </LinkContainer>
+                    <ThemedLinkContainer to="/signup">
+                      <Item>Signup</Item>
+                    </ThemedLinkContainer>
+                    <ThemedLinkContainer to="/login">
+                      <Item>Login</Item>
+                    </ThemedLinkContainer>
                   </>
               }
             </Nav>
-          </Navbar.Collapse>
-        </Navbar>
+          </Collapse>
+        </ThemedNavbar>
       </>
     );
   }
@@ -66,7 +76,7 @@ class NavbarComponent extends Component {
 
 NavbarComponent.propTypes = {
   isAuth: PropTypes.bool.isRequired,
-  clearStateOnLogout: PropTypes.func.isRequired,
+  handleLogout: PropTypes.func.isRequired,
 };
 
-export default withRouter(NavbarComponent);
+export default NavbarComponent;

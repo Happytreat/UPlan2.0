@@ -16,7 +16,7 @@ class App extends Component {
     log.info(`${DEF_NAME} client: v${VERSION}`);
 
     return (
-      <div className="App container">
+      <div className="App">
         <ThemeProvider theme={ lightTheme }>
           <Provider store={getStore()}>
             <PersistGate loading={null} persistor={persistor}>
