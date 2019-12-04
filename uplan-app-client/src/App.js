@@ -3,6 +3,9 @@ import { hot } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { PersistGate } from 'redux-persist/integration/react';
+import { ThemeProvider } from 'styled-components'
+
+import { lightTheme } from './theme/globalStyle';
 import Router from './services/router';
 import { history, persistor, getStore } from './services/store';
 import "./App.css";
@@ -14,13 +17,15 @@ class App extends Component {
 
     return (
       <div className="App container">
-        <Provider store={getStore()}>
-          <PersistGate loading={null} persistor={persistor}>
-            <ConnectedRouter history={history}>
-              <Router />
-            </ConnectedRouter>
-          </PersistGate>
-        </Provider>
+        <ThemeProvider theme={ lightTheme }>
+          <Provider store={getStore()}>
+            <PersistGate loading={null} persistor={persistor}>
+              <ConnectedRouter history={history}>
+                <Router />
+              </ConnectedRouter>
+            </PersistGate>
+          </Provider>
+        </ThemeProvider>
       </div>
     );
   }
