@@ -1,6 +1,7 @@
 {
   "name": "uplan-app-api",
   "version": "1.0.0",
+  "private": false,
   "description": "A Node.js starter for the Serverless Framework with async/await and unit test support",
   "main": "handler.js",
   "scripts": {

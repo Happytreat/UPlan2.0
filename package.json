@@ -11,7 +11,7 @@
     "url": "git+https://github.com/Happytreat/UPlan2.0.git"
   },
   "author": "Melodies Sim",
-  "license": "ISC",
+  "license": "SEE LICENSE IN LICENSE.md",
   "bugs": {
     "url": "https://github.com/Happytreat/UPlan2.0/issues"
   },
@@ -23,5 +23,8 @@
     "commitizen": {
       "path": "git-cz"
     }
+  },
+  "dependencies": {
+    "package.json": "^2.0.1"
   }
 }

@@ -12,7 +12,8 @@ module.exports = {
     publicPath: '',
   },
   resolve: {
-    extensions: [".js", ".jsx"]
+    // .mjs needed for https://github.com/graphql/graphql-js/issues/1272
+    extensions: [".js", ".jsx", ".mjs"]
   },
   plugins: [
     new CleanWebpackPlugin(),
@@ -28,6 +29,12 @@ module.exports = {
   ],
   module: {
     rules: [
+      // fixes https://github.com/graphql/graphql-js/issues/1272
+      {
+        test: /\.mjs$/,
+        include: /node_modules/,
+        type: 'javascript/auto'
+      },
       { test: /\.(js|jsx)$/,
         exclude: /node_modules/,
         use: {
