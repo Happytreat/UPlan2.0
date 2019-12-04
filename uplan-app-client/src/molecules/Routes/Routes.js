@@ -50,7 +50,7 @@ export const UnauthenticatedRoute = ({ component: C, isAuth, ...rest }) => {
       {...rest}
       render={props =>
         !isAuth
-          ? renderView(<C {...props} />, rest.title)
+          ? renderView(<C {...props} />, rest.title, rest.handleThemeChange)
           : <Redirect
             to={redirect === "" || redirect === null ? "/dashboard" :
               redirect}

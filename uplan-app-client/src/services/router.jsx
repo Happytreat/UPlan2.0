@@ -27,9 +27,9 @@ import {
 } from '../consts/routes';
 
 
-const Router = ({ isAuth, location }) => (
+const Router = ({ isAuth, location, handleThemeChange }) => (
   <Switch>
-    <UnauthenticatedRoute path={ROUTE_ROOT} exact component={NotLoggedInHome} isAuth={isAuth} title={"UPlan"} />
+    <UnauthenticatedRoute path={ROUTE_ROOT} exact component={NotLoggedInHome} isAuth={isAuth} title={"UPlan"} handleThemeChange={handleThemeChange} />
 
     <UnauthenticatedRoute path={ROUTE_USER_LOGIN} exact component={LoginPage} isAuth={isAuth} title={"Login"}/>
 
@@ -47,6 +47,7 @@ const Router = ({ isAuth, location }) => (
 Router.propTypes = {
   isAuth: PropTypes.bool.isRequired,
   location: PropTypes.string.isRequired,
+  handleThemeChange: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {

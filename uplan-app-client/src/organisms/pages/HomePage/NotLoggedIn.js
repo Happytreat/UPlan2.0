@@ -46,6 +46,7 @@ const SignUpButton = styled(Button)`
     &:hover {
       border: 2px solid white;
       background-color: ${props => props.theme.success};
+      color: ${props => props.theme.primary};
     }
   }
 `;
@@ -67,7 +68,7 @@ export default class NotLoggedIn extends Component {
     return (
       <MainDiv>
         <MainLogo src={Logo} alt={Logo} />
-        <h4>Visual university planner with the student in mind</h4>
+        <h4>Visual. Simple. Plan.</h4>
         <Description>UPlan, we do the rest.</Description>
         <br />
         <Buttons>

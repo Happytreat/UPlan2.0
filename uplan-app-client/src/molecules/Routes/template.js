@@ -2,10 +2,10 @@ import React from 'react';
 import HtmlMeta from '../HtmlMeta/HtmlMeta';
 import NavBar from '../Navbar/Navbar.container';
 
-export const renderView = (view, title) => {
+export const renderView = (view, title, handleThemeChange=null) => {
   return (
     <HtmlMeta subtitle={title}>
-      <NavBar />
+      <NavBar handleThemeChange={handleThemeChange}/>
       {view}
     </HtmlMeta>
   );

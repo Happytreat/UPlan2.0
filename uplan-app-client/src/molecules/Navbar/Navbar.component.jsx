@@ -6,9 +6,11 @@ import { Navbar, Nav } from "react-bootstrap";
 import styled from 'styled-components'
 
 import Logo from "../../asset/unicorn-icon-transparent.png";
+import ThemeSelect from '../ThemeSelect/ThemeSelect';
 
 const { Item } = Nav;
 const { Toggle, Collapse, Brand } = Navbar;
+
 const ThemedLinkContainer = styled(LinkContainer)`
   color: ${props => props.theme.primary};
   padding: 1rem;
@@ -35,7 +37,7 @@ const NavLogoAndTitle = styled(Link)`
   &:hover {
     color: ${props => props.theme.primary};
   }
-`
+`;
 
 class NavbarComponent extends Component {
   render() {
@@ -53,6 +55,9 @@ class NavbarComponent extends Component {
           <Toggle />
           <Collapse className="justify-content-end">
             <Nav>
+              <Item>
+                <ThemeSelect handleThemeChange={this.props.handleThemeChange} />
+              </Item>
               {
                 isAuth
                 ? <ThemedNavItem onClick={handleLogout}>Logout</ThemedNavItem>

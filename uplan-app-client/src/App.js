@@ -3,30 +3,45 @@ import { hot } from 'react-hot-loader';
 import { Provider } from 'react-redux';
 import { ConnectedRouter } from 'connected-react-router';
 import { PersistGate } from 'redux-persist/integration/react';
-import { ThemeProvider } from 'styled-components'
+import styled, { ThemeProvider } from 'styled-components'
 
-import { lightTheme } from './theme/globalStyle';
+import { pinkTheme, blueTheme } from './theme/globalStyle';
 import Router from './services/router';
 import { history, persistor, getStore } from './services/store';
 import "./App.css";
 import log from './utils/logger';
 
+const StyledApp = styled.div`
+  margin-top: 5px;
+  background-color: ${props => props.theme.primary};
+`;
+
 class App extends Component {
+  state = {
+    theme: blueTheme
+  };
+
+  handleThemeChange = value => {
+    let theme = value;
+    theme === 'blueTheme' ? (theme = blueTheme) : (theme = pinkTheme);
+    this.setState({ theme })
+  };
+
   render() {
     log.info(`${DEF_NAME} client: v${VERSION}`);
 
     return (
-      <div className="App">
-        <ThemeProvider theme={ lightTheme }>
+      <StyledApp theme={this.state.theme}>
+        <ThemeProvider theme={this.state.theme}>
           <Provider store={getStore()}>
             <PersistGate loading={null} persistor={persistor}>
               <ConnectedRouter history={history}>
-                <Router />
+                <Router handleThemeChange={this.handleThemeChange} />
               </ConnectedRouter>
             </PersistGate>
           </Provider>
         </ThemeProvider>
-      </div>
+      </StyledApp>
     );
   }
 }
