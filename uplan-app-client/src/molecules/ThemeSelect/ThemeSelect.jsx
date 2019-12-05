@@ -3,6 +3,8 @@ import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { Button } from 'react-bootstrap'
 
+import { themes } from '../../theme/globalStyle';
+
 const ThemePicker = styled(Button)`
   margin-top: 8px;
   border-color: ${props => props.theme.secondary};
@@ -13,21 +15,19 @@ const ThemePicker = styled(Button)`
   }
 `;
 
-const colors = ['blueTheme', 'pinkTheme'];
-
 class ThemeSelect extends React.Component {
   state = {
     theme: 0
   };
 
-  alternateTheme = (e) => {
-    const newTheme = 1 - this.state.theme;
+  changeTheme = (e) => {
+    const newTheme = (this.state.theme + 1) % themes.length;
     this.setState({ theme: newTheme });
-    this.props.handleThemeChange(colors[newTheme]);
+    this.props.handleThemeChange(themes[newTheme]);
   };
 
   render() {
-    return <ThemePicker onClick={this.alternateTheme}><i className="	fa fa-eyedropper"></i></ThemePicker>
+    return <ThemePicker onClick={this.changeTheme}><i className="	fa fa-eyedropper"></i></ThemePicker>
   }
 }
 
