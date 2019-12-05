@@ -5,11 +5,14 @@ import { ConnectedRouter } from 'connected-react-router';
 import { PersistGate } from 'redux-persist/integration/react';
 import styled, { ThemeProvider } from 'styled-components'
 
-import { pinkTheme, blueTheme } from './theme/globalStyle';
+import {
+  pinkTheme, blueTheme, yellowTheme, greenTheme, darkTheme
+} from './theme/globalStyle';
 import Router from './services/router';
 import { history, persistor, getStore } from './services/store';
 import "./App.css";
 import log from './utils/logger';
+import NavBar from "./molecules/Navbar/Navbar.container";
 
 const StyledApp = styled.div`
   margin-top: 5px;
@@ -22,9 +25,21 @@ class App extends Component {
   };
 
   handleThemeChange = value => {
-    let theme = value;
-    theme === 'blueTheme' ? (theme = blueTheme) : (theme = pinkTheme);
-    this.setState({ theme })
+    switch(value) {
+      case 'blueTheme':
+        this.setState({ theme: blueTheme });
+        break;
+      case 'pinkTheme':
+        this.setState({ theme: pinkTheme });
+        break;
+      case 'yellowTheme':
+        this.setState({ theme: yellowTheme });
+        break;
+      case 'greenTheme':
+        this.setState({ theme: greenTheme });
+        break;
+      default:
+    }
   };
 
   render() {
@@ -36,7 +51,8 @@ class App extends Component {
           <Provider store={getStore()}>
             <PersistGate loading={null} persistor={persistor}>
               <ConnectedRouter history={history}>
-                <Router handleThemeChange={this.handleThemeChange} />
+                <NavBar handleThemeChange={this.handleThemeChange}/>
+                <Router />
               </ConnectedRouter>
             </PersistGate>
           </Provider>
