@@ -1,8 +1,9 @@
 import React, {PureComponent} from 'react';
 import { DragDropContext } from 'react-beautiful-dnd';
 import PropTypes from "prop-types";
-import { map, find } from "lodash";
-import styled  from 'styled-components';
+import { map, find, get } from "lodash"; // TODO: Use lazy loading https://reactjs.org/docs/code-splitting.html
+import styled from 'styled-components';
+
 import DraggableModulelist from '../../molecules/DraggableModuleList/DraggableModuleList';
 import { reorder, move } from "../../utils/DraggableUtils";
 
@@ -68,7 +69,6 @@ class DraggableBoard extends PureComponent {
         source.index,
         destination.index
       );
-
       updateDraggableStateAndProps({ module, sourceId: source.droppableId, destinationId: destination.droppableId, reordered });
     } else {
       const reordered = move(
@@ -77,7 +77,6 @@ class DraggableBoard extends PureComponent {
         source,
         destination
       );
-
       updateDraggableStateAndProps({ module, sourceId: source.droppableId, destinationId: destination.droppableId, reordered });
     }
   };
@@ -86,7 +85,7 @@ class DraggableBoard extends PureComponent {
     const { semesters, updateDraggableList, showModal, modules: draggableList } = this.props;
     return (
       map(semesters, sem => {
-        const moduleList = draggableList[sem.semesterId] !== undefined ? draggableList[sem.semesterId] : [];
+        const moduleList = get(draggableList, `${sem.semesterId}`, []);
         if (draggableList[sem.semesterId] === undefined) {
           const updated = draggableList;
           updated[sem.semesterId] = [];
