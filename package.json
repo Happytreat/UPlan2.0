@@ -25,6 +25,7 @@
     }
   },
   "dependencies": {
+    "@material-ui/core": "^4.7.1",
     "package.json": "^2.0.1"
   }
 }
