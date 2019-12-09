@@ -13,7 +13,7 @@ function mapDispatchToProps(dispatch) {
       try {
         const module = {
           ...values,
-          credits: parseFloat(values.credits),
+          credits: parseFloat(values.credits), // Credits to add on backend?
           semesterId,
         };
         await API.post("api", "/add-modules", { body: module });

@@ -1,25 +1,15 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import * as yup from 'yup';
-import { Form, Field, Formik } from "formik";
-import { Typography } from "@material-ui/core";
+import { Formik } from "formik";
 import { TextField } from "formik-material-ui";
+
+import { StyledForm, StyledFormHeader, ThemedField, StyledHelpBlock } from '../../molecules/FormStyles/formStyledComponents';
 import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
 
-const styles = {
-  helpBlock: {
-    fontSize: '14',
-    padding: '1rem',
-    color: '#999',
-  },
-  form: {
-    margin: '0 auto',
-    maxWidth: '320px',
-  },
-};
 
 const EmailConfirmSchema = yup.object().shape({
-  confirmationCode: yup.string().min(6, 'Confirmation code too short').required('Required'),
+  confirmationCode: yup.string().min(6, 'Confirmation code too short').required('* Required'),
 });
 
 class EmailConfirmation extends Component {
@@ -27,53 +17,46 @@ class EmailConfirmation extends Component {
   render() {
     const { email, handleSubmit } = this.props;
     return (
-      <>
-        <div style={{minHeight: '7vh'}}></div>
-        <div className="Signup">
-          <Formik
-            initialValues={{
-              confirmationCode: '',
-            }}
-            validationSchema={EmailConfirmSchema}
-            onSubmit={async (values, { setSubmitting }) => {
-              return handleSubmit({ email, values, setSubmitting });
-            }}
-          >
-            {({isSubmitting, isValid}) => (
-              <Form style={styles.form}>
-                <br/>
-                <Typography variant="body1" style={{fontSize: '0.9rem', fontWeight: 500}}>
-                  Confirmation Code
-                </Typography>
-                <Field
-                  type="text"
-                  name="confirmationCode"
-                  margin="dense"
-                  component={TextField}
-                  fullWidth
-                  autoFocus
-                  variant="outlined"
-                />
-                <br />
-                <p style={styles.helpBlock}>Please check your email for the code.</p>
-                <ProgressButton
-                  block
-                  size="large"
-                  disabled={!isValid && isSubmitting}
-                  isLoading={isSubmitting}
-                  variant="outline-primary"
-                  type="submit"
-                  text="Verify Your Email"
-                  loadingText="Verifying..."
-                  style={{margin: '1rem 0'}}
-                >
-                  Verify Your Email
-                </ProgressButton>
-              </Form>
-            )}
-          </Formik>
-        </div>
-      </>
+      <Formik
+        initialValues={{
+          confirmationCode: '',
+        }}
+        validationSchema={EmailConfirmSchema}
+        onSubmit={async (values, { setSubmitting }) => {
+          return handleSubmit({ email, values, setSubmitting });
+        }}
+      >
+        {({isSubmitting, isValid}) => (
+          <StyledForm>
+            <br/>
+            <StyledFormHeader variant="body1">Confirmation Code</StyledFormHeader>
+            <ThemedField
+              type="text"
+              name="confirmationCode"
+              margin="dense"
+              component={TextField}
+              fullWidth
+              autoFocus
+              variant="outlined"
+            />
+            <br />
+            <StyledHelpBlock>Please check your email for the code.</StyledHelpBlock>
+            <ProgressButton
+              block
+              size="large"
+              disabled={!isValid && isSubmitting}
+              isLoading={isSubmitting}
+              variant="outline-primary"
+              type="submit"
+              text="Verify Your Email"
+              loadingText="Verifying..."
+              style={{margin: '1rem 0'}}
+            >
+              Verify Your Email
+            </ProgressButton>
+          </StyledForm>
+        )}
+      </Formik>
     );
   }
 }

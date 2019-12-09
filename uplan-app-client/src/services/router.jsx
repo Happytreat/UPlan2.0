@@ -29,7 +29,7 @@ import {
 
 const Router = ({ isAuth, location }) => (
   <Switch>
-    <UnauthenticatedRoute path={ROUTE_ROOT} exact component={NotLoggedInHome} isAuth={isAuth} title={"UPlan"} />
+    <UnauthenticatedRoute path={ROUTE_ROOT} exact component={NotLoggedInHome} isAuth={isAuth} title={"Home"} />
 
     <UnauthenticatedRoute path={ROUTE_USER_LOGIN} exact component={LoginPage} isAuth={isAuth} title={"Login"}/>
 
@@ -46,7 +46,7 @@ const Router = ({ isAuth, location }) => (
 
 Router.propTypes = {
   isAuth: PropTypes.bool.isRequired,
-  location: PropTypes.string.isRequired,
+  location: PropTypes.string.isRequired
 };
 
 function mapStateToProps(state) {
