@@ -22,7 +22,7 @@ export async function main(event, context) {
   try {
     const { Items: allModules } = await dynamoDbLib.call("query", params);
     const modules = groupBy(allModules, mod => mod.semesterId);
-
+    console.log(allModules);
     return success({
       modules,
     });
