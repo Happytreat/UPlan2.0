@@ -13,19 +13,35 @@ const StyledButton = styled(Button)`
   }
 `;
 
+const StyledText = styled.div`
+  && {
+    color: ${props => props.theme.secondary};
+    display: inline-block;
+    margin: auto;
+  }
+`;
+
+const StyledSpinner = styled(Spinner)`
+  color: ${props => props.theme.secondary};
+  display: inline-block;
+  margin: auto;
+`;
+
 export default ({
                   isLoading,
                   text,
                   loadingText,
-                  className = "",
                   disabled = false,
                   ...props
                 }) =>
   <StyledButton
-    className={`ProgressButton ${className}`}
     disabled={disabled || isLoading}
     {...props}
   >
-    {isLoading && <Spinner animation="border" size="sm"/>}
-    {!isLoading ? text : loadingText}
+    {isLoading
+      ? (<>
+          <StyledSpinner animation="border" size="sm"/>
+          <StyledText>{loadingText}</StyledText>
+          </>)
+      : text}
   </StyledButton>;
