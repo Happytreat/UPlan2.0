@@ -16,6 +16,8 @@ const styles = {
 };
 
 class UpdateSemester extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.file = null;
@@ -26,8 +28,12 @@ class UpdateSemester extends Component {
       attachmentURL: null,
       order: 1,
     };
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
   async componentDidMount() {
+    this._isMounted = true;
     try {
       let attachmentURL;
       const semester = await this.getSemester();
@@ -44,10 +50,14 @@ class UpdateSemester extends Component {
         order,
       });
     } catch (e) {
-      // console.log('error from update sem', e);
+      console.log('error from update sem', e);
       alert('You are not authorised to view this page.');
-      this.props.history.push("/");
+      //this.props.history.push("/");
     }
+  }
+
+  componentWillUnmount() {
+    this._isMounted = false;
   }
 
   // path="/semesters/:id"
@@ -95,7 +105,7 @@ class UpdateSemester extends Component {
 
       const { name, description, order, semester } = this.state;
 
-      saveSemester({
+      await saveSemester({
         id,
         semester: {
           name,
@@ -209,7 +219,7 @@ class UpdateSemester extends Component {
               variant="primary"
               size="large"
               disabled={!this.validateForm()}
-              type="submit"
+              onClick={this.handleSubmit}
               isLoading={fetching}
               text="Save"
               loadingText="Saving…"

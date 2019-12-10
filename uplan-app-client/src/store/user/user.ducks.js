@@ -1,6 +1,6 @@
 import { orderBy, noop, identity } from 'lodash';
 import { createAction, handleActions } from 'redux-actions';
-import { createSelector } from 'reselect'
+import { createSelector } from 'reselect';
 
 export const types = {
   request: 'user/REQUEST',
