@@ -42,6 +42,14 @@ const DroppableCol = styled.div`
   height: 40vh;
 `;
 
+const AddModuleButton = styled(Button)`
+  &&{
+    color: #999;
+    text-transform: none;
+    margin-left: 1rem;
+  }
+`;
+
 const trimDescription = (description) => {
   const text = description.substring(0, 30).trim().split("\n")[0];
   return description.length > 40
@@ -62,15 +70,16 @@ const DraggableModuleList = ({ sem, moduleList, showModal }) => {
         {(provided, snapshot) => (
           <DroppableCol
             ref={provided.innerRef}
-            style={getListStyle(snapshot.isDraggingOver)}>
+            style={getListStyle(snapshot.isDraggingOver)}
+          >
             {moduleList.map((mod, index) => (
               <DraggableModule key={`${sem.semesterId}${mod.moduleId}-draggableModule`} mod={mod} index={index} onClick={() => showModal(ModalModes.UPDATE_MODULE)(mod.moduleId)}/>
             ))}
             {provided.placeholder}
-            <Button style={{ color: '#999', textTransform: 'none', marginLeft: '1rem'}} onClick={() => showModal(ModalModes.NEW_MODULE)(sem.semesterId)}>
+            <AddModuleButton onClick={() => showModal(ModalModes.NEW_MODULE)(sem.semesterId)}>
               <b>{"\uFF0B "}</b>
               Add a new module
-            </Button>
+            </AddModuleButton>
           </DroppableCol>
         )}
       </Droppable>
