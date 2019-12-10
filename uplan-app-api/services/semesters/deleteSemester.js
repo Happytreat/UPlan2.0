@@ -11,7 +11,7 @@ export async function main(event, context) {
     TableName: SemestersTable,
     Key: {
       userId: event.requestContext.identity.cognitoIdentityId,
-      semesterId: event.pathParameters.semesterId
+      semesterId: event.pathParameters.id
     }
   };
 
@@ -26,7 +26,7 @@ export async function main(event, context) {
   try {
     // Delete all modules in semester
     const { Items: allModules } = await dynamoDbLib.call("query", getAllModules);
-    const filteredModules = filter(allModules, mod => mod.semesterId === event.pathParameters.semesterId);
+    const filteredModules = filter(allModules, mod => mod.semesterId === event.pathParameters.id);
     await Promise.all(map(filteredModules, async mod => {
       const params = {
         TableName: ModulesTable,
