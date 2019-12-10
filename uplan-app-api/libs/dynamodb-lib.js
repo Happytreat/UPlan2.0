@@ -6,3 +6,15 @@ export function call(action, params) {
   // response data property or rejected with the response error property.
   return dynamoDb[action](params).promise();
 }
+
+export function get(tableName, keys) {
+  return call("get", {
+    TableName: tableName,
+    Key: keys,
+  });
+}
+
+export default {
+  get,
+  call
+};

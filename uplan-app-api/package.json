@@ -2,7 +2,7 @@
   "name": "uplan-app-api",
   "version": "1.0.0",
   "private": false,
-  "description": "A Node.js starter for the Serverless Framework with async/await and unit test support",
+  "description": "UPlan Api using the Serverless Framework with AWS",
   "main": "handler.js",
   "scripts": {
     "test": "serverless-bundle test"
@@ -14,12 +14,15 @@
     "url": "https://github.com/AnomalyInnovations/serverless-nodejs-starter.git"
   },
   "devDependencies": {
+    "@babel/core": "^7.7.5",
     "aws-sdk": "^2.503.0",
+    "babel-jest": "^24.9.0",
+    "jest": "^24.9.0",
+    "lodash": "^4.17.15",
     "serverless-bundle": "^1.2.2",
     "serverless-offline": "^5.3.3"
   },
   "dependencies": {
-    "lodash": "^4.17.15",
     "uuid": "^3.3.2",
     "validator": "^11.1.0"
   }
