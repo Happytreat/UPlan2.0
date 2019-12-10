@@ -1,7 +1,7 @@
 import * as dynamoDbLib from "../../libs/dynamodb-lib";
 import { success, failure } from "../../libs/response-lib";
 import { SemestersTable, ModulesTable, TagsTable } from "../../consts/tables";
-import {groupBy} from "lodash";
+import { groupBy } from "lodash";
 
 export async function main(event, context) {
   let params = {

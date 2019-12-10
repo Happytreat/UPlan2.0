@@ -1,10 +1,10 @@
 {
   "pathParameters": {
-    "id": "605f7e10-b5c0-11e9-82a3-7f6610b16252"
+    "semesterId": "93f13892-1386-453f-8d6b-77c52a37cd56"
   },
   "requestContext": {
     "identity": {
-      "cognitoIdentityId": "USER-SUB-1234"
+      "cognitoIdentityId": "ap-southeast-1:99a87cf5-918e-4bd4-acd8-e0cd3e507aef"
     }
   }
 }
