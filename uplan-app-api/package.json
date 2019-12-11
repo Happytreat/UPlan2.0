@@ -23,6 +23,7 @@
     "serverless-offline": "^5.3.3"
   },
   "dependencies": {
+    "package.json": "^2.0.1",
     "uuid": "^3.3.2",
     "validator": "^11.1.0"
   }
