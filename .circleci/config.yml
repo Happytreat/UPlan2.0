@@ -18,7 +18,7 @@ jobs:
 
     steps:
       - checkout
-      - cd uplan-app-api
+      - run: cd uplan-app-api
 
       - run:
           name: update-npm
