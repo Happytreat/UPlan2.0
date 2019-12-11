@@ -15,6 +15,6 @@ export async function main(event, context) {
     // Return the matching list of items in response body
     return success(result.Items);
   } catch (e) {
-    return failure({ err: e.message });
+    return failure({ error: e.message }, 500);
   }
 }

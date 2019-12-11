@@ -20,6 +20,17 @@ const get = async (tableName, keys) => {
   return { Item: val };
 };
 
+// Mock del acts like get
+const del = async (tableName, keys) => {
+  let val = data[tableName];
+  await Promise.all(Object.keys(keys).map(async k => {
+    val = _.get(val, `${keys[k]}`, null);
+    await setTimeout(function(){}, 1000)
+  }));
+  return { Attributes: val };
+};
+
 export default {
-  get
+  get,
+  del
 }

@@ -26,6 +26,6 @@ export async function main(event, context) {
     return success({ updated: res.Attributes });
   } catch (e) {
     // console.log(e);
-    return failure({ err: e.message });
+    return failure({ error: e.message }, 500);
   }
 }

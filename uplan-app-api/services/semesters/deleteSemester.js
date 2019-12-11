@@ -41,6 +41,6 @@ export async function main(event, context) {
     await dynamoDbLib.call("delete", deleteSemester);
     return success({ status: true });
   } catch (e) {
-    return failure({ status: false });
+    return failure({ error: e.message }, 500);
   }
 }
