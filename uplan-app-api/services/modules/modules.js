@@ -7,14 +7,25 @@ class Modules {
     this.get = this.get.bind(this);
   }
 
-  async get(userId, moduleId, success, failure) {
+  async get({ userId, moduleId, success, failure }) {
     try {
       const result = await this.db.get(this.tableName, { userId, moduleId });
       return get(result, 'Item', null)
           ? success(result.Item)
-          : failure({ status: false, error: "Item not found." });
+          : failure({ error: "Item not found." }, 404);
     } catch (err) {
-      return failure({ status: false, error: err });
+      return failure({ error: err.message }, 500);
+    }
+  }
+
+  async delete({ userId, moduleId, success, failure }) {
+    try {
+      const result = await this.db.del(this.tableName, { userId, moduleId });
+      return get(result, 'Attributes', null)
+        ? success(result.Attributes)
+        : failure({ error: "Item not found." }, 404);
+    } catch (err) {
+      return failure({ error: err.message }, 500);
     }
   }
 }

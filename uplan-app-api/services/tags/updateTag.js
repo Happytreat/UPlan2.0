@@ -23,7 +23,6 @@ export async function main(event, context) {
     await dynamoDbLib.call("update", params);
     return success({ tagId: event.pathParameters.id });
   } catch (e) {
-    console.log(e);
-    return failure({ err: e.message });
+    return failure({ error: e.message }, 500);
   }
 }

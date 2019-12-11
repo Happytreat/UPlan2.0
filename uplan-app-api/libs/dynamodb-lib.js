@@ -14,7 +14,16 @@ export function get(tableName, keys) {
   });
 }
 
+export function del(tableName, keys) {
+  return call("delete", {
+    TableName: tableName,
+    Key: keys,
+    ReturnValues: 'ALL_OLD',
+  });
+}
+
 export default {
   get,
-  call
+  call,
+  del
 };

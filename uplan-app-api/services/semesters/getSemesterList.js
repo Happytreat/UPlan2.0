@@ -1,6 +1,7 @@
 import * as dynamoDbLib from "../../libs/dynamodb-lib";
 import { success, failure } from "../../libs/response-lib";
 import { SemestersTable } from "../../consts/tables";
+import {get} from "lodash";
 
 export async function main(event, context) {
   const params = {
@@ -19,8 +20,10 @@ export async function main(event, context) {
   try {
     const result = await dynamoDbLib.call("query", params);
     // Return the matching list of items in response body
-    return success(result.Items);
+    return get(result, 'Items', null)
+      ? success(result.Items)
+      : failure({ error: "Internal Server Error" }, 500); // not sure when will reach here
   } catch (e) {
-    return failure({ status: false });
+    return failure({ error: e.message }, 500);
   }
 }

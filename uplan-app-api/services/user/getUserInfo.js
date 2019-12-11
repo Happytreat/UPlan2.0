@@ -47,6 +47,6 @@ export async function main(event, context) {
       tags,
     });
   } catch (e) {
-    return failure({ status: false });
+    return failure({error: e.message}, 500);
   }
 }
