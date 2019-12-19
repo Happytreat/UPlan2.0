@@ -17,7 +17,7 @@ export async function main(event, context) {
   ]);
 
   if (!isValid) {
-    return validationError({ message: 'Validation Error.' });
+    return validationError();
   }
 
   const params = {
@@ -35,6 +35,6 @@ export async function main(event, context) {
     await dynamoDbLib.call("put", params);
     return success(params.Item);
   } catch (e) {
-    return failure({ status: false });
+    return failure({ error: e.message }, 500);
   }
 }

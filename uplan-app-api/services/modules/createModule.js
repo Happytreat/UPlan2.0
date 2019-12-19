@@ -1,9 +1,9 @@
 import uuid from "uuid";
-import _ from 'lodash';
 import * as dynamoDbLib from "../../libs/dynamodb-lib";
 import { success, failure, validationError } from "../../libs/response-lib";
-import { isNonEmptyString, validate } from '../../utils/validation';
+import { isValidCreateModule } from '../../utils/modules-validation';
 import { ModulesTable } from "../../consts/tables";
+import Modules from "./modules";
 
 // TODO: Improve validation by creating "middleware"
 export async function main(event, context) {
@@ -11,31 +11,20 @@ export async function main(event, context) {
   const { semesterId, code, description, credits } = data;
 
   // Validate else throw 422
-  const isValid = validate([
-    _.isNumber(credits),
-    isNonEmptyString([code, semesterId]),
-  ]);
-
-  if (!isValid) {
-    return validationError({ message: 'Validation Error.' });
+  if (!isValidCreateModule({ semesterId, code, description, credits })) {
+    return validationError();
   }
-
-  const params = {
-    TableName: ModulesTable,
-    Item: {
+  const moduleTable = new Modules(dynamoDbLib, ModulesTable);
+  return moduleTable.create({
+    item: {
       userId: event.requestContext.identity.cognitoIdentityId,
       moduleId: uuid.v4(),
       semesterId,
       code,
       description,
       credits,
-    }
-  };
-
-  try {
-    await dynamoDbLib.call("put", params);
-    return success(params.Item);
-  } catch (e) {
-    return failure({ status: false, err: e });
-  }
+    },
+    success,
+    failure
+  });
 }

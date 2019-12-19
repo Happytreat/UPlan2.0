@@ -1,32 +1,20 @@
-import { groupBy } from 'lodash';
 import * as dynamoDbLib from "../../libs/dynamodb-lib";
 import { success, failure } from "../../libs/response-lib";
 import { ModulesTable } from "../../consts/tables";
+import Modules from "./modules";
 
-// @return all modules of a list of semester ids
+/**
+ * @return all modules of a list of semester ids:
+ * modules: {
+ *   "semId": [{moduleId: ...}, {moduleId: ...}],
+ *   "semId": [{moduleId: ...}, {moduleId: ...}],
+ * }
+ * */
 export async function main(event, context) {
-  /**
-   * Should look like:
-   * modules: {
-   *   "semId": [{moduleId: ...}, {moduleId: ...}],
-   *   "semId": [{moduleId: ...}, {moduleId: ...}],
-   * }
-   * */
-  const params = {
-    TableName: ModulesTable,
-    KeyConditionExpression: "userId = :userId",
-    ExpressionAttributeValues: {
-      ":userId": event.requestContext.identity.cognitoIdentityId
-    }
-  };
-  try {
-    const { Items: allModules } = await dynamoDbLib.call("query", params);
-    const modules = groupBy(allModules, mod => mod.semesterId);
-    console.log(allModules);
-    return success({
-      modules,
-    });
-  } catch (e) {
-    return failure({ status: false, error: e });
-  }
+  const moduleTable = new Modules(dynamoDbLib, ModulesTable);
+  return moduleTable.getAll({
+    userId: event.requestContext.identity.cognitoIdentityId,
+    success,
+    failure
+  });
 }

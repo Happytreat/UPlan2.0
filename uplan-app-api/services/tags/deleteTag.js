@@ -14,6 +14,6 @@ export async function main(event, context) {
     await dynamoDbLib.call("delete", params);
     return success({ tagId: event.pathParameters.id });
   } catch (e) {
-    return failure({ err: e });
+    return failure({ error: e.message }, 500);
   }
 }

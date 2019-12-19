@@ -2,12 +2,12 @@ export function success(body) {
   return buildResponse(200, body);
 }
 
-export function failure(body) {
-  return buildResponse(500, body);
+export function failure(body, statusCode=500) {
+  return buildResponse(statusCode, body);
 }
 
 export function validationError(body) {
-  return buildResponse(422, body);
+  return buildResponse(422, { message: 'Validation Error.' });
 }
 
 // TODO: To create a general handleException method or logging system

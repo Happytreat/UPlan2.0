@@ -5,5 +5,10 @@ import Modules from "./modules";
 
 export async function main(event, context) {
   const moduleTable = new Modules(dynamoDbLib, ModulesTable);
-  return moduleTable.get(event.requestContext.identity.cognitoIdentityId, event.pathParameters.id, success, failure);
+  return moduleTable.get({
+    userId: event.requestContext.identity.cognitoIdentityId,
+    moduleId: event.pathParameters.id,
+    success,
+    failure
+  });
 }
