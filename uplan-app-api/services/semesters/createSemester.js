@@ -17,7 +17,7 @@ export async function main(event, context) {
   ]);
 
   if (!isValid) {
-    return validationError({ message: 'Validation Error.' });
+    return validationError();
   }
 
   const params = {

@@ -7,7 +7,7 @@ export function failure(body, statusCode=500) {
 }
 
 export function validationError(body) {
-  return buildResponse(422, body);
+  return buildResponse(422, { message: 'Validation Error.' });
 }
 
 // TODO: To create a general handleException method or logging system

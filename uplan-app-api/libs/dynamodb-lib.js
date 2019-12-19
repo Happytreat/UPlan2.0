@@ -14,6 +14,13 @@ export function get(tableName, keys) {
   });
 }
 
+export function create(tableName, item) {
+  return call("put", {
+    TableName: tableName,
+    Item: item,
+  });
+}
+
 export function del(tableName, keys) {
   return call("delete", {
     TableName: tableName,

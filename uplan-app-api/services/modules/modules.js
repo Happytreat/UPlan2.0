@@ -18,6 +18,15 @@ class Modules {
     }
   }
 
+  async create({ item, success, failure }) {
+    try {
+      await this.db.create(this.tableName, item);
+      return success(item);
+    } catch (err) {
+      return failure({ error: err.message }, 500);
+    }
+  }
+
   async delete({ userId, moduleId, success, failure }) {
     try {
       const result = await this.db.del(this.tableName, { userId, moduleId });

@@ -1,16 +1,14 @@
 import Modules from "../../../services/modules/modules";
-import testDb from './mock';
+import testDb, { failure, moduleExist, userExist, success } from './mock';
 
-it('Get Module Successfully if Exists', async () => {
+it('Get Module Successfully if module exists', async () => {
   expect.assertions(1);
   const moduleTable = new Modules(testDb, "moduleTable");
-  const moduleExist = 'mod-1';
-  const userExist = 'user-1';
   const data = await moduleTable.get({
     userId: userExist,
     moduleId: moduleExist,
-    success: (body) => body,
-    failure: (body) => body,
+    success,
+    failure,
   });
   expect(data).toEqual({
     moduleId: 'mod-1',
@@ -18,16 +16,14 @@ it('Get Module Successfully if Exists', async () => {
   });
 });
 
-it('getModule return failure if module does not exists', async () => {
+it('Get module return failure if module does not exists', async () => {
   expect.assertions(1);
   const moduleTable = new Modules(testDb, "moduleTable");
-  const moduleNotExist = 'mod-2';
-  const userNotExist = 'user-2';
   const data = await moduleTable.get({
-    userId: userNotExist,
-    moduleId: moduleNotExist,
-    success: (body) => body,
-    failure: (body) => body,
+    userId: 'userNotExist',
+    moduleId: 'moduleNotExist',
+    success,
+    failure,
   });
 
   expect(data).toEqual({
