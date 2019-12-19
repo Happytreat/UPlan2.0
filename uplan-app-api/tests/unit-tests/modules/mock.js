@@ -52,13 +52,21 @@ const del = async (tableName, keys) => {
   return { Attributes: val };
 };
 
+// Always succeed in AWS put function
 const create = async (tableName, item) => {
   await setTimeout(function(){}, 1000);
+};
+
+// Always succeed in AWS update function
+const update = async (tableName, userId, data) => {
+  await setTimeout(function(){}, 1000);
+  return { Attributes: data };
 };
 
 export default {
   get,
   del,
   create,
-  getAll
+  getAll,
+  update
 }

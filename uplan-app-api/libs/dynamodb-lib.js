@@ -39,8 +39,27 @@ export function getAll(tableName, userId) {
   });
 }
 
+export function update(tableName, userId, data) {
+  return call("update", {
+    TableName: tableName,
+    Key: {
+      userId,
+      moduleId: data.moduleId
+    },
+    UpdateExpression: "SET code = :code, credits =:credits, description =:description, semesterId =:semesterId",
+    ExpressionAttributeValues: {
+      ":code": data.code || "",
+      ":description": data.description || "",
+      ":credits": data.credits || 0,
+      ":semesterId": data.semesterId || "",
+    },
+    ReturnValues: "ALL_NEW"
+  });
+}
+
 export default {
   get,
   call,
-  del
+  del,
+  update
 };

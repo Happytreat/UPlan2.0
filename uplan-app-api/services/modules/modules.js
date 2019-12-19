@@ -47,6 +47,15 @@ class Modules {
       return failure({ error: err.message }, 500);
     }
   }
+
+  async update({ userId, data, success, failure }) {
+    try {
+      const { Attributes: updated } = await this.db.update(this.tableName, userId, data);
+      return success({ updated });
+    } catch (err) {
+      return failure({ error: err.message }, 500);
+    }
+  }
 }
 
 export default Modules;
