@@ -29,6 +29,16 @@ export function del(tableName, keys) {
   });
 }
 
+export function getAll(tableName, userId) {
+  return call("query", {
+    TableName: tableName,
+    KeyConditionExpression: "userId = :userId",
+    ExpressionAttributeValues: {
+      ":userId": userId
+    }
+  });
+}
+
 export default {
   get,
   call,

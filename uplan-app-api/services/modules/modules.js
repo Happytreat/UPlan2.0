@@ -1,4 +1,4 @@
-import { get } from 'lodash';
+import { get, groupBy } from 'lodash';
 
 class Modules {
   constructor(db, tableName) {
@@ -33,6 +33,16 @@ class Modules {
       return get(result, 'Attributes', null)
         ? success(result.Attributes)
         : failure({ error: "Item not found." }, 404);
+    } catch (err) {
+      return failure({ error: err.message }, 500);
+    }
+  }
+
+  async getAll({ userId, success, failure }) {
+    try {
+      const { Items: allModules } = await this.db.getAll(this.tableName, userId);
+      const modules = groupBy(allModules, mod => mod.semesterId);
+      return success({ modules });
     } catch (err) {
       return failure({ error: err.message }, 500);
     }

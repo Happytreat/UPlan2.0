@@ -12,7 +12,8 @@ it('Delete Module Successfully if Exists', async () => {
   });
   expect(data).toEqual({
     moduleId: 'mod-1',
-    userId: 'user-1'
+    userId: 'user-1',
+    semesterId: 'sem-1'
   });
 });
 

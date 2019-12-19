@@ -12,7 +12,8 @@ it('Get Module Successfully if module exists', async () => {
   });
   expect(data).toEqual({
     moduleId: 'mod-1',
-    userId: 'user-1'
+    userId: 'user-1',
+    semesterId: 'sem-1'
   });
 });
 

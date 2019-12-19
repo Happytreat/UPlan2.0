@@ -20,7 +20,8 @@ const data = {
     [userExist]: {
       [moduleExist]: {
         moduleId: 'mod-1',
-        userId: 'user-1'
+        userId: 'user-1',
+        semesterId: 'sem-1'
       },
     }
   }
@@ -35,6 +36,12 @@ const get = async (tableName, keys) => {
   return { Item: val };
 };
 
+const getAll = async (tableName, userId) => {
+  let val = data[tableName];
+  await setTimeout(function(){}, 1000);
+  return { Items: _.get(val, `${userId}`, {}) };
+};
+
 // Mock del acts like get
 const del = async (tableName, keys) => {
   let val = data[tableName];
@@ -47,11 +54,11 @@ const del = async (tableName, keys) => {
 
 const create = async (tableName, item) => {
   await setTimeout(function(){}, 1000);
-  return;
 };
 
 export default {
   get,
   del,
-  create
+  create,
+  getAll
 }
