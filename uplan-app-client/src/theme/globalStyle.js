@@ -34,5 +34,7 @@ export const greenTheme = {
   fontFamily: "Montserrat"
 };
 
+export const defaultTheme = 'blueTheme';
+
 export const themes = ['blueTheme', 'pinkTheme', 'yellowTheme', 'greenTheme'];
 

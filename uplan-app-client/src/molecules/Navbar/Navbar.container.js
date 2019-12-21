@@ -18,9 +18,10 @@ function mapDispatchToProps(dispatch) {
       event.preventDefault();
       await Auth.signOut();
       dispatch(authActions.clear());
-      dispatch(userActions.clear());
+      // dispatch(userActions.clear());
       push("/login");
-    }
+    },
+    updateTheme: (theme) => dispatch(userActions.updateTheme(theme))
   };
 }
 
