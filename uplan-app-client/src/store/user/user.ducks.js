@@ -2,6 +2,8 @@ import { orderBy, noop, identity } from 'lodash';
 import { createAction, handleActions } from 'redux-actions';
 import { createSelector } from 'reselect';
 
+import { defaultTheme } from '../../theme/globalStyle';
+
 export const types = {
   request: 'user/REQUEST',
   clear: 'user/CLEAR',
@@ -12,6 +14,7 @@ export const types = {
   success: 'user/SUCCESS',
   error: 'user/ERROR',
   alt: 'user/ALT',
+  updateTheme: 'user/UPDATETHEME'
 };
 
 export const actions = {
@@ -28,6 +31,7 @@ export const actions = {
   ),
   error: createAction(types.error),
   alt: createAction(types.alt),
+  updateTheme: createAction(types.updateTheme),
 };
 
 const initialState = {
@@ -81,6 +85,11 @@ const reducer = handleActions({
       fetching: false,
       error: true,
     }),
+  [types.updateTheme]: (state, action) => (
+    {
+      ...state,
+      theme: action.payload,
+    }),
 }, initialState);
 
 export const selectors = {
@@ -93,6 +102,7 @@ export const selectors = {
   tags: state => state.user.tags,
   modules: state => state.user.modules,
   alt: state => state.user.alt,
+  theme: state => state.user.theme || defaultTheme,
 };
 
 export default reducer;

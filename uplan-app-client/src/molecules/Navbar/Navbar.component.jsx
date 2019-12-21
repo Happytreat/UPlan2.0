@@ -41,7 +41,7 @@ const NavLogoAndTitle = styled(Link)`
 
 class NavbarComponent extends Component {
   render() {
-    const { isAuth, handleLogout } = this.props;
+    const { isAuth, handleLogout, updateTheme } = this.props;
 
     return (
       <>
@@ -56,7 +56,7 @@ class NavbarComponent extends Component {
           <Collapse className="justify-content-end">
             <Nav>
               <Item>
-                <ThemeSelect handleThemeChange={this.props.handleThemeChange} />
+                <ThemeSelect handleThemeChange={updateTheme} />
               </Item>
               {
                 isAuth
@@ -82,6 +82,7 @@ class NavbarComponent extends Component {
 NavbarComponent.propTypes = {
   isAuth: PropTypes.bool.isRequired,
   handleLogout: PropTypes.func.isRequired,
+  updateTheme: PropTypes.func.isRequired,
 };
 
 export default NavbarComponent;
