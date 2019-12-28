@@ -56,8 +56,6 @@ class Router extends Component {
         <Switch>
           <UnauthenticatedRoute path={ROUTE_ROOT} exact component={NotLoggedInHome} isAuth={isAuth} title={"Home"} />
 
-          <UnauthenticatedRoute path={ROUTE_USER_RESET_PASSWORD} exact component={ResetPassword} isAuth={isAuth} title={"Reset Password"}/>
-
           <UnauthenticatedRoute path={ROUTE_USER_LOGIN} exact component={LoginPage} isAuth={isAuth} title={"Login"}/>
 
           <UnauthenticatedRoute path={ROUTE_USER_SIGNUP} exact component={SignupPage} isAuth={isAuth} title={"Signup"}/>
@@ -72,6 +70,7 @@ class Router extends Component {
       </ThemeProvider>
     );
   }
+  // <UnauthenticatedRoute path={ROUTE_USER_RESET_PASSWORD} exact component={ResetPassword} isAuth={isAuth} title={"Reset Password"}/>
 }
 
 Router.propTypes = {
