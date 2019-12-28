@@ -8,8 +8,8 @@ class PasswordReset extends Component {
   render() {
     const { handleEmailSubmit, handleResetSubmit, isCodeSent, email } = this.props;
     return isCodeSent
-      ? <ResetPasswordAfterCodeForm handleResetSubmit={handleResetSubmit} email={email} />
-      : <ResetPasswordBeforeCodeForm handleEmailSubmit={handleEmailSubmit} />;
+      ? <></>
+      : <><ResetPasswordBeforeCodeForm handleEmailSubmit={handleEmailSubmit} /></>;
   }
 }
 
