@@ -1,16 +1,16 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React from 'react';
+import PropTypes from 'prop-types';
 
 import ResetPasswordBeforeCodeForm from './ResetPasswordBeforeCode';
 import ResetPasswordAfterCodeForm from './ResetPasswordAfterCode';
 
-class PasswordReset extends Component {
-  render() {
-    const { handleEmailSubmit, handleResetSubmit, isCodeSent, email } = this.props;
-    return isCodeSent
-      ? <ResetPasswordAfterCodeForm handleResetSubmit={handleResetSubmit} email={email} />
-      : <ResetPasswordBeforeCodeForm handleEmailSubmit={handleEmailSubmit} />;
-  }
+function PasswordReset(props) {
+  const {
+    handleEmailSubmit, handleResetSubmit, isCodeSent, email,
+  } = props;
+  return isCodeSent
+    ? <ResetPasswordAfterCodeForm handleResetSubmit={handleResetSubmit} email={email}/>
+    : <ResetPasswordBeforeCodeForm handleEmailSubmit={handleEmailSubmit}/>;
 }
 
 

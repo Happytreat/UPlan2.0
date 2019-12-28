@@ -1,4 +1,4 @@
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
 import DraggableBoard from './DraggableBoard.component';
 import { actions as userActions, selectors as user } from '../../store/user/user.ducks';
 
@@ -14,8 +14,8 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    updateDraggableList: draggableList => dispatch(userActions.dragRequest(draggableList)),
-    updateModulePosition: module => dispatch(userActions.updateModule(module)),
+    updateDraggableList: (draggableList) => dispatch(userActions.dragRequest(draggableList)),
+    updateModulePosition: (module) => dispatch(userActions.updateModule(module)),
   };
 }
 

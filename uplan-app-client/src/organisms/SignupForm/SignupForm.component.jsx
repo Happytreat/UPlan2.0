@@ -1,11 +1,11 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
 import * as yup from 'yup';
-import { Formik } from 'formik';
-import { TextField } from 'formik-material-ui';
+import {Formik} from 'formik';
+import {TextField} from 'formik-material-ui';
 
-import { StyledForm, StyledFormHeader, ThemedField } from '../../molecules/FormStyles/formStyledComponents';
-import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
+import {StyledForm, StyledFormHeader, ThemedField} from '../../molecules/FormStyles/formStyledComponents';
+import ProgressButton from '../../molecules/ProgressButton/ProgressButton';
 
 const SignupSchema = yup.object().shape({
   username: yup.string().email('Invalid Email').required('Required'),
@@ -16,7 +16,8 @@ const SignupSchema = yup.object().shape({
 
 class Signup extends Component {
   componentDidMount() {
-    this.props.resetState();
+    const { resetState } = this.props;
+    resetState();
   }
 
   render() {
@@ -29,9 +30,7 @@ class Signup extends Component {
           nickname: '',
         }}
         validationSchema={SignupSchema}
-        onSubmit={async (values, { setSubmitting }) => {
-          return this.props.handleSubmit({ values, setSubmitting });
-        }}
+        onSubmit={async (values, { setSubmitting }) => this.props.handleSubmit({ values, setSubmitting })}
       >
         {({ isSubmitting, isValid }) => (
           <StyledForm>

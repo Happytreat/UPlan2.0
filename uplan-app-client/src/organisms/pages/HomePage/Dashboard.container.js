@@ -1,5 +1,5 @@
-import { connect } from "react-redux";
-import { API } from "aws-amplify";
+import { connect } from 'react-redux';
+import { API } from 'aws-amplify';
 import Dashboard from './Dashboard.component.jsx';
 import { selectors as auth } from '../../../store/auth.ducks';
 import { actions as userActions, selectors as user } from '../../../store/user/user.ducks';
@@ -19,12 +19,12 @@ function mapDispatchToProps(dispatch) {
     updateDashboard: async () => {
       dispatch(userActions.request());
       try {
-        const { semesters, modules, tags } = await API.get("api", "/user");
-        dispatch(userActions.update( {
+        const { semesters, modules, tags } = await API.get('api', '/user');
+        dispatch(userActions.update({
           semesters,
           modules,
           tags,
-        } ));
+        }));
       } catch (e) {
         alert(e);
         dispatch(userActions.error(e.message));

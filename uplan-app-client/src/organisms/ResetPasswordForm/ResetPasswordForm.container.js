@@ -1,10 +1,10 @@
-import { connect } from "react-redux";
-import { Auth } from "aws-amplify";
-import { push } from "connected-react-router";
+import { connect } from 'react-redux';
+import { Auth } from 'aws-amplify';
+import { push } from 'connected-react-router';
 
 import ResetPasswordForm from './ResetPasswordForm.component';
 import { actions as authActions, selectors as auth } from '../../store/auth.ducks';
-import { getStore } from "../../services/store";
+import { getStore } from '../../services/store';
 
 function mapStateToProps(state) {
   return {
@@ -33,7 +33,7 @@ function mapDispatchToProps(dispatch) {
         await Auth.forgotPasswordSubmit(email, confirmationCode, password);
         dispatch(authActions.resetPasswordSuccess());
         alert('Your password has been reset successfully. Please login.'); // TODO: Change to snack bar
-        getStore().dispatch(push("/login"));
+        getStore().dispatch(push('/login'));
       } catch (e) {
         alert(e.message); // to use snack bar
       } finally {

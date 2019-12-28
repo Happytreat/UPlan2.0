@@ -1,15 +1,17 @@
 import React from 'react';
-import { ModalModes } from "../../../consts/modal";
-import MainModal from "../../../molecules/Modal/Modal";
+import { ModalModes } from '../../../consts/modal';
+import MainModal from '../../../molecules/Modal/Modal';
 
-import NewSemester from "../../NewSemester/NewSemester.container";
-import EditSemester from "../../UpdateSemester/UpdateSemester.container";
+import NewSemester from '../../NewSemester/NewSemester.container';
+import EditSemester from '../../UpdateSemester/UpdateSemester.container';
 import NewModule from '../../../molecules/NewModule/NewModule.container';
 import UpdateModule from '../../../molecules/UpdateModule/UpdateModule.container';
 
 // renderModal({ mode, showModal, onHide: () => this.setState({ showModal: false, mode: '' }), semId })
-export const renderModal = ({ mode, onHide, showModal, ...cProps }) => {
-  switch(mode) {
+export const renderModal = ({
+  mode, onHide, showModal, ...cProps
+}) => {
+  switch (mode) {
     case `${ModalModes.NEW_SEMESTER}`:
       return (
         <MainModal

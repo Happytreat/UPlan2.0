@@ -1,13 +1,13 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import {
   Button, Grid,
 } from '@material-ui/core';
-import styled from 'styled-components'
+import styled from 'styled-components';
 
 // import LoadingPage from '../../../molecules/LoadingPage/LoadingPage';
-import { renderModal } from "./DashboardModal";
-import { ModalModes } from "../../../consts/modal";
+import { renderModal } from './DashboardModal';
+import { ModalModes } from '../../../consts/modal';
 import DraggableBoard from '../../DraggableBoard/DraggableBoard.container';
 
 
@@ -51,14 +51,16 @@ export default class LoggedIn extends Component {
         <Grid container>
           <Grid item xs={12} key="unique-id-123">
             <Button onClick={() => this.setState({ showModal: true, mode: ModalModes.NEW_SEMESTER })}>
-              <b>{"\uFF0B "}</b>
+              <b>{'\uFF0B '}</b>
               Add a new semester
             </Button>
             {
-              renderModal({ mode, showModal, onHide: () => this.setState({ showModal: false, mode: '' }), id })
+              renderModal({
+                mode, showModal, onHide: () => this.setState({ showModal: false, mode: '' }), id,
+              })
             }
           </Grid>
-          <DraggableBoard showModal={(mode) => (id) => this.setState({ showModal: true, id, mode })}/>
+          <DraggableBoard showModal={(mode) => (id) => this.setState({ showModal: true, id, mode })} />
         </Grid>
       </PageWrapper>
     );
