@@ -15,6 +15,10 @@ const SignupSchema = yup.object().shape({
 });
 
 class Signup extends Component {
+  componentDidMount() {
+    this.props.resetState();
+  }
+
   render() {
     return (
       <Formik
@@ -94,6 +98,7 @@ class Signup extends Component {
 
 Signup.propTypes = {
   handleSubmit: PropTypes.func.isRequired,
+  resetState: PropTypes.func.isRequired,
 };
 
 export default Signup;

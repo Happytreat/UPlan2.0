@@ -16,6 +16,7 @@ import NotFoundPage from '../organisms/pages/404';
 import Dashboard from '../organisms/pages/HomePage/Dashboard.container';
 import NotLoggedInHome from '../organisms/pages/HomePage/NotLoggedIn';
 import LoginPage from '../organisms/LoginForm/LoginForm.container';
+import ResetPassword from "../organisms/ResetPasswordForm/ResetPasswordForm.container";
 import SignupPage from '../organisms/SignupForm/SignupForm.container';
 import EmailConfirmation from '../organisms/EmailConfirmationForm/EmailConfirmationForm.container';
 
@@ -25,6 +26,7 @@ import {
   ROUTE_USER_LOGIN,
   ROUTE_USER_SIGNUP,
   ROUTE_CONFIRM_EMAIL,
+  ROUTE_USER_RESET_PASSWORD,
 } from '../consts/routes';
 import NavBar from "../molecules/Navbar/Navbar.container";
 import {ThemeProvider} from "styled-components";
@@ -48,12 +50,13 @@ class Router extends Component {
 
   render() {
     const { isAuth, theme } = this.props;
-    console.log('theme', theme);
     return (
       <ThemeProvider theme={this.handleThemeChange(theme)}>
         <NavBar/>
         <Switch>
           <UnauthenticatedRoute path={ROUTE_ROOT} exact component={NotLoggedInHome} isAuth={isAuth} title={"Home"} />
+
+          <UnauthenticatedRoute path={ROUTE_USER_RESET_PASSWORD} exact component={ResetPassword} isAuth={isAuth} title={"Reset Password"}/>
 
           <UnauthenticatedRoute path={ROUTE_USER_LOGIN} exact component={LoginPage} isAuth={isAuth} title={"Login"}/>
 

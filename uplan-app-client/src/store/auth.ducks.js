@@ -5,6 +5,8 @@ import { createAction, handleActions } from 'redux-actions';
 export const types = {
   request: 'auth/REQUEST',
   signup: 'auth/signup',
+  resetPasswordRequest: 'auth/RESET_PW_REQUEST',
+  resetPasswordSuccess: 'auth/RESET_PW_SUCCESS',
   clear: 'auth/CLEAR',
   success: 'auth/SUCCESS',
   error: 'auth/ERROR',
@@ -13,6 +15,8 @@ export const types = {
 export const actions = {
   request: createAction(types.request),
   signup: createAction(types.signup),
+  resetPasswordRequest: createAction(types.resetPasswordRequest),
+  resetPasswordSuccess: createAction(types.resetPasswordSuccess),
   clear: createAction(types.clear),
   success: createAction(
     types.success,
@@ -29,6 +33,7 @@ const initialState = {
   nickname: "",
   email: "",
   emailVerified: false,
+  resetPasswordRequest: false // reset password code sent out
 };
 
 const reducer = handleActions({
@@ -43,6 +48,19 @@ const reducer = handleActions({
       ...state,
       error: false,
       email: action.payload,
+    }),
+  [types.resetPasswordRequest]: (state, action) => (
+    {
+      ...state,
+      error: false,
+      email: action.payload,
+      resetPasswordRequest: true,
+    }),
+  [types.resetPasswordSuccess]: (state) => (
+    {
+      ...state,
+      error: false,
+      resetPasswordRequest: false,
     }),
   [types.clear]: () => (
     {
@@ -71,6 +89,7 @@ export const selectors = {
   nickname: state => state.auth.nickname,
   email: state => state.auth.email,
   username: state => state.auth.username,
+  resetPasswordRequest: state => state.auth.resetPasswordRequest,
 };
 
 export default reducer;

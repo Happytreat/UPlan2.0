@@ -16,12 +16,10 @@ function mapDispatchToProps(dispatch) {
     handleSubmit: async ({ email, values, setSubmitting }) => {
       const { confirmationCode } = values;
       try {
-        console.log('in');
         await Auth.confirmSignUp(email, confirmationCode);
         alert('Email successfully confirmed. Please login.'); // TODO: Change to snack bar
         getStore().dispatch(push("/login"));
       } catch (e) {
-        console.log('out', e);
         alert(e.message); // to use snack bar
       } finally {
         setSubmitting(false);
