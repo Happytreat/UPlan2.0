@@ -1,52 +1,40 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
+import React, {Component} from 'react';
 import * as yup from 'yup';
-import { Formik } from 'formik';
-import { TextField } from 'formik-material-ui';
+import { Formik } from "formik";
+import { TextField } from "formik-material-ui";
 
-import { StyledForm, StyledFormHeader, ThemedField } from '../../molecules/FormStyles/formStyledComponents';
+import {
+  StyledForm,
+  StyledFormHeader,
+  StyledHelpBlock,
+  ThemedField
+} from '../../molecules/FormStyles/formStyledComponents';
 import ProgressButton from "../../molecules/ProgressButton/ProgressButton";
 
-const SignupSchema = yup.object().shape({
-  username: yup.string().email('Invalid Email').required('Required'),
-  nickname: yup.string().min(6, 'Nickname too short').required('Required'),
+const PasswordResetAfterCodeSentSchema = yup.object().shape({
+  confirmationCode: yup.string().min(6, 'Confirmation code too short').required('* Required'),
   password: yup.string().min(8, 'Password too short').required('Required'),
   passwordConfirmation: yup.string().oneOf([yup.ref('password'), null], 'Passwords must match').required('Required'),
 });
 
-class Signup extends Component {
-  componentDidMount() {
-    this.props.resetState();
-  }
-
+class ResetPasswordAfterCodeForm extends Component {
   render() {
+    const { handleResetSubmit, email } = this.props;
     return (
       <Formik
         initialValues={{
-          username: '',
+          confirmationCode: '',
           password: '',
           passwordConfirmation: '',
-          nickname: '',
         }}
-        validationSchema={SignupSchema}
-        onSubmit={async (values, { setSubmitting }) => {
-          return this.props.handleSubmit({ values, setSubmitting });
+        validationSchema={PasswordResetAfterCodeSentSchema}
+        onSubmit={async (values, {setSubmitting}) => {
+          return handleResetSubmit({email, values, setSubmitting});
         }}
       >
-        {({ isSubmitting, isValid }) => (
+        {({isSubmitting, isValid}) => (
           <StyledForm>
-            <br />
-            <StyledFormHeader variant="body1">Username</StyledFormHeader>
-            <ThemedField
-              type="email"
-              name="username"
-              margin="dense"
-              component={TextField}
-              fullWidth
-              autoFocus
-              autoComplete="email"
-              variant="outlined"
-            />
+            <br/>
             <StyledFormHeader variant="body1">Password</StyledFormHeader>
             <ThemedField
               type="password"
@@ -67,15 +55,17 @@ class Signup extends Component {
               fullWidth
               variant="outlined"
             />
-            <StyledFormHeader variant="body1">Nickname</StyledFormHeader>
+            <StyledFormHeader variant="body1">Confirmation Code</StyledFormHeader>
             <ThemedField
               type="text"
-              name="nickname"
+              name="confirmationCode"
               margin="dense"
               component={TextField}
               fullWidth
+              autoFocus
               variant="outlined"
             />
+            <StyledHelpBlock>Please check your email for the code.</StyledHelpBlock>
             <ProgressButton
               block
               size="large"
@@ -83,22 +73,17 @@ class Signup extends Component {
               isLoading={isSubmitting}
               variant="outline-primary"
               type="submit"
-              text="Signup"
-              loadingText="Loading..."
-              style={{ margin: '1rem 0' }}
+              text="Reset Your Password"
+              loadingText="Resetting..."
+              style={{margin: '1rem 0'}}
             >
-              Signup
+              Reset Your Password
             </ProgressButton>
           </StyledForm>
         )}
       </Formik>
-    );
+    )
   }
 }
 
-Signup.propTypes = {
-  handleSubmit: PropTypes.func.isRequired,
-  resetState: PropTypes.func.isRequired,
-};
-
-export default Signup;
+export default ResetPasswordAfterCodeForm;

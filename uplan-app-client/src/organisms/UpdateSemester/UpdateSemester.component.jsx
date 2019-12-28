@@ -50,7 +50,6 @@ class UpdateSemester extends Component {
         order,
       });
     } catch (e) {
-      console.log('error from update sem', e);
       alert('You are not authorised to view this page.');
       //this.props.history.push("/");
     }

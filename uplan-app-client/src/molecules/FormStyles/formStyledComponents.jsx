@@ -11,7 +11,7 @@ export const StyledForm = styled(Form)`
 `;
 
 export const StyledFormHeader = styled(Typography)`
-  font-size: 0.9rem; 
+  font-size: 0.9rem;
   font-weight: 500;
 `;
 
@@ -26,6 +26,6 @@ export const ThemedField = styled(Field)`
 
 export const StyledHelpBlock = styled.p`
   font-size: 14px;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   color: #999;
 `;

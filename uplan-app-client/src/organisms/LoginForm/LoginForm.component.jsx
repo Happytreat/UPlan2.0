@@ -3,9 +3,11 @@ import PropTypes from "prop-types";
 import * as yup from "yup";
 import { Formik } from "formik";
 import { TextField } from "formik-material-ui";
+import { Link } from "react-router-dom";
 
 import { StyledForm, StyledFormHeader, StyledError, ThemedField } from '../../molecules/FormStyles/formStyledComponents';
 import ProgressButton from '../../molecules/ProgressButton/ProgressButton';
+import { ROUTE_USER_RESET_PASSWORD } from "../../consts/routes";
 
 
 const LoginSchema = yup.object().shape({
@@ -14,6 +16,10 @@ const LoginSchema = yup.object().shape({
 });
 
 class LoginForm extends Component {
+  componentDidMount() {
+    this.props.resetState();
+  }
+
   render() {
     const { handleSubmit, error } = this.props;
     return (
@@ -54,6 +60,7 @@ class LoginForm extends Component {
             <StyledError align="center" color="error">
               {error || ''}
             </StyledError>
+            <Link to={ROUTE_USER_RESET_PASSWORD}>Forgot password?</Link>
             <ProgressButton
               block
               size="large"
@@ -75,8 +82,9 @@ class LoginForm extends Component {
 }
 
 LoginForm.propTypes = {
+  resetState: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  error: PropTypes.object // TODO: Define what error is (type)
+  // error: PropTypes.object // TODO: Define what error is (type)
 };
 
 export default LoginForm;

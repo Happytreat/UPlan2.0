@@ -21,13 +21,13 @@ class App extends Component {
 
     return (
       <StyledApp>
-          <Provider store={getStore()}>
-            <PersistGate loading={null} persistor={persistor}>
-              <ConnectedRouter history={history}>
-                  <Router />
-              </ConnectedRouter>
-            </PersistGate>
-          </Provider>
+        <Provider store={getStore()}>
+          <PersistGate loading={null} persistor={persistor}>
+            <ConnectedRouter history={history}>
+              <Router />
+            </ConnectedRouter>
+          </PersistGate>
+        </Provider>
       </StyledApp>
     );
   }

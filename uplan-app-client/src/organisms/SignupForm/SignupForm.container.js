@@ -13,6 +13,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
+    resetState: () => dispatch(authActions.resetPasswordSuccess()),
     handleSubmit: async ({ values, setSubmitting }) => {
       const { username, password, nickname } = values;
       try {
