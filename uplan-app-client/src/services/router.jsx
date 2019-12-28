@@ -51,29 +51,27 @@ class Router extends Component {
   render() {
     const { isAuth, theme } = this.props;
     return (
-      <>
-        <ThemeProvider theme={this.handleThemeChange(theme)}>
-          <>
-            <NavBar />
-            <Switch>
-              <UnauthenticatedRoute path={ROUTE_ROOT} exact component={NotLoggedInHome} isAuth={isAuth} title={"Home"} />
+      <ThemeProvider theme={this.handleThemeChange(theme)}>
+        <>
+          <NavBar />
+          <Switch>
+            <UnauthenticatedRoute path={ROUTE_ROOT} exact component={NotLoggedInHome} isAuth={isAuth} title={"Home"} />
 
-              <UnauthenticatedRoute path={ROUTE_USER_RESET_PASSWORD} exact component={ResetPassword} isAuth={isAuth} title={"Reset Password"}/>
+            <UnauthenticatedRoute path={ROUTE_USER_RESET_PASSWORD} exact component={ResetPassword} isAuth={isAuth} title={"Reset Password"}/>
 
-              <UnauthenticatedRoute path={ROUTE_USER_LOGIN} exact component={LoginPage} isAuth={isAuth} title={"Login"}/>
+            <UnauthenticatedRoute path={ROUTE_USER_LOGIN} exact component={LoginPage} isAuth={isAuth} title={"Login"}/>
 
-              <UnauthenticatedRoute path={ROUTE_USER_SIGNUP} exact component={SignupPage} isAuth={isAuth} title={"Signup"}/>
+            <UnauthenticatedRoute path={ROUTE_USER_SIGNUP} exact component={SignupPage} isAuth={isAuth} title={"Signup"}/>
 
-              <UnauthenticatedRoute path={ROUTE_CONFIRM_EMAIL} exact component={EmailConfirmation} isAuth={isAuth} title={"Confirm Your Email"}/>
+            <UnauthenticatedRoute path={ROUTE_CONFIRM_EMAIL} exact component={EmailConfirmation} isAuth={isAuth} title={"Confirm Your Email"}/>
 
-              <AuthenticatedRoute path={ROUTE_DASHBOARD} exact component={Dashboard} isAuth={isAuth} title={"My Dashboard"} />
+            <AuthenticatedRoute path={ROUTE_DASHBOARD} exact component={Dashboard} isAuth={isAuth} title={"My Dashboard"} />
 
-              { /* Finally, catch all unmatched routes */ }
-              <Route component={NotFoundPage} />
-            </Switch>
-          </>
-        </ThemeProvider>
-      </>
+            { /* Finally, catch all unmatched routes */ }
+            <Route component={NotFoundPage} />
+          </Switch>
+        </>
+      </ThemeProvider>
     );
   }
 }

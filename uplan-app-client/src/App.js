@@ -20,7 +20,7 @@ class App extends Component {
     log.info(`${DEF_NAME} client: v${VERSION}`);
 
     return (
-      <div>
+      <StyledApp>
         <Provider store={getStore()}>
           <PersistGate loading={null} persistor={persistor}>
             <ConnectedRouter history={history}>
@@ -28,7 +28,7 @@ class App extends Component {
             </ConnectedRouter>
           </PersistGate>
         </Provider>
-      </div>
+      </StyledApp>
     );
   }
 }
