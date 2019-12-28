@@ -7,8 +7,9 @@ import ResetPasswordAfterCodeForm from './ResetPasswordAfterCode';
 class PasswordReset extends Component {
   render() {
     const { handleEmailSubmit, handleResetSubmit, isCodeSent, email } = this.props;
-    return isCodeSent ?  <ResetPasswordAfterCodeForm handleResetSubmit={handleResetSubmit} email={email} />
-      : <ResetPasswordBeforeCodeForm handleEmailSubmit={handleEmailSubmit} />
+    return isCodeSent
+      ? <ResetPasswordAfterCodeForm handleResetSubmit={handleResetSubmit} email={email} />
+      : <ResetPasswordBeforeCodeForm handleEmailSubmit={handleEmailSubmit} />;
   }
 }
 

@@ -84,7 +84,7 @@ class LoginForm extends Component {
 LoginForm.propTypes = {
   resetState: PropTypes.func.isRequired,
   handleSubmit: PropTypes.func.isRequired,
-  error: PropTypes.object // TODO: Define what error is (type)
+  // error: PropTypes.object // TODO: Define what error is (type)
 };
 
 export default LoginForm;

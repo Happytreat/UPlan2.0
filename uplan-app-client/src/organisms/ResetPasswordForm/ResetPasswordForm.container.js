@@ -1,9 +1,10 @@
 import { connect } from "react-redux";
 import { Auth } from "aws-amplify";
+import { push } from "connected-react-router";
+
 import ResetPasswordForm from './ResetPasswordForm.component';
-import {actions as authActions, selectors as auth} from '../../store/auth.ducks';
-import {getStore} from "../../services/store";
-import {push} from "connected-react-router";
+import { actions as authActions, selectors as auth } from '../../store/auth.ducks';
+import { getStore } from "../../services/store";
 
 function mapStateToProps(state) {
   return {
