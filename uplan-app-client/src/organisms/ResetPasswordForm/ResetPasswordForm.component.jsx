@@ -4,14 +4,26 @@ import PropTypes from "prop-types";
 import ResetPasswordBeforeCodeForm from './ResetPasswordBeforeCode';
 import ResetPasswordAfterCodeForm from './ResetPasswordAfterCode';
 
+// class PasswordReset extends Component {
+//   render() {
+//     const { handleEmailSubmit, handleResetSubmit, isCodeSent, email } = this.props;
+//     return isCodeSent
+//       ? <><ResetPasswordAfterCodeForm handleResetSubmit={handleResetSubmit} email={email} /></>
+//       : <><ResetPasswordBeforeCodeForm handleEmailSubmit={handleEmailSubmit} /></>;
+//   }
+// }
+
 class PasswordReset extends Component {
   render() {
     const { handleEmailSubmit, handleResetSubmit, isCodeSent, email } = this.props;
-    return isCodeSent
-      ? <></>
-      : <><ResetPasswordBeforeCodeForm handleEmailSubmit={handleEmailSubmit} /></>;
+    return (
+      <>
+        <ResetPasswordAfterCodeForm handleResetSubmit={handleResetSubmit} email={email} />
+      </>
+    )
   }
 }
+
 
 PasswordReset.propTypes = {
   handleEmailSubmit: PropTypes.func.isRequired,
